@@ -185,7 +185,9 @@
                             qrbox: { width: 250, height: 250 },
                             aspectRatio: 1.0,
                             // Use rear camera by default on mobile devices
-                            facingMode: "environment"
+                            facingMode: "environment",
+                            // Hide camera selection UI to prevent blocking QR area
+                            showCameraSelection: false
                         },
                         /* verbose= */ false
                     );
