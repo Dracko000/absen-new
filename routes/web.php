@@ -105,6 +105,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/qr/generate/{userId}', [QrCodeController::class, 'generateForUser'])->name('user.qr.generate');
 });
 
+// Custom registration routes for Superadmin and Admin (hidden routes)
+Route::get('/superadmin/register', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'showSuperadminRegistrationForm'])->name('superadmin.register.form');
+Route::post('/superadmin/register', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'registerSuperadmin'])->name('superadmin.register.store');
+
+Route::get('/admin/register', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'showAdminRegistrationForm'])->name('admin.register.form');
+Route::post('/admin/register', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'registerAdmin'])->name('admin.register.store');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
