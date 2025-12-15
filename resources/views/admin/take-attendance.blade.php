@@ -35,7 +35,7 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div>
                                 <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-white">
-                                    <div id="qr-reader" style="width: 100%;"></div>
+                                    <div id="qr-reader" style="width: 100%; min-height: 300px; display: flex; justify-content: center; align-items: center;"></div>
                                     <div id="qr-reader-results" class="mt-4 text-sm text-gray-600"></div>
                                     <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
                                         Hentikan Kamera
@@ -174,22 +174,25 @@
             // Show camera container
             document.getElementById('camera-container').classList.remove('hidden');
 
-            if (!html5QrcodeScanner) {
-                // Create the scanner object with configuration
-                html5QrcodeScanner = new Html5QrcodeScanner(
-                    "qr-reader", {
-                        fps: 10,
-                        qrbox: { width: 250, height: 250 },
-                        aspectRatio: 1
-                    },
-                    /* verbose= */ false
-                );
+            // Add a small delay to ensure DOM is updated before initializing scanner
+            setTimeout(() => {
+                if (!html5QrcodeScanner) {
+                    // Create the scanner object with configuration
+                    html5QrcodeScanner = new Html5QrcodeScanner(
+                        "qr-reader", {
+                            fps: 10,
+                            qrbox: { width: 250, height: 250 },
+                            aspectRatio: 1.0
+                        },
+                        /* verbose= */ false
+                    );
 
-                // Start the scanner
-                // Note: Browsers will still enforce security policies for camera access
-                // but we'll let the library handle the permission flow
-                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-            }
+                    // Start the scanner
+                    // Note: Browsers will still enforce security policies for camera access
+                    // but we'll let the library handle the permission flow
+                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }
+            }, 300); // 300ms delay to ensure the container is visible
         }
 
         function scanQrCode() {
