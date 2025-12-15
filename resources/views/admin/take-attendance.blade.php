@@ -34,12 +34,20 @@
                         <h4 class="text-lg font-medium mb-4 text-gray-900">Pemindai QR Code</h4>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <div>
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-white">
+                                <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-white">
+                                    <div id="qr-reader" style="width: 100%;"></div>
+                                    <div id="qr-reader-results" class="mt-4 text-sm text-gray-600"></div>
+                                    <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                                        Hentikan Kamera
+                                    </button>
+                                </div>
+
+                                <div id="no-camera-access" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-white">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                     </svg>
                                     <p class="text-gray-600 mt-4">Arahkan kamera ke kode QR siswa untuk memindai</p>
-                                    <p class="text-sm text-gray-500 mt-2">Fungsi kamera akan aktif di lingkungan produksi</p>
+                                    <p class="text-sm text-gray-500 mt-2">Pastikan izin kamera telah diberikan</p>
                                     <button onclick="startCameraScanner()" class="mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">
                                         Aktifkan Kamera
                                     </button>
@@ -142,7 +150,12 @@
         </div>
     </div>
 
+    <!-- Load Html5-QrCode library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
     <script>
+        let html5QrcodeScanner;
+
         function showScanner() {
             document.getElementById('scanner').classList.remove('hidden');
             document.getElementById('manualEntry').classList.add('hidden');
@@ -154,9 +167,29 @@
         }
 
         function startCameraScanner() {
-            alert('Fitur scanner kamera akan diaktifkan di lingkungan produksi. Silakan masukkan kode QR secara manual untuk saat ini.');
-            // Ini adalah tempat untuk menambahkan implementasi scanner kamera
-            // Misalnya menggunakan library seperti QuaggaJS atau Html5-QRCode
+            // Always try to activate camera regardless of environment
+            // Hide no camera access message
+            document.getElementById('no-camera-access').style.display = 'none';
+
+            // Show camera container
+            document.getElementById('camera-container').classList.remove('hidden');
+
+            if (!html5QrcodeScanner) {
+                // Create the scanner object with configuration
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "qr-reader", {
+                        fps: 10,
+                        qrbox: { width: 250, height: 250 },
+                        aspectRatio: 1
+                    },
+                    /* verbose= */ false
+                );
+
+                // Start the scanner
+                // Note: Browsers will still enforce security policies for camera access
+                // but we'll let the library handle the permission flow
+                html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            }
         }
 
         function scanQrCode() {
@@ -264,6 +297,47 @@
                 });
             });
         });
+
+        function stopCameraScanner() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear().then(_ => {
+                    // Success, clear completed
+                    document.getElementById('camera-container').classList.add('hidden');
+                    document.getElementById('no-camera-access').style.display = 'block';
+
+                    // Reset the scanner variable
+                    html5QrcodeScanner = null;
+                }).catch(error => {
+                    console.error("Failed to clear html5QrcodeScanner: ", error);
+                    // Continue with hiding even if clearing fails
+                    document.getElementById('camera-container').classList.add('hidden');
+                    document.getElementById('no-camera-access').style.display = 'block';
+                    html5QrcodeScanner = null;
+                });
+            } else {
+                document.getElementById('camera-container').classList.add('hidden');
+                document.getElementById('no-camera-access').style.display = 'block';
+            }
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Handle the QR code scanning success
+            document.getElementById('qrInput').value = decodedText;
+
+            // Call the existing scanQrCode function to handle the processing
+            scanQrCode();
+
+            // Stop the camera after successful scan
+            setTimeout(() => {
+                stopCameraScanner();
+            }, 2000); // Delay stopping to allow user to see the result
+        }
+
+        function onScanFailure(error) {
+            // Handle scan failure if needed
+            // Note: This happens very frequently since it's called on each frame
+            // Don't log errors during normal operation as it can flood the console
+        }
 
         // Initialize with scanner view
         showScanner();
