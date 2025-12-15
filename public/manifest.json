@@ -1,20 +1,21 @@
 {
-    "name": "Attendance System",
-    "short_name": "Attendance",
-    "description": "A Laravel-based attendance system for schools",
+    "name": "Sistem Absensi Sekolah",
+    "short_name": "Absensi",
+    "description": "Sistem absensi berbasis QR Code untuk sekolah",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#4f46e5",
     "orientation": "portrait",
+    "scope": "/",
     "icons": [
         {
-            "src": "/images/pwa-icon-192.png",
+            "src": "/images/logo.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/images/pwa-icon-512.png",
+            "src": "/images/logo.png",
             "sizes": "512x512",
             "type": "image/png"
         }

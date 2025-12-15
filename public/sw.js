@@ -4,10 +4,13 @@ const CACHE_NAME = 'attendance-app-v1';
 const urlsToCache = [
   '/',
   '/dashboard',
+  '/login',
+  '/register',
+  '/superadmin/register',
+  '/admin/register',
   '/css/app.css',
   '/js/app.js',
-  '/images/pwa-icon-192.png',
-  '/images/pwa-icon-512.png'
+  '/images/logo.png'
 ];
 
 // Install a service worker
@@ -29,8 +32,7 @@ self.addEventListener('fetch', event => {
       .then(response => {
         // Return cached version if available, otherwise fetch from network
         return response || fetch(event.request);
-      }
-    )
+      })
   );
 });
 
