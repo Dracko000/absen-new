@@ -35,8 +35,10 @@
                         <div class="grid grid-cols-1 gap-6">
                             <div>
                                 <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-2 text-center bg-white">
-                                    <div id="qr-reader" style="width: 100%; min-height: 250px; display: flex; justify-content: center; align-items: center;"></div>
-                                    <div id="qr-reader-results" class="mt-2 text-sm text-gray-600"></div>
+                                    <div class="relative">
+                                        <video id="camera-video" autoplay playsinline class="w-full max-h-96 mx-auto" style="max-width: 100%;"></video>
+                                        <canvas id="qr-canvas" class="hidden"></canvas>
+                                    </div>
                                     <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
                                         Hentikan Kamera
                                     </button>
@@ -150,11 +152,11 @@
         </div>
     </div>
 
-    <!-- Load Html5-QrCode library -->
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- Load jsQR library for QR code detection -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
     <script>
-        let html5QrcodeScanner;
+        let videoStream = null;
 
         function showScanner() {
             document.getElementById('scanner').classList.remove('hidden');
@@ -167,37 +169,95 @@
         }
 
         function startCameraScanner() {
-            // Always try to activate camera regardless of environment
             // Hide no camera access message
             document.getElementById('no-camera-access').style.display = 'none';
 
             // Show camera container
             document.getElementById('camera-container').classList.remove('hidden');
 
-            // Add a small delay to ensure DOM is updated before initializing scanner
-            setTimeout(() => {
-                if (!html5QrcodeScanner) {
-                    // Create the scanner object with configuration
-                    // Configure for back camera by default on mobile devices
-                    html5QrcodeScanner = new Html5QrcodeScanner(
-                        "qr-reader", {
-                            fps: 10,
-                            qrbox: { width: 250, height: 250 },
-                            aspectRatio: 1.0,
-                            // Use rear camera by default on mobile devices
-                            facingMode: "environment",
-                            // Hide camera selection UI to prevent blocking QR area
-                            showCameraSelection: false
-                        },
-                        /* verbose= */ false
-                    );
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('qr-canvas');
 
-                    // Start the scanner
-                    // Note: Browsers will still enforce security policies for camera access
-                    // but we'll let the library handle the permission flow
-                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+            if (!videoStream) {
+                // Try to access the back camera on mobile devices
+                navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } }
+                })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Start QR detection once video is playing
+                    video.addEventListener('play', function() {
+                        detectQRCode();
+                    });
+                })
+                .catch(function(error) {
+                    console.error("Camera error: ", error);
+                    // If back camera fails, try any available camera
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        videoStream = stream;
+                        video.srcObject = stream;
+                        video.play();
+
+                        video.addEventListener('play', function() {
+                            detectQRCode();
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error("Camera error (fallback): ", error);
+                        alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                        document.getElementById('camera-container').classList.add('hidden');
+                        document.getElementById('no-camera-access').style.display = 'block';
+                    });
+                });
+            }
+        }
+
+        function stopCameraScanner() {
+            if (videoStream) {
+                const tracks = videoStream.getTracks();
+                tracks.forEach(track => track.stop());
+                videoStream = null;
+            }
+
+            document.getElementById('camera-container').classList.add('hidden');
+            document.getElementById('no-camera-access').style.display = 'block';
+        }
+
+        function detectQRCode() {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('qr-canvas');
+            const ctx = canvas.getContext('2d');
+
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                // Set canvas dimensions to match video
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                // Draw current video frame to canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Get image data from canvas
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                // Try to decode QR code using jsQR
+                const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                    inversionAttempts: "dontInvert",
+                });
+
+                if (code) {
+                    // QR code detected!
+                    document.getElementById('qrInput').value = code.data;
+                    scanQrCode(); // Process the scanned code
+                    stopCameraScanner(); // Stop camera after successful scan
                 }
-            }, 300); // 300ms delay to ensure the container is visible
+            }
+
+            // Continue scanning
+            requestAnimationFrame(detectQRCode);
         }
 
         function scanQrCode() {
@@ -305,47 +365,6 @@
                 });
             });
         });
-
-        function stopCameraScanner() {
-            if (html5QrcodeScanner) {
-                html5QrcodeScanner.clear().then(_ => {
-                    // Success, clear completed
-                    document.getElementById('camera-container').classList.add('hidden');
-                    document.getElementById('no-camera-access').style.display = 'block';
-
-                    // Reset the scanner variable
-                    html5QrcodeScanner = null;
-                }).catch(error => {
-                    console.error("Failed to clear html5QrcodeScanner: ", error);
-                    // Continue with hiding even if clearing fails
-                    document.getElementById('camera-container').classList.add('hidden');
-                    document.getElementById('no-camera-access').style.display = 'block';
-                    html5QrcodeScanner = null;
-                });
-            } else {
-                document.getElementById('camera-container').classList.add('hidden');
-                document.getElementById('no-camera-access').style.display = 'block';
-            }
-        }
-
-        function onScanSuccess(decodedText, decodedResult) {
-            // Handle the QR code scanning success
-            document.getElementById('qrInput').value = decodedText;
-
-            // Call the existing scanQrCode function to handle the processing
-            scanQrCode();
-
-            // Stop the camera after successful scan
-            setTimeout(() => {
-                stopCameraScanner();
-            }, 2000); // Delay stopping to allow user to see the result
-        }
-
-        function onScanFailure(error) {
-            // Handle scan failure if needed
-            // Note: This happens very frequently since it's called on each frame
-            // Don't log errors during normal operation as it can flood the console
-        }
 
         // Initialize with scanner view
         showScanner();
