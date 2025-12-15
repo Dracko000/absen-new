@@ -14,8 +14,8 @@
         <meta name="apple-mobile-web-app-title" content="Absensi">
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <link rel="manifest" href="{{ asset('manifest.json') }}">
-        <link rel="icon" type="image/x-icon" href="{{ asset('images/pwa-icon-192.png') }}">
-        <link rel="apple-touch-icon" href="{{ asset('images/pwa-icon-192.png') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/logo.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
