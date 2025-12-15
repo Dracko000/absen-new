@@ -178,11 +178,14 @@
             setTimeout(() => {
                 if (!html5QrcodeScanner) {
                     // Create the scanner object with configuration
+                    // Configure for back camera by default on mobile devices
                     html5QrcodeScanner = new Html5QrcodeScanner(
                         "qr-reader", {
                             fps: 10,
                             qrbox: { width: 250, height: 250 },
-                            aspectRatio: 1.0
+                            aspectRatio: 1.0,
+                            // Use rear camera by default on mobile devices
+                            facingMode: "environment"
                         },
                         /* verbose= */ false
                     );
