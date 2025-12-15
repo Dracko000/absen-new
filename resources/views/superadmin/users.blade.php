@@ -51,6 +51,20 @@
                 </div>
             </div>
 
+            <div class="mb-6">
+                <form method="GET" action="{{ route('superadmin.users') }}">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="text" name="search" value="{{ request('search') }}" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 w-80" placeholder="Cari nama atau email...">
+                        <button type="submit" class="absolute right-2.5 bottom-2.5 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-4 py-2">Cari</button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Users Table by Role -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
@@ -93,9 +107,9 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                                <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -137,9 +151,9 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                                <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -185,9 +199,9 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                                <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -233,9 +247,9 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                                <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -373,6 +387,41 @@
             allTab.classList.add('active');
             allTab.classList.add('border-blue-500');
             allTab.classList.add('text-blue-600');
+        });
+
+        // Handle delete functionality
+        document.querySelectorAll('.delete-user').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const userId = this.getAttribute('data-user-id');
+                const userName = this.getAttribute('data-user-name');
+
+                if(confirm(`Apakah Anda yakin ingin menghapus pengguna "${userName}"? Tindakan ini tidak dapat dibatalkan.`)) {
+                    // Create a form to submit the delete request
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `{{ route('users.destroy', '') }}/${userId}`;
+                    form.style.display = 'none';
+
+                    // Add CSRF token
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = csrfToken;
+                    form.appendChild(csrfInput);
+
+                    // Add method spoofing for DELETE
+                    const methodInput = document.createElement('input');
+                    methodInput.type = 'hidden';
+                    methodInput.name = '_method';
+                    methodInput.value = 'DELETE';
+                    form.appendChild(methodInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
         });
     </script>
 </x-app-layout>

@@ -37,9 +37,20 @@ class SuperadminController extends Controller
         return view('superadmin.dashboard', compact('totalUsers', 'totalTeachers', 'totalStudents', 'totalClasses', 'todayAttendance', 'attendances', 'recentAttendances'));
     }
 
-    public function manageUsers()
+    public function manageUsers(Request $request)
     {
-        $users = User::with('roles')->get();
+        $query = User::with('roles');
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $users = $query->get();
         $roles = Role::all();
         return view('superadmin.users', compact('users', 'roles'));
     }

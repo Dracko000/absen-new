@@ -70,6 +70,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/qr-code', [StudentController::class, 'showQrCode'])->name('qr.code');
     });
 
+    // User management routes
+    Route::middleware(['auth', 'role:Superadmin'])->prefix('users')->group(function () {
+        Route::delete('/{id}', function($id) {
+            $user = \App\Models\User::findOrFail($id);
+            $user->delete();
+            return redirect()->back()->with('success', 'User deleted successfully.');
+        })->name('users.destroy');
+    });
+
     // Shared attendance routes
     Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(function () {
         Route::post('/record', [AttendanceController::class, 'recordAttendance'])->name('record');
