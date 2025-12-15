@@ -32,32 +32,32 @@
                     <!-- QR Scanner Section -->
                     <div id="scanner" class="hidden mb-6 p-6 bg-gray-50 rounded-xl">
                         <h4 class="text-lg font-medium mb-4 text-gray-900">Pemindai QR Code</h4>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 gap-6">
                             <div>
-                                <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-white">
-                                    <div id="qr-reader" style="width: 100%; min-height: 300px; display: flex; justify-content: center; align-items: center;"></div>
-                                    <div id="qr-reader-results" class="mt-4 text-sm text-gray-600"></div>
-                                    <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                                <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-2 text-center bg-white">
+                                    <div id="qr-reader" style="width: 100%; min-height: 250px; display: flex; justify-content: center; align-items: center;"></div>
+                                    <div id="qr-reader-results" class="mt-2 text-sm text-gray-600"></div>
+                                    <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
                                         Hentikan Kamera
                                     </button>
                                 </div>
 
-                                <div id="no-camera-access" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <div id="no-camera-access" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto sm:h-16 sm:w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                     </svg>
-                                    <p class="text-gray-600 mt-4">Arahkan kamera ke kode QR siswa untuk memindai</p>
-                                    <p class="text-sm text-gray-500 mt-2">Pastikan izin kamera telah diberikan</p>
-                                    <button onclick="startCameraScanner()" class="mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">
+                                    <p class="text-gray-600 mt-2 sm:mt-4 text-sm sm:text-base">Arahkan kamera ke kode QR siswa untuk memindai</p>
+                                    <p class="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">Pastikan izin kamera telah diberikan</p>
+                                    <button onclick="startCameraScanner()" class="mt-2 sm:mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
                                         Aktifkan Kamera
                                     </button>
                                 </div>
 
-                                <div class="mt-4">
-                                    <label for="qrInput" class="block text-sm font-medium text-gray-700 mb-2">Atau masukkan kode QR secara manual:</label>
-                                    <div class="flex">
-                                        <input type="text" id="qrInput" placeholder="Tempel kode QR di sini..." class="flex-1 border-gray-300 rounded-l-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        <button onclick="scanQrCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-r-lg">
+                                <div class="mt-3 sm:mt-4">
+                                    <label for="qrInput" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Atau masukkan kode QR secara manual:</label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input type="text" id="qrInput" placeholder="Tempel kode QR di sini..." class="flex-1 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm py-2 px-3">
+                                        <button onclick="scanQrCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
                                             Pindai
                                         </button>
                                     </div>
@@ -65,16 +65,16 @@
                             </div>
 
                             <div>
-                                <div class="bg-white p-4 rounded-lg border">
-                                    <h5 class="font-medium text-gray-900 mb-3">Hasil Pemindaian</h5>
-                                    <div id="scanResult" class="text-gray-600 min-h-[100px]">
+                                <div class="bg-white p-3 sm:p-4 rounded-lg border">
+                                    <h5 class="font-medium text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Hasil Pemindaian</h5>
+                                    <div id="scanResult" class="text-gray-600 min-h-[80px] sm:min-h-[100px] text-sm">
                                         <p>Hasil pemindaian akan muncul di sini...</p>
                                     </div>
                                 </div>
 
-                                <div class="mt-4 bg-blue-50 p-4 rounded-lg">
-                                    <h5 class="font-medium text-gray-900 mb-2">Petunjuk Pemindaian</h5>
-                                    <ul class="list-disc pl-5 text-sm text-gray-600 space-y-1">
+                                <div class="mt-3 sm:mt-4 bg-blue-50 p-3 sm:p-4 rounded-lg">
+                                    <h5 class="font-medium text-gray-900 mb-2 text-sm sm:text-base">Petunjuk Pemindaian</h5>
+                                    <ul class="list-disc pl-4 text-xs sm:text-sm text-gray-600 space-y-1">
                                         <li>Pastikan pencahayaan cukup</li>
                                         <li>Jaga jarak 10-20cm dari kode QR</li>
                                         <li>Hasil absensi akan muncul secara otomatis</li>
