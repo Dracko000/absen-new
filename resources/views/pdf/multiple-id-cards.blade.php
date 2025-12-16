@@ -160,7 +160,7 @@
                             <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                             <div class="qr-section">
                                 <div class="qr-code">
-                                    {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                                    {!! QrCode::size(44)->generate($user->getQrCodeDataAttribute()) !!}
                                 </div>
                             </div>
                         </div>

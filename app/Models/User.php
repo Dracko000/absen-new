@@ -62,6 +62,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Get QR code data containing user information for verification
+     */
+    public function getQrCodeDataAttribute()
+    {
+        return json_encode([
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'role' => $this->roles->pluck('name')->first(),
+            'school' => 'SDN CIKAMPEK SELATAN 1',
+            'generated_at' => now()->toISOString(),
+        ]);
+    }
+
+    /**
      * Check if user is superadmin
      */
     public function isSuperAdmin()
