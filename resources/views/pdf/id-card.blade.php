@@ -104,8 +104,9 @@
         .qr-code {
             width: 0.6in;
             height: 0.6in;
-            background: white;
+            background: #f0f0f0;
             padding: 0.02in;
+            border: 0.5pt solid #ddd;
         }
         
         .school-logo {
