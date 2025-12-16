@@ -37,72 +37,80 @@
             display: flex;
             flex-direction: column;
         }
-
+        
+        .header-container {
+            text-align: center;
+        }
+        
         .main-content {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
             flex-grow: 1;
         }
-
+        
         .user-info {
             margin-top: 30px;
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
+        
         .user-name {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #333;
         }
-
+        
         .user-role {
             font-size: 14px;
             margin-bottom: 8px;
             color: #333;
         }
-
+        
         .user-id {
             font-size: 12px;
             color: #333;
         }
-
+        
         .user-email {
             font-size: 12px;
             margin-top: 5px;
             color: #333;
         }
-
+        
         .qr-section {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             margin-left: 10px;
         }
-
+        
         .qr-label {
             font-size: 8px;
             color: #333;
             margin-bottom: 2px;
         }
-
+        
         .qr-code {
             width: 60px;
             height: 60px;
             background: white;
         }
-
+        
         .qr-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100%;
         }
-
+        
         .school-name {
             font-size: 16px;
             font-weight: bold;
             color: #333;
-            text-align: center;
+            text-align: left;
             width: 100%;
         }
         
@@ -137,7 +145,7 @@
                     <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
                     <div class="school-name" style="font-size: 16px; margin-bottom: 10px; text-align: left;">SDN CIKAMPEK SELATAN 1</div>
                 </div>
-
+                
                 <div class="main-content">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -155,7 +163,7 @@
                         <div class="user-id">ID: {{ $user->id }}</div>
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
-
+                    
                     <div class="qr-section">
                         <div class="qr-label">SCAN UNTUK ABSEN</div>
                         <div class="qr-wrapper">

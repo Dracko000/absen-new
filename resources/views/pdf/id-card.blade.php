@@ -40,80 +40,81 @@
             display: flex;
             flex-direction: column;
         }
-
+        
+        .header-container {
+            text-align: center;
+        }
+        
         .main-content {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
             flex-grow: 1;
         }
-
+        
         .user-info {
             margin-top: 0.1in;
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-
+        
         .user-name {
             font-size: 0.15in;
             font-weight: bold;
             margin-bottom: 0.02in;
             color: #333;
         }
-
+        
         .user-role {
             font-size: 0.12in;
             margin-bottom: 0.03in;
             color: #333;
         }
-
+        
         .user-id {
             font-size: 0.09in;
             color: #333;
         }
-
+        
         .user-email {
             font-size: 0.08in;
             margin-top: 0.02in;
             color: #333;
         }
-
+        
         .qr-section {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             margin-left: 0.1in;
         }
-
+        
         .qr-label {
             font-size: 0.06in;
             color: #333;
             margin-bottom: 0.01in;
         }
-
+        
         .qr-code {
             width: 0.7in;
             height: 0.7in;
             background: white;
         }
-
+        
         .qr-wrapper {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100%;
         }
-
+        
         .school-name {
             font-size: 0.13in;
             font-weight: bold;
             color: #333;
-            text-align: center;
+            text-align: left;
             width: 100%;
-        }
-
-        .footer-container {
-            padding-top: 0.1in;
-            border-top: 0.5pt solid #ddd;
-            margin-top: 0.1in;
-            text-align: center;
         }
         
         .school-logo {
@@ -147,7 +148,7 @@
                     <h3 style="margin: 0 0 0.05in 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
                     <div class="school-name" style="font-size: 0.13in; margin-bottom: 0.07in; text-align: left;">SDN CIKAMPEK SELATAN 1</div>
                 </div>
-
+                
                 <div class="main-content">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -165,7 +166,7 @@
                         <div class="user-id">ID: {{ $user->id }}</div>
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
-
+                    
                     <div class="qr-section">
                         <div class="qr-label">SCAN UNTUK ABSEN</div>
                         <div class="qr-wrapper">
