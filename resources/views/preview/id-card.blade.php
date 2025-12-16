@@ -61,10 +61,10 @@
         .id-card {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: white;
+            color: #333;
             position: relative;
             overflow: hidden;
         }

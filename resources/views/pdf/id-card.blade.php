@@ -25,10 +25,10 @@
         .id-card {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 0.1in;
             box-shadow: 0 0.05in 0.1in rgba(0,0,0,0.3);
-            color: white;
+            color: #333;
             position: relative;
             overflow: hidden;
             page-break-inside: avoid;
@@ -58,18 +58,18 @@
         .user-role {
             font-size: 0.12in;
             margin-bottom: 0.03in;
-            color: #666;
+            color: #333;
         }
         
         .user-id {
             font-size: 0.09in;
-            color: #888;
+            color: #333;
         }
         
         .user-email {
             font-size: 0.08in;
             margin-top: 0.02in;
-            color: #666;
+            color: #333;
         }
         
         .card-footer {
@@ -97,7 +97,7 @@
         
         .qr-label {
             font-size: 0.06in;
-            color: #666;
+            color: #333;
             margin-bottom: 0.01in;
         }
         

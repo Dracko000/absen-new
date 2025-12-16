@@ -23,10 +23,10 @@
             width: 100%;
             max-width: 350px;
             height: 220px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: white;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: white;
+            color: #333;
             position: relative;
             overflow: hidden;
         }
@@ -55,18 +55,18 @@
         .user-role {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #666;
+            color: #333;
         }
         
         .user-id {
             font-size: 12px;
-            color: #888;
+            color: #333;
         }
         
         .user-email {
             font-size: 12px;
             margin-top: 5px;
-            color: #666;
+            color: #333;
         }
         
         .card-footer {
@@ -94,7 +94,7 @@
         
         .qr-label {
             font-size: 8px;
-            color: #666;
+            color: #333;
             margin-bottom: 2px;
         }
         
