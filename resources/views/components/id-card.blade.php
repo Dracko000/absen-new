@@ -33,8 +33,8 @@
 
         .card-header {
             padding: 15px 20px;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.4);
         }
 
         .card-body {
@@ -50,20 +50,17 @@
             font-weight: bold;
             margin-bottom: 5px;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         .user-role {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #e0e0e0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            color: white;
         }
 
         .user-id {
             font-size: 12px;
-            color: #f0f0f0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            color: white;
         }
 
         .card-footer {
@@ -72,7 +69,7 @@
             left: 0;
             right: 0;
             padding: 10px 20px;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -82,7 +79,6 @@
             font-size: 10px;
             font-weight: bold;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         .qr-section {
@@ -92,7 +88,7 @@
 
         .qr-label {
             font-size: 8px;
-            color: rgba(255,255,255,0.8);
+            color: white;
             margin-bottom: 2px;
         }
 
@@ -145,7 +141,7 @@
                         @endif
                     </div>
                     <div class="user-id">ID: {{ $user->id }}</div>
-                    <div class="user-email" style="font-size: 12px; margin-top: 5px; color: #e0e0e0; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                    <div class="user-email" style="font-size: 12px; margin-top: 5px; color: white;">
                         {{ $user->email }}
                     </div>
                 </div>

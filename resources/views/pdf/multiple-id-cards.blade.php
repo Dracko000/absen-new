@@ -37,8 +37,8 @@
 
         .card-header {
             padding: 0.15in 0.2in;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.4);
         }
 
         .card-body {
@@ -54,27 +54,23 @@
             font-weight: bold;
             margin-bottom: 0.02in;
             color: white;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         .user-role {
             font-size: 0.12in;
             margin-bottom: 0.03in;
-            color: #e0e0e0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            color: white;
         }
 
         .user-id {
             font-size: 0.09in;
-            color: #f0f0f0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            color: white;
         }
 
         .user-email {
             font-size: 0.08in;
             margin-top: 0.02in;
-            color: #e0e0e0;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            color: white;
         }
 
         .card-footer {
@@ -83,7 +79,7 @@
             left: 0;
             right: 0;
             padding: 0.08in 0.2in;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -93,7 +89,6 @@
             font-size: 0.08in;
             font-weight: bold;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         .qr-section {
@@ -103,7 +98,7 @@
 
         .qr-label {
             font-size: 0.06in;
-            color: rgba(255,255,255,0.8);
+            color: white;
             margin-bottom: 0.01in;
         }
 
