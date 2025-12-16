@@ -104,7 +104,7 @@
             font-size: 10px;
             font-weight: bold;
             color: #333;
-            margin-top: auto;
+            margin-top: 5px;
             text-align: center;
             width: 100%;
         }

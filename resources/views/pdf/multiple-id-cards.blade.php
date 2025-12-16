@@ -108,7 +108,7 @@
             font-size: 0.08in;
             font-weight: bold;
             color: #333;
-            margin-top: auto;
+            margin-top: 0.05in;
             text-align: center;
             width: 100%;
         }
