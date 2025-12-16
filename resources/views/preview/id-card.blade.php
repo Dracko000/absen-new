@@ -74,39 +74,39 @@
             background: white;
             border-bottom: 1px solid rgba(0,0,0,0.1);
         }
-        
+
         .card-body {
             padding: 15px 20px 10px;
         }
-        
+
         .user-info {
             margin-top: 10px;
         }
-        
+
         .user-name {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
             color: #333;
         }
-        
+
         .user-role {
             font-size: 14px;
             margin-bottom: 8px;
-            color: #666;
+            color: #333;
         }
-        
+
         .user-id {
             font-size: 12px;
-            color: #888;
+            color: #333;
         }
-        
+
         .user-email {
             font-size: 12px;
             margin-top: 5px;
-            color: #666;
+            color: #333;
         }
-        
+
         .card-footer {
             position: absolute;
             bottom: 0;
@@ -118,31 +118,31 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .school-name {
             font-size: 10px;
             font-weight: bold;
             color: #333;
         }
-        
+
         .qr-section {
             margin-left: auto;
             text-align: center;
         }
-        
+
         .qr-label {
             font-size: 8px;
-            color: #666;
+            color: #333;
             margin-bottom: 2px;
         }
-        
+
         .qr-code {
             width: 50px;
             height: 50px;
             background: white;
             padding: 3px;
         }
-        
+
         .school-logo {
             position: absolute;
             top: 10px;
@@ -153,7 +153,7 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .school-logo img {
             max-width: 100%;
             max-height: 100%;
@@ -171,18 +171,18 @@
                 ← Kembali
             </a>
         </div>
-        
+
         <div class="card-container">
             <div class="id-card" id="card-to-download">
                 <!-- School logo -->
                 <div class="school-logo">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah">
                 </div>
-                
+
                 <div class="card-header">
                     <h3 style="margin: 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -201,7 +201,7 @@
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
                 </div>
-                
+
                 <div class="card-footer">
                     <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                     <div class="qr-section">
@@ -213,7 +213,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script>
             function downloadAsJpg() {
