@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\PrintController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -112,6 +113,13 @@ Route::middleware(['auth'])->group(function () {
     // QR Code routes
     Route::get('/qr/show/{id}', [QrCodeController::class, 'show'])->name('user.qr.show');
     Route::get('/qr/generate/{userId}', [QrCodeController::class, 'generateForUser'])->name('user.qr.generate');
+
+    // Print routes
+    Route::middleware(['auth'])->prefix('print')->name('print.')->group(function () {
+        Route::get('/id-card/{userId}', [PrintController::class, 'printIdCard'])->name('id.card');
+        Route::post('/multiple-id-cards', [PrintController::class, 'printMultipleIdCards'])->name('multiple.id.cards');
+        Route::get('/preview/id-card/{userId}', [PrintController::class, 'previewIdCard'])->name('preview.id.card');
+    });
 });
 
 // Custom registration routes for Superadmin and Admin (hidden routes)

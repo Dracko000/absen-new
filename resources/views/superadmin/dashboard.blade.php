@@ -95,7 +95,13 @@
                     </div>
                     <div class="mt-4 sm:mt-6">
                         <h4 class="font-medium text-gray-900 text-sm sm:text-base mb-2 sm:mb-3">Akses Cepat</h4>
-                        <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+                            <a href="{{ route('print.id.card', Auth::id()) }}" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-700 py-2 sm:py-3 px-3 sm:px-4 rounded-lg text-center transition duration-200" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                                <span class="text-xs sm:text-sm">Cetak Kartu</span>
+                            </a>
                             <a href="{{ route('superadmin.users') }}" class="bg-blue-50 hover:bg-blue-100 text-blue-700 py-2 sm:py-3 px-3 sm:px-4 rounded-lg text-center transition duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />

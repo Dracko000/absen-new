@@ -32,6 +32,7 @@
                                     <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Siswa</th>
                                     <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                     <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terakhir Absen</th>
+                                    <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -47,10 +48,13 @@
                                         <td class="px-3 sm:px-6 py-3 whitespace-nowrap text-sm text-gray-500">
                                             {{ $student->attendances->last()?->created_at?->format('d M Y H:i') ?? 'Tidak ada' }}
                                         </td>
+                                        <td class="px-3 sm:px-6 py-3 whitespace-nowrap text-sm font-medium">
+                                            <a href="{{ route('print.id.card', $student->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak Kartu</a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada siswa dalam kelas ini</td>
+                                        <td colspan="5" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada siswa dalam kelas ini</td>
                                     </tr>
                                 @endforelse
                             </tbody>

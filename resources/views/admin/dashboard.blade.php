@@ -111,6 +111,18 @@
                     </div>
                     <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Aksi Cepat</h3>
                     <div class="space-y-3">
+                        <a href="{{ route('print.id.card', Auth::id()) }}" class="flex items-center p-3 sm:p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
+                            <div class="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-yellow-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 sm:ml-4">
+                                <p class="text-sm font-medium text-gray-900">Cetak Kartu Saya</p>
+                                <p class="text-sm text-gray-500">Unduh kartu identitas saya</p>
+                            </div>
+                        </a>
+
                         <a href="{{ route('admin.classes') }}" class="flex items-center p-3 sm:p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition duration-200">
                             <div class="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-blue-100 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
