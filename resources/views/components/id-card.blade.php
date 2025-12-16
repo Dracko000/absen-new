@@ -135,7 +135,7 @@
             <div class="content-container">
                 <div class="header-container">
                     <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
-                    <div class="school-name" style="font-size: 14px; margin-bottom: 10px;">SDN CIKAMPEK SELATAN 1</div>
+                    <div class="school-name" style="font-size: 16px; margin-bottom: 10px; text-align: left;">SDN CIKAMPEK SELATAN 1</div>
                 </div>
 
                 <div class="main-content">
