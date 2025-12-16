@@ -126,8 +126,6 @@
         .qr-code {
             width: 60px;
             height: 60px;
-            padding: 4px;
-            border: 1px solid #ddd;
             background: white;
         }
 
@@ -139,12 +137,19 @@
         }
 
         .school-name {
-            font-size: 10px;
+            font-size: 16px;
             font-weight: bold;
             color: #333;
-            margin-top: 5px;
+            margin-top: 10px;
             text-align: center;
             width: 100%;
+        }
+
+        .footer-container {
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            margin-top: 15px;
+            text-align: center;
         }
 
         .school-logo {
@@ -213,7 +218,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="footer-container">
                     <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                 </div>
             </div>

@@ -88,8 +88,6 @@
         .qr-code {
             width: 60px;
             height: 60px;
-            padding: 4px;
-            border: 1px solid #ddd;
             background: white;
         }
 
@@ -101,10 +99,9 @@
         }
 
         .school-name {
-            font-size: 10px;
+            font-size: 16px;
             font-weight: bold;
             color: #333;
-            margin-top: 5px;
             text-align: center;
             width: 100%;
         }
@@ -165,9 +162,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
             </div>
+
+            <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
         </div>
     </div>
 </body>
