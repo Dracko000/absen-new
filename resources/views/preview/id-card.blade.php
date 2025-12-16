@@ -194,9 +194,6 @@
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah">
                 </div>
 
-                <!-- Personal logo placeholder -->
-                <div class="logo">SC</div>
-
                 <div class="card-header">
                     <h3 style="margin: 0; font-size: 16px; color: white;">KARTU IDENTITAS</h3>
                 </div>

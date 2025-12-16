@@ -109,21 +109,6 @@
             padding: 0.02in;
         }
 
-        .logo {
-            position: absolute;
-            top: 0.08in;
-            right: 0.15in;
-            width: 0.4in;
-            height: 0.4in;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.15in;
-            color: white;
-        }
-
         .school-logo {
             position: absolute;
             top: 0.08in;
@@ -152,9 +137,6 @@
                         <div class="school-logo">
                             <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah" style="max-width:100%; max-height:100%;">
                         </div>
-                        
-                        <!-- Personal logo placeholder -->
-                        <div class="logo">SC</div>
                         
                         <div class="card-header">
                             <h3 style="margin: 0; font-size: 0.13in; color: white;">KARTU IDENTITAS</h3>
