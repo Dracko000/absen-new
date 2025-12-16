@@ -94,15 +94,16 @@
                                         <p class="text-sm text-gray-500">Lihat semua kelas</p>
                                     </div>
                                 </a>
-                                <a href="{{ route('print.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
+                                <a href="{{ route('print.preview.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
                                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </div>
                                     <div class="ml-4">
-                                        <p class="text-sm font-medium text-gray-900">Cetak Kartu Saya</p>
-                                        <p class="text-sm text-gray-500">Unduh kartu identitas saya</p>
+                                        <p class="text-sm font-medium text-gray-900">Lihat Kartu Saya</p>
+                                        <p class="text-sm text-gray-500">Pratinjau kartu identitas saya</p>
                                     </div>
                                 </a>
                             @elseif(Auth::user()->hasRole('Admin'))
@@ -139,15 +140,16 @@
                                         <p class="text-sm text-gray-500">Lihat jadwal saya</p>
                                     </div>
                                 </a>
-                                <a href="{{ route('print.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
+                                <a href="{{ route('print.preview.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
                                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </div>
                                     <div class="ml-4">
-                                        <p class="text-sm font-medium text-gray-900">Cetak Kartu Saya</p>
-                                        <p class="text-sm text-gray-500">Unduh kartu identitas saya</p>
+                                        <p class="text-sm font-medium text-gray-900">Lihat Kartu Saya</p>
+                                        <p class="text-sm text-gray-500">Pratinjau kartu identitas saya</p>
                                     </div>
                                 </a>
                             @else
@@ -184,15 +186,16 @@
                                         <p class="text-sm text-gray-500">Tampilkan QR untuk absensi</p>
                                     </div>
                                 </a>
-                                <a href="{{ route('print.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
+                                <a href="{{ route('print.preview.id.card', Auth::id()) }}" class="flex items-center p-4 bg-yellow-50 hover:bg-yellow-100 rounded-lg transition duration-200" target="_blank">
                                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
                                     </div>
                                     <div class="ml-4">
-                                        <p class="text-sm font-medium text-gray-900">Cetak Kartu Saya</p>
-                                        <p class="text-sm text-gray-500">Unduh kartu identitas saya</p>
+                                        <p class="text-sm font-medium text-gray-900">Lihat Kartu Saya</p>
+                                        <p class="text-sm text-gray-500">Pratinjau kartu identitas saya</p>
                                     </div>
                                 </a>
                             @endif

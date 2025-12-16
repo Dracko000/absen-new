@@ -49,7 +49,7 @@
                                             {{ $student->attendances->last()?->created_at?->format('d M Y H:i') ?? 'Tidak ada' }}
                                         </td>
                                         <td class="px-3 sm:px-6 py-3 whitespace-nowrap text-sm font-medium">
-                                            <a href="{{ route('print.id.card', $student->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak Kartu</a>
+                                            <a href="{{ route('print.preview.id.card', $student->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat Kartu</a>
                                         </td>
                                     </tr>
                                 @empty

@@ -109,7 +109,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="{{ route('print.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak</a>
+                                                <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
@@ -155,7 +155,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="{{ route('print.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak</a>
+                                                <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
@@ -205,7 +205,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="{{ route('print.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak</a>
+                                                <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
@@ -255,7 +255,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
-                                                <a href="{{ route('print.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Cetak</a>
+                                                <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
