@@ -36,8 +36,8 @@
         
         .card-header {
             padding: 0.15in 0.2in;
-            background: rgba(0,0,0,0.4);
-            border-bottom: 1px solid rgba(255,255,255,0.4);
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         
         .card-body {
@@ -52,24 +52,24 @@
             font-size: 0.15in;
             font-weight: bold;
             margin-bottom: 0.02in;
-            color: white;
+            color: #333;
         }
         
         .user-role {
             font-size: 0.12in;
             margin-bottom: 0.03in;
-            color: white;
+            color: #666;
         }
         
         .user-id {
             font-size: 0.09in;
-            color: white;
+            color: #888;
         }
         
         .user-email {
             font-size: 0.08in;
             margin-top: 0.02in;
-            color: white;
+            color: #666;
         }
         
         .card-footer {
@@ -78,7 +78,7 @@
             left: 0;
             right: 0;
             padding: 0.08in 0.2in;
-            background: rgba(0,0,0,0.5);
+            background: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -87,7 +87,7 @@
         .school-name {
             font-size: 0.08in;
             font-weight: bold;
-            color: white;
+            color: #333;
         }
         
         .qr-section {
@@ -97,7 +97,7 @@
         
         .qr-label {
             font-size: 0.06in;
-            color: white;
+            color: #666;
             margin-bottom: 0.01in;
         }
         
@@ -108,25 +108,10 @@
             padding: 0.02in;
         }
         
-        .logo {
-            position: absolute;
-            top: 0.08in;
-            right: 0.15in;
-            width: 0.4in;
-            height: 0.4in;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.15in;
-            color: white;
-        }
-        
         .school-logo {
             position: absolute;
             top: 0.08in;
-            left: 0.15in;
+            right: 0.15in;
             width: 0.4in;
             height: 0.4in;
             display: flex;
@@ -150,7 +135,7 @@
             </div>
             
             <div class="card-header">
-                <h3 style="margin: 0; font-size: 0.13in; color: white;">KARTU IDENTITAS</h3>
+                <h3 style="margin: 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
             </div>
             
             <div class="card-body">

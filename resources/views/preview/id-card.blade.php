@@ -71,8 +71,8 @@
         
         .card-header {
             padding: 15px 20px;
-            background: rgba(0,0,0,0.4);
-            border-bottom: 1px solid rgba(255,255,255,0.4);
+            background: white;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
         }
         
         .card-body {
@@ -87,24 +87,24 @@
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
-            color: white;
+            color: #333;
         }
         
         .user-role {
             font-size: 14px;
             margin-bottom: 8px;
-            color: white;
+            color: #666;
         }
         
         .user-id {
             font-size: 12px;
-            color: white;
+            color: #888;
         }
         
         .user-email {
             font-size: 12px;
             margin-top: 5px;
-            color: white;
+            color: #666;
         }
         
         .card-footer {
@@ -113,7 +113,7 @@
             left: 0;
             right: 0;
             padding: 10px 20px;
-            background: rgba(0,0,0,0.5);
+            background: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -122,7 +122,7 @@
         .school-name {
             font-size: 10px;
             font-weight: bold;
-            color: white;
+            color: #333;
         }
         
         .qr-section {
@@ -132,7 +132,7 @@
         
         .qr-label {
             font-size: 8px;
-            color: white;
+            color: #666;
             margin-bottom: 2px;
         }
         
@@ -143,32 +143,17 @@
             padding: 3px;
         }
         
-        .logo {
+        .school-logo {
             position: absolute;
             top: 10px;
             right: 15px;
             width: 40px;
             height: 40px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: white;
-        }
-
-        .school-logo {
-            position: absolute;
-            top: 10px;
-            left: 15px;
-            width: 40px;
-            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
+        
         .school-logo img {
             max-width: 100%;
             max-height: 100%;
@@ -186,18 +171,18 @@
                 ← Kembali
             </a>
         </div>
-
+        
         <div class="card-container">
             <div class="id-card" id="card-to-download">
                 <!-- School logo -->
                 <div class="school-logo">
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah">
                 </div>
-
+                
                 <div class="card-header">
-                    <h3 style="margin: 0; font-size: 16px; color: white;">KARTU IDENTITAS</h3>
+                    <h3 style="margin: 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
                 </div>
-
+                
                 <div class="card-body">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -216,7 +201,7 @@
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
                 </div>
-
+                
                 <div class="card-footer">
                     <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                     <div class="qr-section">
@@ -228,7 +213,7 @@
                 </div>
             </div>
         </div>
-
+        
         <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
         <script>
             function downloadAsJpg() {
