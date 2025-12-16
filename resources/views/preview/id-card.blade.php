@@ -69,18 +69,17 @@
             overflow: hidden;
         }
         
-        .card-header {
+        .content-container {
             padding: 15px 20px;
-            background: white;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .card-body {
-            padding: 15px 20px 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .user-info {
-            margin-top: 10px;
+            margin-top: 30px;
+            flex-grow: 1;
         }
 
         .user-name {
@@ -107,16 +106,11 @@
             color: #333;
         }
 
-        .card-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 10px 20px;
-            background: white;
+        .footer-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: auto;
         }
 
         .school-name {
@@ -126,7 +120,6 @@
         }
 
         .qr-section {
-            margin-left: auto;
             text-align: center;
         }
 
@@ -180,11 +173,9 @@
                     <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah">
                 </div>
 
-                <div class="card-header">
-                    <h3 style="margin: 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
-                </div>
+                <div class="content-container">
+                    <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
 
-                <div class="card-body">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
                         <div class="user-role">
@@ -201,14 +192,14 @@
                         <div class="user-id">ID: {{ $user->id }}</div>
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
-                </div>
 
-                <div class="card-footer">
-                    <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
-                    <div class="qr-section">
-                        <div class="qr-label">SCAN UNTUK ABSEN</div>
-                        <div class="qr-code">
-                            {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                    <div class="footer-section">
+                        <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
+                        <div class="qr-section">
+                            <div class="qr-label">SCAN UNTUK ABSEN</div>
+                            <div class="qr-code">
+                                {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,7 +210,7 @@
         <script>
             function downloadAsJpg() {
                 html2canvas(document.querySelector('#card-to-download'), {
-                    backgroundColor: '#667eea',
+                    backgroundColor: 'white',
                     scale: 2 // Higher resolution
                 }).then(canvas => {
                     // Create a temporary link to download the image
