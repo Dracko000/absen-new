@@ -10,18 +10,18 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-        
+
         .page-break {
             page-break-before: always;
         }
-        
+
         .card-container {
             width: 100%;
             max-width: 3.375in; /* Standard ID card width: 85.6mm */
             height: 2.125in; /* Standard ID card height: 54mm */
             margin: 0 auto;
         }
-        
+
         .id-card {
             width: 100%;
             height: 100%;
@@ -33,87 +33,93 @@
             overflow: hidden;
             page-break-inside: avoid;
         }
-        
+
         .card-header {
             padding: 0.15in 0.2in;
-            background: rgba(0,0,0,0.2);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
         }
-        
+
         .card-body {
             padding: 0.15in 0.2in 0.1in;
         }
-        
+
         .user-info {
             margin-top: 0.05in;
         }
-        
+
         .user-name {
             font-size: 0.15in;
             font-weight: bold;
             margin-bottom: 0.02in;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
-        
+
         .user-role {
             font-size: 0.12in;
             margin-bottom: 0.03in;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            color: #e0e0e0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
-        
+
         .user-id {
             font-size: 0.09in;
-            opacity: 0.8;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            color: #f0f0f0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
-        
+
         .user-email {
             font-size: 0.08in;
             margin-top: 0.02in;
-            opacity: 0.9;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            color: #e0e0e0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
-        
+
         .card-footer {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             padding: 0.08in 0.2in;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .school-name {
             font-size: 0.08in;
             font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
-        
+
         .qr-section {
             margin-left: auto;
         }
-        
+
         .qr-code {
             width: 0.6in;
             height: 0.6in;
             background: white;
             padding: 0.02in;
         }
-        
+
         .logo {
             position: absolute;
             top: 0.08in;
             right: 0.15in;
             width: 0.4in;
             height: 0.4in;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 0.15in;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
     </style>
 </head>
@@ -122,11 +128,11 @@
         <div class="id-card">
             <!-- Logo placeholder -->
             <div class="logo">SC</div>
-            
+
             <div class="card-header">
-                <h3 style="margin: 0; font-size: 0.13in;">KARTU IDENTITAS</h3>
+                <h3 style="margin: 0; font-size: 0.13in; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">KARTU IDENTITAS</h3>
             </div>
-            
+
             <div class="card-body">
                 <div class="user-info">
                     <div class="user-name">{{ $user->name }}</div>
@@ -145,7 +151,7 @@
                     <div class="user-email">{{ $user->email }}</div>
                 </div>
             </div>
-            
+
             <div class="card-footer">
                 <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                 <div class="qr-section">
