@@ -42,6 +42,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Assign default role - for a student in the attendance system
+        $user->assignRole('User');
+
         event(new Registered($user));
 
         Auth::login($user);
