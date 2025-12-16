@@ -122,7 +122,23 @@
             justify-content: center;
             font-size: 0.15in;
             color: white;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .school-logo {
+            position: absolute;
+            top: 0.08in;
+            left: 0.15in;
+            width: 0.4in;
+            height: 0.4in;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .school-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -132,13 +148,18 @@
             @foreach($chunk as $user)
                 <div class="card-container">
                     <div class="id-card">
-                        <!-- Logo placeholder -->
-                        <div class="logo">SC</div>
-
-                        <div class="card-header">
-                            <h3 style="margin: 0; font-size: 0.13in; color: white; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">KARTU IDENTITAS</h3>
+                        <!-- School logo -->
+                        <div class="school-logo">
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah" style="max-width:100%; max-height:100%;">
                         </div>
-
+                        
+                        <!-- Personal logo placeholder -->
+                        <div class="logo">SC</div>
+                        
+                        <div class="card-header">
+                            <h3 style="margin: 0; font-size: 0.13in; color: white;">KARTU IDENTITAS</h3>
+                        </div>
+                        
                         <div class="card-body">
                             <div class="user-info">
                                 <div class="user-name">{{ $user->name }}</div>
@@ -157,7 +178,7 @@
                                 <div class="user-email">{{ $user->email }}</div>
                             </div>
                         </div>
-
+                        
                         <div class="card-footer">
                             <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                             <div class="qr-section">

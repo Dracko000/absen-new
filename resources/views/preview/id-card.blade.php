@@ -157,28 +157,50 @@
             font-size: 20px;
             color: white;
         }
+
+        .school-logo {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .school-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="controls">
-            <a href="{{ route('print.id.card', $user->id) }}" class="btn" target="_blank">
-                ⬇️ Download PDF
-            </a>
+            <button onclick="downloadAsJpg()" class="btn">
+                ⬇️ Download JPG
+            </button>
             <a href="javascript:history.back()" class="btn btn-back" style="margin-left: 10px;">
                 ← Kembali
             </a>
         </div>
-        
+
         <div class="card-container">
-            <div class="id-card">
-                <!-- Logo placeholder -->
+            <div class="id-card" id="card-to-download">
+                <!-- School logo -->
+                <div class="school-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo Sekolah">
+                </div>
+
+                <!-- Personal logo placeholder -->
                 <div class="logo">SC</div>
-                
+
                 <div class="card-header">
                     <h3 style="margin: 0; font-size: 16px; color: white;">KARTU IDENTITAS</h3>
                 </div>
-                
+
                 <div class="card-body">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -197,7 +219,7 @@
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
                 </div>
-                
+
                 <div class="card-footer">
                     <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                     <div class="qr-section">
@@ -209,6 +231,22 @@
                 </div>
             </div>
         </div>
+
+        <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+        <script>
+            function downloadAsJpg() {
+                html2canvas(document.querySelector('#card-to-download'), {
+                    backgroundColor: '#667eea',
+                    scale: 2 // Higher resolution
+                }).then(canvas => {
+                    // Create a temporary link to download the image
+                    const link = document.createElement('a');
+                    link.download = 'kartu-identitas-{{ $user->name }}.jpg';
+                    link.href = canvas.toDataURL('image/jpeg', 0.8); // 80% quality
+                    link.click();
+                });
+            }
+        </script>
     </div>
 </body>
 </html>
