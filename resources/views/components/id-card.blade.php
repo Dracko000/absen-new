@@ -87,6 +87,13 @@
 
         .qr-section {
             margin-left: auto;
+            text-align: center;
+        }
+
+        .qr-label {
+            font-size: 8px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2px;
         }
 
         .qr-code {
@@ -147,6 +154,7 @@
             <div class="card-footer">
                 <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                 <div class="qr-section">
+                    <div class="qr-label">SCAN UNTUK ABSEN</div>
                     <div class="qr-code">
                         {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
                     </div>
