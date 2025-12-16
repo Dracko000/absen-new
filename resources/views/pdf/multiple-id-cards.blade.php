@@ -40,7 +40,13 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+        }
+
+        .main-content {
+            display: flex;
             justify-content: space-between;
+            align-items: flex-start;
+            flex-grow: 1;
         }
 
         .user-info {
@@ -72,21 +78,9 @@
             color: #333;
         }
 
-        .footer-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-        }
-
-        .school-name {
-            font-size: 0.08in;
-            font-weight: bold;
-            color: #333;
-        }
-
         .qr-section {
             text-align: center;
+            margin-left: 0.1in;
         }
 
         .qr-label {
@@ -96,11 +90,20 @@
         }
 
         .qr-code {
-            width: 0.6in;
-            height: 0.6in;
+            width: 0.7in;
+            height: 0.7in;
             background: #f0f0f0;
-            padding: 0.02in;
+            padding: 0.03in;
             border: 0.5pt solid #ddd;
+        }
+
+        .school-name {
+            font-size: 0.08in;
+            font-weight: bold;
+            color: #333;
+            margin-top: auto;
+            text-align: center;
+            width: 100%;
         }
 
         .school-logo {
@@ -134,26 +137,25 @@
                         
                         <div class="content-container">
                             <h3 style="margin: 0 0 0.1in 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
-                            
-                            <div class="user-info">
-                                <div class="user-name">{{ $user->name }}</div>
-                                <div class="user-role">
-                                    @if($user->hasRole('Superadmin'))
-                                        Super Administrator
-                                    @elseif($user->hasRole('Admin'))
-                                        Guru
-                                    @elseif($user->hasRole('User'))
-                                        Siswa
-                                    @else
-                                        Pengguna
-                                    @endif
+
+                            <div class="main-content">
+                                <div class="user-info">
+                                    <div class="user-name">{{ $user->name }}</div>
+                                    <div class="user-role">
+                                        @if($user->hasRole('Superadmin'))
+                                            Super Administrator
+                                        @elseif($user->hasRole('Admin'))
+                                            Guru
+                                        @elseif($user->hasRole('User'))
+                                            Siswa
+                                        @else
+                                            Pengguna
+                                        @endif
+                                    </div>
+                                    <div class="user-id">ID: {{ $user->id }}</div>
+                                    <div class="user-email">{{ $user->email }}</div>
                                 </div>
-                                <div class="user-id">ID: {{ $user->id }}</div>
-                                <div class="user-email">{{ $user->email }}</div>
-                            </div>
-                            
-                            <div class="footer-section">
-                                <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
+
                                 <div class="qr-section">
                                     <div class="qr-label">SCAN UNTUK ABSEN</div>
                                     <div class="qr-code">
@@ -161,6 +163,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                         </div>
                     </div>
                 </div>
