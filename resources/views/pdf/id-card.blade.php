@@ -145,10 +145,10 @@
             
             <div class="content-container">
                 <div class="header-container">
-                    <h3 style="margin: 0 0 0.05in 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
-                    <div class="school-name" style="font-size: 0.13in; margin-bottom: 0.07in; text-align: left;">SDN CIKAMPEK SELATAN 1</div>
+                    <h3 style="margin: 0 0 0.05in 0; font-size: 0.13in; color: #333; text-align: center;">KARTU IDENTITAS</h3>
+                    <div class="school-name" style="font-size: 0.13in; margin-bottom: 0.07in; text-align: center;">SDN CIKAMPEK SELATAN 1</div>
                 </div>
-                
+
                 <div class="main-content">
                     <div class="user-info">
                         <div class="user-name">{{ $user->name }}</div>
@@ -166,9 +166,8 @@
                         <div class="user-id">ID: {{ $user->id }}</div>
                         <div class="user-email">{{ $user->email }}</div>
                     </div>
-                    
+
                     <div class="qr-section">
-                        <div class="qr-label">SCAN UNTUK ABSEN</div>
                         <div class="qr-wrapper">
                             <div class="qr-code">
                                 {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}

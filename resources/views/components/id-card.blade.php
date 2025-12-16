@@ -87,12 +87,6 @@
             margin-left: 10px;
         }
         
-        .qr-label {
-            font-size: 8px;
-            color: #333;
-            margin-bottom: 2px;
-        }
-        
         .qr-code {
             width: 60px;
             height: 60px;
@@ -110,7 +104,7 @@
             font-size: 16px;
             font-weight: bold;
             color: #333;
-            text-align: left;
+            text-align: center;
             width: 100%;
         }
         
@@ -142,8 +136,8 @@
             
             <div class="content-container">
                 <div class="header-container">
-                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
-                    <div class="school-name" style="font-size: 16px; margin-bottom: 10px; text-align: left;">SDN CIKAMPEK SELATAN 1</div>
+                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333; text-align: center;">KARTU IDENTITAS</h3>
+                    <div class="school-name" style="font-size: 16px; margin-bottom: 10px; text-align: center;">SDN CIKAMPEK SELATAN 1</div>
                 </div>
                 
                 <div class="main-content">
@@ -165,7 +159,6 @@
                     </div>
                     
                     <div class="qr-section">
-                        <div class="qr-label">SCAN UNTUK ABSEN</div>
                         <div class="qr-wrapper">
                             <div class="qr-code">
                                 {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
