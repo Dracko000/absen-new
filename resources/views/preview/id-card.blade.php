@@ -145,12 +145,6 @@
             width: 100%;
         }
 
-        .footer-container {
-            padding-top: 15px;
-            border-top: 1px solid #ddd;
-            margin-top: 15px;
-            text-align: center;
-        }
 
         .school-logo {
             position: absolute;
@@ -189,7 +183,10 @@
                 </div>
 
                 <div class="content-container">
-                    <h3 style="margin: 0 0 10px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
+                    <div class="header-container">
+                        <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">KARTU IDENTITAS</h3>
+                        <div class="school-name" style="font-size: 14px; margin-bottom: 10px;">SDN CIKAMPEK SELATAN 1</div>
+                    </div>
 
                     <div class="main-content">
                         <div class="user-info">
@@ -218,10 +215,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="footer-container">
-                    <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
                 </div>
             </div>
         </div>

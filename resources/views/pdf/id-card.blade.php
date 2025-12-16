@@ -143,7 +143,10 @@
             </div>
             
             <div class="content-container">
-                <h3 style="margin: 0 0 0.1in 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
+                <div class="header-container">
+                    <h3 style="margin: 0 0 0.05in 0; font-size: 0.13in; color: #333;">KARTU IDENTITAS</h3>
+                    <div class="school-name" style="font-size: 0.11in; margin-bottom: 0.07in;">SDN CIKAMPEK SELATAN 1</div>
+                </div>
 
                 <div class="main-content">
                     <div class="user-info">
@@ -172,10 +175,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="footer-container">
-                <div class="school-name">SDN CIKAMPEK SELATAN 1</div>
             </div>
         </div>
     </div>
