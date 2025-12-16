@@ -76,6 +76,6 @@ class PrintController extends Controller
             }
         }
 
-        return view('components.id-card', compact('user'));
+        return view('preview.id-card', compact('user'));
     }
 }
