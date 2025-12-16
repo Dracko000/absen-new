@@ -91,9 +91,16 @@
         .qr-code {
             width: 0.7in;
             height: 0.7in;
-            background: #f0f0f0;
             padding: 0.03in;
             border: 0.5pt solid #ddd;
+            background: white;
+        }
+
+        .qr-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
         }
 
         .school-name {
@@ -154,8 +161,10 @@
 
                     <div class="qr-section">
                         <div class="qr-label">SCAN UNTUK ABSEN</div>
-                        <div class="qr-code">
-                            {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                        <div class="qr-wrapper">
+                            <div class="qr-code">
+                                {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                            </div>
                         </div>
                     </div>
                 </div>
