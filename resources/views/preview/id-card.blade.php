@@ -171,7 +171,7 @@
             <button onclick="downloadAsJpg()" class="btn">
                 ⬇️ Download JPG
             </button>
-            <a href="javascript:history.back()" class="btn btn-back" style="margin-left: 10px;">
+            <a href="{{ url()->previous() }}" class="btn btn-back" style="margin-left: 10px;">
                 ← Kembali
             </a>
         </div>
