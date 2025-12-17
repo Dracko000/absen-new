@@ -40,7 +40,7 @@
         }
 
         .content-container {
-            padding: 0.15in 0.2in;
+            padding: 0.18in 0.2in;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -92,7 +92,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-left: 0.1in;
+            margin-left: 0.15in;
         }
 
         .qr-label {
@@ -102,8 +102,8 @@
         }
 
         .qr-code {
-            width: 0.7in;
-            height: 0.7in;
+            width: 1.2in;
+            height: 1.2in;
             background: white;
         }
 
@@ -178,7 +178,7 @@
                                 <div class="qr-section">
                                     <div class="qr-wrapper">
                                         <div class="qr-code">
-                                            {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                                            {!! QrCode::size(100)->generate($user->getQrCodeAttribute()) !!}
                                         </div>
                                     </div>
                                 </div>

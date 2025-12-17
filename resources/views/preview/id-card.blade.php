@@ -122,13 +122,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-left: 10px;
+            margin-left: 15px;
         }
         
         
         .qr-code {
-            width: 60px;
-            height: 60px;
+            width: 120px;
+            height: 120px;
             background: white;
         }
         
@@ -210,7 +210,7 @@
                         <div class="qr-section">
                             <div class="qr-wrapper">
                                 <div class="qr-code">
-                                    {!! QrCode::size(44)->generate($user->getQrCodeAttribute()) !!}
+                                    {!! QrCode::size(100)->generate($user->getQrCodeAttribute()) !!}
                                 </div>
                             </div>
                         </div>
