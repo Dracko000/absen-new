@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Attendance Application Documentation</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body class="bg-gray-50 font-sans leading-normal tracking-normal">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-gray-900">Attendance Application Documentation</h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Welcome Section -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6 mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Attendance Application</h2>
+                        <p class="text-gray-600 mb-4">
+                            This application is designed to streamline attendance tracking in educational institutions. 
+                            The system supports three main user roles: Superadmin, Administrator (Teacher), and Student.
+                        </p>
+                        <p class="text-gray-600">
+                            This documentation provides guidance on using the application's features based on your role.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Features Overview -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Application Features</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-2">User Management</h3>
+                                <p class="text-gray-600">Create and manage users with different roles and permissions.</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                <h3 class="text-lg font-semibold text-green-800 mb-2">Class Management</h3>
+                                <p class="text-gray-600">Create classes and assign students to appropriate groups.</p>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Schedule Creation</h3>
+                                <p class="text-gray-600">Set class schedules and time slots for effective organization.</p>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                                <h3 class="text-lg font-semibold text-purple-800 mb-2">QR Code Attendance</h3>
+                                <p class="text-gray-600">Take attendance using unique QR codes for efficiency.</p>
+                            </div>
+                            <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                <h3 class="text-lg font-semibold text-red-800 mb-2">Manual Attendance</h3>
+                                <p class="text-gray-600">Mark attendance manually when needed.</p>
+                            </div>
+                            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                                <h3 class="text-lg font-semibold text-indigo-800 mb-2">Reporting</h3>
+                                <p class="text-gray-600">Generate daily, weekly, and monthly attendance reports.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Getting Started -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Getting Started</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-indigo-800 font-bold">1</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-medium text-gray-800">Sign In</h3>
+                                    <p class="text-gray-600">Access the application using your provided credentials.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-indigo-800 font-bold">2</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-medium text-gray-800">Navigate Dashboard</h3>
+                                    <p class="text-gray-600">You'll be directed to a role-specific dashboard.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                    <span class="text-indigo-800 font-bold">3</span>
+                                </div>
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-medium text-gray-800">Use Appropriate Features</h3>
+                                    <p class="text-gray-600">Access features based on your assigned role (Superadmin, Admin, Student).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Role-Specific Guides -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Role-Specific Guides</h2>
+                        
+                        <!-- Superadmin Guide -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">For Superadmins</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                <li>Manage all system users (Admins, Students)</li>
+                                <li>View comprehensive reports across all classes</li>
+                                <li>Manage overall system settings</li>
+                                <li>Assign roles and permissions to users</li>
+                                <li>Generate system-wide attendance reports</li>
+                            </ul>
+                        </div>
+
+                        <!-- Admin/Teacher Guide -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">For Administrators (Teachers)</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                <li>Create and manage your classes</li>
+                                <li>Set class schedules and time slots</li>
+                                <li>Take attendance for your classes (using QR codes or manually)</li>
+                                <li>View attendance records for your classes</li>
+                                <li>Export attendance data to Excel or CSV</li>
+                                <li>Print ID cards for students</li>
+                            </ul>
+                        </div>
+
+                        <!-- Student Guide -->
+                        <div class="mb-8">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-3">For Students</h3>
+                            <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                                <li>View your attendance history</li>
+                                <li>Access your unique QR code for attendance</li>
+                                <li>Check attendance status for different classes</li>
+                                <li>Update your profile information</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- QR Code Usage -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">QR Code Usage Guide</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">For Students</h3>
+                                <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                                    <li>Log in to your student account</li>
+                                    <li>Navigate to the "QR Code" section in the menu</li>
+                                    <li>Your unique QR code will be displayed</li>
+                                    <li>Show this QR code to your teacher when requested</li>
+                                </ol>
+                                <p class="mt-3 text-gray-600">
+                                    <strong>Security Note:</strong> Keep your QR code secure and do not share with others. 
+                                    Contact administration if you suspect unauthorized use.
+                                </p>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800 mb-2">For Teachers</h3>
+                                <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                                    <li>Navigate to "Take Attendance" for the required class</li>
+                                    <li>Have students present their QR codes</li>
+                                    <li>Scan the QR code using the provided scanner interface</li>
+                                    <li>The system will automatically record attendance</li>
+                                </ol>
+                                <p class="mt-3 text-gray-600">
+                                    <strong>Alternative:</strong> Teachers can also use manual attendance entry if needed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section class="mb-12">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Troubleshooting</h2>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4">
+                                <h3 class="text-lg font-medium text-blue-800">QR Code won't scan</h3>
+                                <p class="text-blue-700">
+                                    Ensure good lighting and a clean camera lens. Hold the device steady and at the right distance. 
+                                    Try refreshing the QR code page if the issue persists.
+                                </p>
+                            </div>
+                            <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4">
+                                <h3 class="text-lg font-medium text-blue-800">Wrong student identified</h3>
+                                <p class="text-blue-700">
+                                    Verify that the scanned QR code belongs to the correct student. 
+                                    Contact technical support if the issue persists.
+                                </p>
+                            </div>
+                            <div class="border-l-4 border-blue-500 pl-4 bg-blue-50 p-4">
+                                <h3 class="text-lg font-medium text-blue-800">Can't access certain features</h3>
+                                <p class="text-blue-700">
+                                    Check your user role permissions. Contact your system administrator if you believe 
+                                    you should have access to specific features.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Login -->
+                <section class="mb-12">
+                    <div class="bg-indigo-50 rounded-lg shadow p-6 text-center">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Access the Application</h2>
+                        <p class="text-gray-600 mb-6">Log in with your credentials to access the attendance application and its features.</p>
+                        <a href="/login" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                            Go to Login
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-gray-500 text-sm">
+                    Attendance Application Documentation &copy; {{ date('Y') }} - All rights reserved
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
