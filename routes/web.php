@@ -5,6 +5,7 @@ use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\PrintController;
@@ -120,6 +121,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/multiple-id-cards', [PrintController::class, 'printMultipleIdCards'])->name('multiple.id.cards');
         Route::get('/preview/id-card/{userId}', [PrintController::class, 'previewIdCard'])->name('preview.id.card');
     });
+
+    // Documentation routes
+    Route::get('/documentation', [DocumentationController::class, 'index'])->name('documentation.index');
+    Route::get('/documentation/{page}', [DocumentationController::class, 'showPage'])->name('documentation.page');
 });
 
 // Custom registration routes for Superadmin and Admin (hidden routes)
