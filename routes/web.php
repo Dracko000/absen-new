@@ -121,11 +121,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/multiple-id-cards', [PrintController::class, 'printMultipleIdCards'])->name('multiple.id.cards');
         Route::get('/preview/id-card/{userId}', [PrintController::class, 'previewIdCard'])->name('preview.id.card');
     });
-
-    // Documentation routes
-    Route::get('/documentation', [DocumentationController::class, 'index'])->name('documentation.index');
-    Route::get('/documentation/{page}', [DocumentationController::class, 'showPage'])->name('documentation.page');
 });
+
+// Documentation routes (public)
+Route::get('/documentation', [DocumentationController::class, 'index'])->name('documentation.index');
+Route::get('/documentation/{page}', [DocumentationController::class, 'showPage'])->name('documentation.page');
 
 // Custom registration routes for Superadmin and Admin (hidden routes)
 Route::get('/superadmin/register', [App\Http\Controllers\Auth\CustomRegistrationController::class, 'showSuperadminRegistrationForm'])->name('superadmin.register.form');
