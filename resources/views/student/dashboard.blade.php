@@ -86,6 +86,7 @@
                                     <tr>
                                         <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
                                         <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Masuk</th>
+                                        <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Pulang</th>
                                         <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                         <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catatan</th>
                                     </tr>
@@ -98,6 +99,9 @@
                                             </td>
                                             <td class="px-3 sm:px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-500">{{ $attendance->time_in }}</div>
+                                            </td>
+                                            <td class="px-3 sm:px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-500">{{ $attendance->time_out ?? '-' }}</div>
                                             </td>
                                             <td class="px-3 sm:px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
@@ -200,8 +204,9 @@
                             <tr>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Masuk</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Pulang</th>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -213,6 +218,12 @@
                                     <td class="px-3 sm:px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-500 truncate max-w-[80px] sm:max-w-none">{{ $attendance->classModel->name ?? 'N/A' }}</div>
                                     </td>
+                                    <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $attendance->time_in }}
+                                    </td>
+                                    <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $attendance->time_out ?? '-' }}
+                                    </td>
                                     <td class="px-3 sm:px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                             @if($attendance->status == 'Hadir') bg-green-100 text-green-800
@@ -222,13 +233,10 @@
                                             {{ $attendance->status }}
                                         </span>
                                     </td>
-                                    <td class="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $attendance->time_in }}
-                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada data absensi</td>
+                                    <td colspan="5" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada data absensi</td>
                                 </tr>
                             @endforelse
                         </tbody>

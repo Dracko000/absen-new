@@ -135,4 +135,95 @@ class AdminController extends Controller
 
         return view('admin.class-attendance', compact('class', 'attendances', 'date'));
     }
+
+    public function manageLeaveRequests()
+    {
+        $leaveRequests = \App\Models\LeaveRequest::with('user', 'approvedBy')
+            ->whereHas('user', function($q) {
+                $q->whereHas('attendances', function($query) {
+                    $query->whereIn('class_model_id',
+                        \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+                    );
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('admin.leave-requests', compact('leaveRequests'));
+    }
+
+    public function showLeaveRequest($id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::with('user', 'approvedBy')->findOrFail($id);
+
+        // Check if the admin has access to this leave request (student should be in one of admin's classes)
+        $isAdminOfClass = $leaveRequest->user->attendances()
+            ->whereIn('class_model_id',
+                \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+            )
+            ->exists();
+
+        if (!$isAdminOfClass) {
+            abort(403);
+        }
+
+        return view('admin.show-leave-request', compact('leaveRequest'));
+    }
+
+    public function approveLeaveRequest(Request $request, $id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::findOrFail($id);
+
+        // Check if admin has access to this leave request
+        $isAdminOfClass = $leaveRequest->user->attendances()
+            ->whereIn('class_model_id',
+                \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+            )
+            ->exists();
+
+        if (!$isAdminOfClass) {
+            abort(403);
+        }
+
+        $request->validate([
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $leaveRequest->update([
+            'status' => 'approved',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'notes' => $request->notes,
+        ]);
+
+        return redirect()->route('admin.leave.requests')->with('success', 'Permohonan izin berhasil disetujui.');
+    }
+
+    public function rejectLeaveRequest(Request $request, $id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::findOrFail($id);
+
+        // Check if admin has access to this leave request
+        $isAdminOfClass = $leaveRequest->user->attendances()
+            ->whereIn('class_model_id',
+                \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+            )
+            ->exists();
+
+        if (!$isAdminOfClass) {
+            abort(403);
+        }
+
+        $request->validate([
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $leaveRequest->update([
+            'status' => 'rejected',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'notes' => $request->notes,
+        ]);
+
+        return redirect()->route('admin.leave.requests')->with('success', 'Permohonan izin berhasil ditolak.');
+    }
 }

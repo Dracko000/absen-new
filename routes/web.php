@@ -61,6 +61,12 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/class/{classId}', [SuperadminController::class, 'updateClass'])->name('class.update');
         Route::delete('/class/{classId}', [SuperadminController::class, 'deleteClass'])->name('class.delete');
 
+        // Leave request routes
+        Route::get('/leave-requests', [SuperadminController::class, 'manageLeaveRequests'])->name('leave.requests');
+        Route::get('/leave-requests/{id}', [SuperadminController::class, 'showLeaveRequest'])->name('leave.request.show');
+        Route::put('/leave-requests/{id}/approve', [SuperadminController::class, 'approveLeaveRequest'])->name('leave.request.approve');
+        Route::put('/leave-requests/{id}/reject', [SuperadminController::class, 'rejectLeaveRequest'])->name('leave.request.reject');
+
         // User management routes
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{userId}', [SuperadminController::class, 'updateUser'])->name('users.update');
@@ -79,6 +85,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{id}/attendance/{date?}', [AdminController::class, 'classAttendanceByDate'])->name('class.attendance.by.date');
         Route::get('/class/{id}/members', [AdminController::class, 'classMembers'])->name('class.members');
         Route::get('/class/{classId}/export', [AdminController::class, 'exportClass'])->name('class.export');
+
+        // Leave request routes
+        Route::get('/leave-requests', [AdminController::class, 'manageLeaveRequests'])->name('leave.requests');
+        Route::get('/leave-requests/{id}', [AdminController::class, 'showLeaveRequest'])->name('leave.request.show');
+        Route::put('/leave-requests/{id}/approve', [AdminController::class, 'approveLeaveRequest'])->name('leave.request.approve');
+        Route::put('/leave-requests/{id}/reject', [AdminController::class, 'rejectLeaveRequest'])->name('leave.request.reject');
     });
 
     // Student routes
@@ -86,6 +98,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [StudentController::class, 'index'])->name('dashboard');
         Route::get('/attendance-history', [StudentController::class, 'attendanceHistory'])->name('attendance.history');
         Route::get('/qr-code', [StudentController::class, 'showQrCode'])->name('qr.code');
+
+        // Leave request routes
+        Route::get('/leave-request', [StudentController::class, 'showLeaveRequestForm'])->name('leave.request.form');
+        Route::post('/leave-request', [StudentController::class, 'submitLeaveRequest'])->name('leave.request.submit');
+        Route::get('/leave-requests', [StudentController::class, 'showLeaveRequests'])->name('leave.requests');
     });
 
     // User management routes

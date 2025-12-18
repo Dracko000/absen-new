@@ -229,6 +229,54 @@ class SuperadminController extends Controller
         return redirect()->route('superadmin.users')->with('success', 'Password has been reset to NIS successfully.');
     }
 
+    public function manageLeaveRequests()
+    {
+        $leaveRequests = \App\Models\LeaveRequest::with('user', 'approvedBy')->orderBy('created_at', 'desc')->get();
+        return view('superadmin.leave-requests', compact('leaveRequests'));
+    }
+
+    public function showLeaveRequest($id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::with('user', 'approvedBy')->findOrFail($id);
+        return view('superadmin.show-leave-request', compact('leaveRequest'));
+    }
+
+    public function approveLeaveRequest(Request $request, $id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::findOrFail($id);
+
+        $request->validate([
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $leaveRequest->update([
+            'status' => 'approved',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'notes' => $request->notes,
+        ]);
+
+        return redirect()->route('superadmin.leave.requests')->with('success', 'Permohonan izin berhasil disetujui.');
+    }
+
+    public function rejectLeaveRequest(Request $request, $id)
+    {
+        $leaveRequest = \App\Models\LeaveRequest::findOrFail($id);
+
+        $request->validate([
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        $leaveRequest->update([
+            'status' => 'rejected',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'notes' => $request->notes,
+        ]);
+
+        return redirect()->route('superadmin.leave.requests')->with('success', 'Permohonan izin berhasil ditolak.');
+    }
+
     public function manageClasses()
     {
         $classes = ClassModel::with('teacher')->get();

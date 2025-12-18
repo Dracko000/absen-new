@@ -20,6 +20,9 @@
                         <x-nav-link :href="route('superadmin.users')" :active="request()->routeIs('superadmin.users') || request()->routeIs('superadmin.create.*')">
                             {{ __('Users') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('superadmin.leave.requests')" :active="request()->routeIs('superadmin.leave.requests')">
+                            {{ __('Leave Requests') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('superadmin.classes')" :active="request()->routeIs('superadmin.classes')">
                             {{ __('Classes') }}
                         </x-nav-link>
@@ -30,6 +33,9 @@
                         <x-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
                             {{ __('My Classes') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.leave.requests')" :active="request()->routeIs('admin.leave.requests')">
+                            {{ __('Leave Requests') }}
+                        </x-nav-link>
                         <x-nav-link :href="route('admin.schedules')" :active="request()->routeIs('admin.schedules')">
                             {{ __('Schedules') }}
                         </x-nav-link>
@@ -39,6 +45,9 @@
                     @elseif(Auth::user()->hasRole('User'))
                         <x-nav-link :href="route('student.attendance.history')" :active="request()->routeIs('student.attendance.history')">
                             {{ __('My Attendance') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('student.leave.requests')" :active="request()->routeIs('student.leave.requests')">
+                            {{ __('Leave Requests') }}
                         </x-nav-link>
                         <x-nav-link :href="route('student.qr.code')" :active="request()->routeIs('student.qr.code')">
                             {{ __('QR Code') }}
@@ -114,6 +123,9 @@
                 <x-responsive-nav-link :href="route('superadmin.users')" :active="request()->routeIs('superadmin.users') || request()->routeIs('superadmin.create.*')">
                     {{ __('Users') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('superadmin.leave.requests')" :active="request()->routeIs('superadmin.leave.requests')">
+                    {{ __('Leave Requests') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('superadmin.classes')" :active="request()->routeIs('superadmin.classes')">
                     {{ __('Classes') }}
                 </x-responsive-nav-link>
@@ -124,6 +136,9 @@
                 <x-responsive-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
                     {{ __('My Classes') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.leave.requests')" :active="request()->routeIs('admin.leave.requests')">
+                    {{ __('Leave Requests') }}
+                </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.schedules')" :active="request()->routeIs('admin.schedules')">
                     {{ __('Schedules') }}
                 </x-responsive-nav-link>
@@ -133,6 +148,9 @@
             @elseif(Auth::user()->hasRole('User'))
                 <x-responsive-nav-link :href="route('student.attendance.history')" :active="request()->routeIs('student.attendance.history')">
                     {{ __('My Attendance') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('student.leave.requests')" :active="request()->routeIs('student.leave.requests')">
+                    {{ __('Leave Requests') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.qr.code')" :active="request()->routeIs('student.qr.code')">
                     {{ __('QR Code') }}
