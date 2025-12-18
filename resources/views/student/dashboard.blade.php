@@ -69,6 +69,20 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-lg p-4 sm:p-6 text-white">
+                    <div class="flex items-center">
+                        <div class="p-2 sm:p-3 rounded-lg bg-blue-400 bg-opacity-30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+                            </svg>
+                        </div>
+                        <div class="ml-3 sm:ml-4">
+                            <h3 class="text-xs sm:text-sm font-medium">Izin</h3>
+                            <p class="text-lg sm:text-2xl font-bold">{{ Auth::user()->attendances->where('status', 'Izin')->count() }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Main Content Grid - Responsive -->
@@ -107,6 +121,7 @@
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                     @if($attendance->status == 'Hadir') bg-green-100 text-green-800
                                                     @elseif($attendance->status == 'Terlambat') bg-yellow-100 text-yellow-800
+                                                    @elseif($attendance->status == 'Izin') bg-blue-100 text-blue-800
                                                     @else bg-red-100 text-red-800
                                                     @endif">
                                                     {{ $attendance->status }}
@@ -228,6 +243,7 @@
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                             @if($attendance->status == 'Hadir') bg-green-100 text-green-800
                                             @elseif($attendance->status == 'Terlambat') bg-yellow-100 text-yellow-800
+                                            @elseif($attendance->status == 'Izin') bg-blue-100 text-blue-800
                                             @else bg-red-100 text-red-800
                                             @endif">
                                             {{ $attendance->status }}

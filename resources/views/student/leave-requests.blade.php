@@ -62,7 +62,7 @@
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <a href="{{ asset('storage/' . $request->attachment) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">
+                                            <a href="{{ route('leave.request.download', basename($request->attachment)) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">
                                                 Lihat
                                             </a>
                                         </td>

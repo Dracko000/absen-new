@@ -81,8 +81,8 @@
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700">Lampiran</label>
                         <div class="mt-2">
-                            <a href="{{ asset('storage/' . $leaveRequest->attachment) }}" target="_blank">
-                                <img src="{{ asset('storage/' . $leaveRequest->attachment) }}" alt="Lampiran Izin" class="max-w-xs h-auto rounded border">
+                            <a href="{{ route('leave.request.download', basename($leaveRequest->attachment)) }}" target="_blank">
+                                <img src="{{ route('leave.request.image', basename($leaveRequest->attachment)) }}" alt="Lampiran Izin" class="max-w-md h-auto rounded border object-contain" style="max-height: 300px;">
                             </a>
                         </div>
                     </div>

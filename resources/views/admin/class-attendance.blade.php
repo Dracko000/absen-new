@@ -92,9 +92,10 @@
                                             <div class="text-sm text-gray-500">{{ $attendance->time_in }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                 @if($attendance->status == 'Hadir') bg-green-100 text-green-800
                                                 @elseif($attendance->status == 'Terlambat') bg-yellow-100 text-yellow-800
+                                                @elseif($attendance->status == 'Izin') bg-blue-100 text-blue-800
                                                 @else bg-red-100 text-red-800
                                                 @endif">
                                                 {{ $attendance->status }}
@@ -134,9 +135,9 @@
                             </div>
                             <div class="bg-blue-100 p-4 rounded-lg text-center">
                                 <p class="text-2xl font-bold text-blue-800">
-                                    {{ $attendances->count() }}
+                                    {{ $attendances->where('status', 'Izin')->count() }}
                                 </p>
-                                <p class="text-sm text-blue-700">Total</p>
+                                <p class="text-sm text-blue-700">Leave</p>
                             </div>
                         </div>
                     </div>

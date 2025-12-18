@@ -86,6 +86,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{id}/members', [AdminController::class, 'classMembers'])->name('class.members');
         Route::get('/class/{classId}/export', [AdminController::class, 'exportClass'])->name('class.export');
 
+        // QR code for admin
+        Route::get('/qr-code', [AdminController::class, 'showQrCode'])->name('qr.code');
+
         // Leave request routes
         Route::get('/leave-requests', [AdminController::class, 'manageLeaveRequests'])->name('leave.requests');
         Route::get('/leave-requests/{id}', [AdminController::class, 'showLeaveRequest'])->name('leave.request.show');
@@ -112,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
             $user->delete();
             return redirect()->back()->with('success', 'User deleted successfully.');
         })->name('users.destroy');
+
+        // Admin QR code route
+        Route::get('/{userId}/qr-code', [SuperadminController::class, 'showAdminQrCode'])->name('admin.qr.code');
     });
 
     // Shared attendance routes
@@ -155,6 +161,88 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/multiple-id-cards', [PrintController::class, 'printMultipleIdCards'])->name('multiple.id.cards');
         Route::get('/preview/id-card/{userId}', [PrintController::class, 'previewIdCard'])->name('preview.id.card');
     });
+
+    // Route to serve leave request attachments for download
+    Route::get('/leave-requests/download/{filename}', function ($filename) {
+        $path = storage_path('app/public/leave-requests/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        $leaveRequest = \App\Models\LeaveRequest::where('attachment', 'leave-requests/' . $filename)->first();
+
+        if (!$leaveRequest) {
+            abort(404);
+        }
+
+        // Check if the authenticated user can access this file
+        // Superadmin can access all files
+        if (auth()->user()->hasRole('Superadmin')) {
+            return response()->download($path);
+        }
+
+        // Admin can access files for students in their classes
+        if (auth()->user()->hasRole('Admin')) {
+            $isAdminOfClass = $leaveRequest->user->attendances()
+                ->whereIn('class_model_id',
+                    \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+                )
+                ->exists();
+
+            if ($isAdminOfClass) {
+                return response()->download($path);
+            }
+        }
+
+        // Student can access their own files
+        if (auth()->user()->hasRole('User') && $leaveRequest->user_id == auth()->id()) {
+            return response()->download($path);
+        }
+
+        abort(403);
+    })->name('leave.request.download');
+
+    // Route to serve leave request attachment images for display
+    Route::get('/leave-requests/image/{filename}', function ($filename) {
+        $path = storage_path('app/public/leave-requests/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        $leaveRequest = \App\Models\LeaveRequest::where('attachment', 'leave-requests/' . $filename)->first();
+
+        if (!$leaveRequest) {
+            abort(404);
+        }
+
+        // Check if the authenticated user can access this file
+        // Superadmin can access all files
+        if (auth()->user()->hasRole('Superadmin')) {
+            return response()->file($path);
+        }
+
+        // Admin can access files for students in their classes
+        if (auth()->user()->hasRole('Admin')) {
+            $isAdminOfClass = $leaveRequest->user->attendances()
+                ->whereIn('class_model_id',
+                    \App\Models\ClassModel::where('teacher_id', auth()->id())->pluck('id')->toArray()
+                )
+                ->exists();
+
+            if ($isAdminOfClass) {
+                return response()->file($path);
+            }
+        }
+
+        // Student can access their own files
+        if (auth()->user()->hasRole('User') && $leaveRequest->user_id == auth()->id()) {
+            return response()->file($path);
+        }
+
+        abort(403);
+    })->name('leave.request.image');
 });
 
 

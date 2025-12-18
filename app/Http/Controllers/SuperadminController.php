@@ -10,6 +10,7 @@ use App\Exports\ClassMembersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SuperadminController extends Controller
 {
@@ -256,6 +257,38 @@ class SuperadminController extends Controller
             'notes' => $request->notes,
         ]);
 
+        // Update attendance records for the leave period
+        $currentDate = \Carbon\Carbon::parse($leaveRequest->start_date);
+        $endDate = \Carbon\Carbon::parse($leaveRequest->end_date);
+
+        // Get all classes the student is enrolled in for the leave period
+        $classes = \App\Models\Attendance::where('user_id', $leaveRequest->user_id)
+            ->whereBetween('date', [$leaveRequest->start_date, $leaveRequest->end_date])
+            ->pluck('class_model_id')
+            ->unique();
+
+        // Create or update attendance records for each day in the leave period
+        while ($currentDate->lte($endDate)) {
+            foreach ($classes as $classId) {
+                // Check if attendance already exists for this date and class
+                $attendance = \App\Models\Attendance::firstOrCreate([
+                    'user_id' => $leaveRequest->user_id,
+                    'date' => $currentDate->toDateString(),
+                    'class_model_id' => $classId,
+                ], [
+                    'status' => 'Tidak Hadir',  // Default status
+                    'note' => 'Izin disetujui dari ' . $leaveRequest->start_date . ' sampai ' . $leaveRequest->end_date,
+                ]);
+
+                // Update the attendance status to reflect approved leave
+                $attendance->update([
+                    'status' => 'Izin', // Mark as approved leave
+                    'note' => ($attendance->note ? $attendance->note . ' | ' : '') . 'Izin disetujui (ID: ' . $leaveRequest->id . ')',
+                ]);
+            }
+            $currentDate->addDay();
+        }
+
         return redirect()->route('superadmin.leave.requests')->with('success', 'Permohonan izin berhasil disetujui.');
     }
 
@@ -273,6 +306,38 @@ class SuperadminController extends Controller
             'approved_at' => now(),
             'notes' => $request->notes,
         ]);
+
+        // Update attendance records for the leave period
+        $currentDate = \Carbon\Carbon::parse($leaveRequest->start_date);
+        $endDate = \Carbon\Carbon::parse($leaveRequest->end_date);
+
+        // Get all classes the student is enrolled in for the leave period
+        $classes = \App\Models\Attendance::where('user_id', $leaveRequest->user_id)
+            ->whereBetween('date', [$leaveRequest->start_date, $leaveRequest->end_date])
+            ->pluck('class_model_id')
+            ->unique();
+
+        // Create or update attendance records for each day in the leave period
+        while ($currentDate->lte($endDate)) {
+            foreach ($classes as $classId) {
+                // Check if attendance already exists for this date and class
+                $attendance = \App\Models\Attendance::firstOrCreate([
+                    'user_id' => $leaveRequest->user_id,
+                    'date' => $currentDate->toDateString(),
+                    'class_model_id' => $classId,
+                ], [
+                    'status' => 'Tidak Hadir',  // Default status
+                    'note' => 'Izin ditolak dari ' . $leaveRequest->start_date . ' sampai ' . $leaveRequest->end_date,
+                ]);
+
+                // Update the attendance status for rejected leave
+                $attendance->update([
+                    'status' => 'Tidak Hadir', // Mark as absent for rejected leave
+                    'note' => ($attendance->note ? $attendance->note . ' | ' : '') . 'Izin ditolak (ID: ' . $leaveRequest->id . ')',
+                ]);
+            }
+            $currentDate->addDay();
+        }
 
         return redirect()->route('superadmin.leave.requests')->with('success', 'Permohonan izin berhasil ditolak.');
     }
@@ -393,5 +458,21 @@ class SuperadminController extends Controller
         $class->delete();
 
         return redirect()->route('superadmin.classes')->with('success', 'Class deleted successfully.');
+    }
+
+    public function showAdminQrCode($userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Verify that the user is an admin
+        if (!$user->hasRole('Admin')) {
+            abort(404);
+        }
+
+        $qrCode = base64_encode(QrCode::format('png')
+            ->size(200)
+            ->generate(route('user.qr.show', ['id' => $user->id])));
+
+        return view('superadmin.admin-qr-code', compact('qrCode', 'user'));
     }
 }

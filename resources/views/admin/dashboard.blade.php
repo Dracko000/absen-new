@@ -148,6 +148,18 @@
                             </div>
                         </a>
 
+                        <a href="{{ route('admin.qr.code') }}" class="flex items-center p-3 sm:p-4 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition duration-200">
+                            <div class="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                </svg>
+                            </div>
+                            <div class="ml-3 sm:ml-4">
+                                <p class="text-sm font-medium text-gray-900">QR Code Saya</p>
+                                <p class="text-sm text-gray-500">Tampilkan QR Code untuk absensi</p>
+                            </div>
+                        </a>
+
                         <a href="{{ route('admin.classes') }}" class="flex items-center p-3 sm:p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition duration-200">
                             <div class="flex-shrink-0 w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-purple-100 flex items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

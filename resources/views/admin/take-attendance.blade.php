@@ -120,6 +120,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
+                                    <!-- Students Section -->
                                     @forelse($students as $student)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -148,10 +149,44 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa ditemukan untuk kelas ini.</td>
-                                        </tr>
                                     @endforelse
+
+                                    <!-- Admins Section -->
+                                    @forelse($admins as $admin)
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm font-medium text-gray-900">{{ $admin->name }} (Admin)</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                {{ $admin->email }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <select class="status-select border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                        data-student-id="{{ $admin->id }}">
+                                                    <option value="Hadir">Hadir</option>
+                                                    <option value="Terlambat">Terlambat</option>
+                                                    <option value="Tidak Hadir">Tidak Hadir</option>
+                                                </select>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <input type="text" class="note-input border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                                       data-student-id="{{ $admin->id }}" placeholder="Catatan...">
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                <button class="record-btn bg-indigo-600 hover:bg-indigo-800 text-white font-bold py-2 px-3 rounded text-sm"
+                                                        data-student-id="{{ $admin->id }}">
+                                                    Simpan
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+
+                                    @if($students->isEmpty() && $admins->isEmpty())
+                                        <tr>
+                                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada siswa atau admin ditemukan untuk kelas ini.</td>
+                                        </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

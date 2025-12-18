@@ -59,6 +59,7 @@
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
                                                 @if($attendance->status == 'Hadir') bg-green-100 text-green-800
                                                 @elseif($attendance->status == 'Terlambat') bg-yellow-100 text-yellow-800
+                                                @elseif($attendance->status == 'Izin') bg-blue-100 text-blue-800
                                                 @else bg-red-100 text-red-800
                                                 @endif">
                                                 {{ $attendance->status }}
@@ -133,6 +134,7 @@
                             <option value="Hadir">Hadir</option>
                             <option value="Terlambat">Terlambat</option>
                             <option value="Tidak Hadir">Tidak Hadir</option>
+                            <option value="Izin">Izin</option>
                         </select>
                     </div>
 

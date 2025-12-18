@@ -8,6 +8,7 @@ use App\Models\Schedule;
 use App\Models\Attendance;
 use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AdminController extends Controller
 {
@@ -83,7 +84,10 @@ class AdminController extends Controller
     {
         $class = ClassModel::findOrFail($classId);
         $students = User::role('User')->get(); // All students
-        return view('admin.take-attendance', compact('class', 'students'));
+        $admins = User::role('Admin')->get(); // All admins
+
+        // Combine students and admins, but make sure they can be distinguished in the view
+        return view('admin.take-attendance', compact('class', 'students', 'admins'));
     }
 
     public function classAttendance($classId)
@@ -195,6 +199,38 @@ class AdminController extends Controller
             'notes' => $request->notes,
         ]);
 
+        // Update attendance records for the leave period
+        $currentDate = \Carbon\Carbon::parse($leaveRequest->start_date);
+        $endDate = \Carbon\Carbon::parse($leaveRequest->end_date);
+
+        // Get all classes the student is enrolled in for the leave period
+        $classes = \App\Models\Attendance::where('user_id', $leaveRequest->user_id)
+            ->whereBetween('date', [$leaveRequest->start_date, $leaveRequest->end_date])
+            ->pluck('class_model_id')
+            ->unique();
+
+        // Create or update attendance records for each day in the leave period
+        while ($currentDate->lte($endDate)) {
+            foreach ($classes as $classId) {
+                // Check if attendance already exists for this date and class
+                $attendance = \App\Models\Attendance::firstOrCreate([
+                    'user_id' => $leaveRequest->user_id,
+                    'date' => $currentDate->toDateString(),
+                    'class_model_id' => $classId,
+                ], [
+                    'status' => 'Tidak Hadir',  // Default status
+                    'note' => 'Izin disetujui dari ' . $leaveRequest->start_date . ' sampai ' . $leaveRequest->end_date,
+                ]);
+
+                // Update the attendance status to reflect approved leave
+                $attendance->update([
+                    'status' => 'Izin', // Mark as approved leave
+                    'note' => ($attendance->note ? $attendance->note . ' | ' : '') . 'Izin disetujui (ID: ' . $leaveRequest->id . ')',
+                ]);
+            }
+            $currentDate->addDay();
+        }
+
         return redirect()->route('admin.leave.requests')->with('success', 'Permohonan izin berhasil disetujui.');
     }
 
@@ -224,6 +260,48 @@ class AdminController extends Controller
             'notes' => $request->notes,
         ]);
 
+        // Update attendance records for the leave period
+        $currentDate = \Carbon\Carbon::parse($leaveRequest->start_date);
+        $endDate = \Carbon\Carbon::parse($leaveRequest->end_date);
+
+        // Get all classes the student is enrolled in for the leave period
+        $classes = \App\Models\Attendance::where('user_id', $leaveRequest->user_id)
+            ->whereBetween('date', [$leaveRequest->start_date, $leaveRequest->end_date])
+            ->pluck('class_model_id')
+            ->unique();
+
+        // Create or update attendance records for each day in the leave period
+        while ($currentDate->lte($endDate)) {
+            foreach ($classes as $classId) {
+                // Check if attendance already exists for this date and class
+                $attendance = \App\Models\Attendance::firstOrCreate([
+                    'user_id' => $leaveRequest->user_id,
+                    'date' => $currentDate->toDateString(),
+                    'class_model_id' => $classId,
+                ], [
+                    'status' => 'Tidak Hadir',  // Default status
+                    'note' => 'Izin ditolak dari ' . $leaveRequest->start_date . ' sampai ' . $leaveRequest->end_date,
+                ]);
+
+                // Update the attendance status for rejected leave
+                $attendance->update([
+                    'status' => 'Tidak Hadir', // Mark as absent for rejected leave
+                    'note' => ($attendance->note ? $attendance->note . ' | ' : '') . 'Izin ditolak (ID: ' . $leaveRequest->id . ')',
+                ]);
+            }
+            $currentDate->addDay();
+        }
+
         return redirect()->route('admin.leave.requests')->with('success', 'Permohonan izin berhasil ditolak.');
+    }
+
+    public function showQrCode()
+    {
+        $user = auth()->user();
+        $qrCode = base64_encode(QrCode::format('png')
+            ->size(200)
+            ->generate(route('user.qr.show', ['id' => $user->id])));
+
+        return view('admin.qr-code', compact('qrCode', 'user'));
     }
 }
