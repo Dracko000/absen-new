@@ -11,12 +11,12 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                         <div class="flex-1">
-                            <h3 class="text-lg font-medium text-gray-900">My Classes</h3>
-                            <p class="text-sm text-gray-500 mt-1">These are the classes assigned to you by the Superadmin</p>
+                            <h3 class="text-lg font-medium text-gray-900">Kelas Saya</h3>
+                            <p class="text-sm text-gray-500 mt-1">Ini adalah kelas-kelas yang ditugaskan kepada Anda oleh Superadmin</p>
                         </div>
                         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
                             <div class="relative w-full sm:w-64">
-                                <input type="text" id="searchInput" placeholder="Search classes..."
+                                <input type="text" id="searchInput" placeholder="Cari kelas..."
                                     class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                     <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -61,18 +61,18 @@
                                             </td>
                                             <td class="px-3 sm:px-4 py-3 sm:py-4 text-xs sm:text-sm font-medium">
                                                 <div class="flex flex-col sm:flex-row sm:flex-wrap gap-1">
-                                                    <a href="{{ route('admin.class.attendance', $class->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-1 sm:mb-0 sm:mr-2">View</a>
-                                                    <a href="{{ route('admin.class.take.attendance', $class->id) }}" class="text-green-600 hover:text-green-900 mb-1 sm:mb-0 sm:mr-2">Take</a>
+                                                    <a href="{{ route('admin.class.attendance', $class->id) }}" class="text-indigo-600 hover:text-indigo-900 mb-1 sm:mb-0 sm:mr-2">Lihat</a>
+                                                    <a href="{{ route('admin.class.take.attendance', $class->id) }}" class="text-green-600 hover:text-green-900 mb-1 sm:mb-0 sm:mr-2">Absen</a>
                                                     <a href="{{ route('admin.class.export', $class->id) }}" class="text-blue-600 hover:text-blue-900 mb-1 sm:mb-0 sm:mr-2">Excel</a>
                                                     @if($class->schedules->count() > 0)
-                                                    <a href="{{ route('admin.schedules') }}" class="text-purple-600 hover:text-purple-900">Sched</a>
+                                                    <a href="{{ route('admin.schedules') }}" class="text-purple-600 hover:text-purple-900">Jadwal</a>
                                                     @endif
                                                 </div>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="px-3 sm:px-4 py-4 text-center text-xs sm:text-sm text-gray-500">No classes found.</td>
+                                            <td colspan="5" class="px-3 sm:px-4 py-4 text-center text-xs sm:text-sm text-gray-500">Tidak ada kelas ditemukan.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

@@ -13,44 +13,44 @@
                 <!-- Desktop Navigation Links -->
                 <div class="hidden md:ml-6 md:flex md:space-x-4">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        Beranda
                     </x-nav-link>
 
                     @if(Auth::user()->hasRole('Superadmin'))
                         <x-nav-link :href="route('superadmin.users')" :active="request()->routeIs('superadmin.users') || request()->routeIs('superadmin.create.*')">
-                            {{ __('Users') }}
+                            Pengguna
                         </x-nav-link>
                         <x-nav-link :href="route('superadmin.leave.requests')" :active="request()->routeIs('superadmin.leave.requests')">
-                            {{ __('Leave Requests') }}
+                            Permintaan Izin
                         </x-nav-link>
                         <x-nav-link :href="route('superadmin.classes')" :active="request()->routeIs('superadmin.classes')">
-                            {{ __('Classes') }}
+                            Kelas
                         </x-nav-link>
                         <x-nav-link :href="route('superadmin.attendance.report')" :active="request()->routeIs('superadmin.attendance.report')">
-                            {{ __('Reports') }}
+                            Laporan
                         </x-nav-link>
                     @elseif(Auth::user()->hasRole('Admin'))
                         <x-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
-                            {{ __('My Classes') }}
+                            Kelas Saya
                         </x-nav-link>
                         <x-nav-link :href="route('admin.leave.requests')" :active="request()->routeIs('admin.leave.requests')">
-                            {{ __('Leave Requests') }}
+                            Permintaan Izin
                         </x-nav-link>
                         <x-nav-link :href="route('admin.schedules')" :active="request()->routeIs('admin.schedules')">
-                            {{ __('Schedules') }}
+                            Jadwal
                         </x-nav-link>
                         <x-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
-                            {{ __('Attendance') }}
+                            Absensi
                         </x-nav-link>
                     @elseif(Auth::user()->hasRole('User'))
                         <x-nav-link :href="route('student.attendance.history')" :active="request()->routeIs('student.attendance.history')">
-                            {{ __('My Attendance') }}
+                            Absensi Saya
                         </x-nav-link>
                         <x-nav-link :href="route('student.leave.requests')" :active="request()->routeIs('student.leave.requests')">
-                            {{ __('Leave Requests') }}
+                            Permintaan Izin
                         </x-nav-link>
                         <x-nav-link :href="route('student.qr.code')" :active="request()->routeIs('student.qr.code')">
-                            {{ __('QR Code') }}
+                            Kode QR
                         </x-nav-link>
                     @endif
                 </div>
@@ -82,14 +82,14 @@
                                 <p class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</p>
                             </div>
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                Profil
                             </x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
                                         onclick="event.preventDefault();
                                                     this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    Keluar
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
@@ -100,7 +100,7 @@
             <!-- Mobile menu button -->
             <div class="flex items-center md:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 transition duration-150 ease-in-out">
-                    <span class="sr-only">Open main menu</span>
+                    <span class="sr-only">Buka menu utama</span>
                     <svg class="h-6 w-6" :class="{'hidden': open, 'block': !open}" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
@@ -116,44 +116,44 @@
     <div :class="{'block': open, 'hidden': !open}" class="md:hidden" x-cloak>
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                Beranda
             </x-responsive-nav-link>
 
             @if(Auth::user()->hasRole('Superadmin'))
                 <x-responsive-nav-link :href="route('superadmin.users')" :active="request()->routeIs('superadmin.users') || request()->routeIs('superadmin.create.*')">
-                    {{ __('Users') }}
+                    Pengguna
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('superadmin.leave.requests')" :active="request()->routeIs('superadmin.leave.requests')">
-                    {{ __('Leave Requests') }}
+                    Permintaan Izin
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('superadmin.classes')" :active="request()->routeIs('superadmin.classes')">
-                    {{ __('Classes') }}
+                    Kelas
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('superadmin.attendance.report')" :active="request()->routeIs('superadmin.attendance.report')">
-                    {{ __('Reports') }}
+                    Laporan
                 </x-responsive-nav-link>
             @elseif(Auth::user()->hasRole('Admin'))
                 <x-responsive-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
-                    {{ __('My Classes') }}
+                    Kelas Saya
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.leave.requests')" :active="request()->routeIs('admin.leave.requests')">
-                    {{ __('Leave Requests') }}
+                    Permintaan Izin
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.schedules')" :active="request()->routeIs('admin.schedules')">
-                    {{ __('Schedules') }}
+                    Jadwal
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.classes')" :active="request()->routeIs('admin.classes')">
-                    {{ __('Attendance') }}
+                    Absensi
                 </x-responsive-nav-link>
             @elseif(Auth::user()->hasRole('User'))
                 <x-responsive-nav-link :href="route('student.attendance.history')" :active="request()->routeIs('student.attendance.history')">
-                    {{ __('My Attendance') }}
+                    Absensi Saya
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.leave.requests')" :active="request()->routeIs('student.leave.requests')">
-                    {{ __('Leave Requests') }}
+                    Permintaan Izin
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.qr.code')" :active="request()->routeIs('student.qr.code')">
-                    {{ __('QR Code') }}
+                    Kode QR
                 </x-responsive-nav-link>
             @endif
         </div>
@@ -167,7 +167,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    Profil
                 </x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -175,7 +175,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        Keluar
                     </x-responsive-nav-link>
                 </form>
             </div>
