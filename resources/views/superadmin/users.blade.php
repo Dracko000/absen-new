@@ -495,6 +495,10 @@
                             <span class="text-gray-300">|</span>
                             <a href="{{ route('superadmin.users.import.template', 'admin') }}" class="text-sm text-blue-600 hover:text-blue-800 underline">Guru</a>
                         </div>
+                        <p class="mt-2 text-xs text-gray-500">
+                            <strong>Format Siswa:</strong> name, nis, class_id (ID kelas, opsional)<br>
+                            <strong>Format Guru:</strong> name, email, nip_nuptk
+                        </p>
                     </div>
 
                     <div class="mt-6">

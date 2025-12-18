@@ -492,23 +492,18 @@ class SuperadminController extends Controller
         }
 
         // Define the headers based on the user type
-        $headers = ['name', 'email'];
-
         if ($type === 'User') {
-            $headers[] = 'nis';
+            // For students: name, nis, and class_id
+            $headers = ['name', 'nis', 'class_id'];
+            $sampleData = '"John Doe","123456789","1"';
         } elseif ($type === 'Admin') {
-            $headers[] = 'nip_nuptk';
+            // For teachers: name, email, nip_nuptk
+            $headers = ['name', 'email', 'nip_nuptk'];
+            $sampleData = '"Jane Smith","jane@example.com","987654321"';
         }
 
         // Create temporary CSV content
-        $content = implode(',', $headers) . "\n";
-
-        // Sample data row
-        if ($type === 'User') {
-            $content .= '"John Doe","john@example.com","123456789"' . "\n";
-        } else {
-            $content .= '"Jane Smith","jane@example.com","987654321"' . "\n";
-        }
+        $content = implode(',', $headers) . "\n" . $sampleData . "\n";
 
         $filename = 'template_import_' . strtolower($type) . '.csv';
 
