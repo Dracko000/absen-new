@@ -79,7 +79,6 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
         Route::get('/classes', [AdminController::class, 'manageClasses'])->name('classes');
-        Route::post('/classes', [AdminController::class, 'createClass'])->name('create.class');
         Route::get('/schedules', [AdminController::class, 'manageSchedules'])->name('schedules');
         Route::post('/schedules', [AdminController::class, 'createSchedule'])->name('create.schedule');
         Route::get('/class/{id}/take-attendance', [AdminController::class, 'takeAttendance'])->name('class.take.attendance');

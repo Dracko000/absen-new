@@ -31,22 +31,8 @@ class AdminController extends Controller
 
     public function createClass(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'entry_time' => 'required|date_format:H:i',
-            'exit_time' => 'required|date_format:H:i|after:entry_time',
-        ]);
-
-        ClassModel::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'teacher_id' => auth()->id(),
-            'entry_time' => $request->entry_time,
-            'exit_time' => $request->exit_time,
-        ]);
-
-        return redirect()->route('admin.classes')->with('success', 'Class created successfully.');
+        // Admin tidak diizinkan untuk membuat kelas
+        abort(403, 'You are not authorized to create classes. Only Superadmin can create classes.');
     }
 
     public function manageSchedules()

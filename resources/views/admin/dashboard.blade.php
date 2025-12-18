@@ -95,7 +95,7 @@
                             <p class="mt-1 text-gray-500">Anda belum memiliki kelas yang ditugaskan.</p>
                             <div class="mt-4 sm:mt-6">
                                 <a href="{{ route('admin.classes') }}" class="inline-flex items-center px-3 py-2 sm:px-4 sm:py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-                                    Kelola Kelas Saya
+                                    Lihat Kelas Saya
                                 </a>
                             </div>
                         </div>
@@ -106,8 +106,8 @@
                 <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6">
                     <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Fitur untuk Guru</h3>
                     <div class="mb-4 p-3 sm:p-4 bg-blue-50 rounded-lg">
-                        <p class="text-sm font-medium text-blue-700">Anda bisa membuat kelas baru!</p>
-                        <p class="text-sm text-blue-600">Klik 'Kelola Kelas' untuk membuat atau mengelola kelas yang Anda ajarkan</p>
+                        <p class="text-sm font-medium text-blue-700">Kelas ditugaskan oleh Superadmin</p>
+                        <p class="text-sm text-blue-600">Klik 'Kelola Kelas' untuk melihat kelas-kelas yang ditugaskan kepada Anda</p>
                     </div>
                     <h3 class="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Aksi Cepat</h3>
                     <div class="space-y-3">
@@ -132,7 +132,7 @@
                             </div>
                             <div class="ml-3 sm:ml-4">
                                 <p class="text-sm font-medium text-gray-900">Kelola Kelas</p>
-                                <p class="text-sm text-gray-500">Buat atau atur kelas Anda</p>
+                                <p class="text-sm text-gray-500">Lihat kelas yang ditugaskan kepada Anda</p>
                             </div>
                         </a>
 
