@@ -67,6 +67,9 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/leave-requests/{id}/approve', [SuperadminController::class, 'approveLeaveRequest'])->name('leave.request.approve');
         Route::put('/leave-requests/{id}/reject', [SuperadminController::class, 'rejectLeaveRequest'])->name('leave.request.reject');
 
+        // Superadmin attendance taking routes
+        Route::get('/take-attendance', [SuperadminController::class, 'takeAttendance'])->name('superadmin.take.attendance');
+
         // User management routes
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{userId}', [SuperadminController::class, 'updateUser'])->name('users.update');
@@ -116,8 +119,8 @@ Route::middleware(['auth'])->group(function () {
             return redirect()->back()->with('success', 'User deleted successfully.');
         })->name('users.destroy');
 
-        // Admin QR code route
-        Route::get('/{userId}/qr-code', [SuperadminController::class, 'showAdminQrCode'])->name('admin.qr.code');
+        // Superadmin view admin QR code route
+        Route::get('/{userId}/qr-code', [SuperadminController::class, 'showAdminQrCode'])->name('superadmin.admin.qr.code');
     });
 
     // Shared attendance routes

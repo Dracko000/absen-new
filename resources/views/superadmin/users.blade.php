@@ -263,6 +263,8 @@
                                                 @endif
                                                 <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
+                                                <a href="{{ route('superadmin.admin.qr.code', $user->id) }}" class="text-blue-600 hover:text-blue-900" target="_blank">QR Code</a>
+                                                <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
                                             </td>
                                         </tr>

@@ -460,6 +460,13 @@ class SuperadminController extends Controller
         return redirect()->route('superadmin.classes')->with('success', 'Class deleted successfully.');
     }
 
+    public function takeAttendance()
+    {
+        $classes = ClassModel::all(); // Get all classes for the dropdown
+        $users = User::all(); // Get all users (students and admins)
+        return view('superadmin.take-attendance', compact('classes', 'users'));
+    }
+
     public function showAdminQrCode($userId)
     {
         $user = User::findOrFail($userId);
