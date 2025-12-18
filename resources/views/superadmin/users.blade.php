@@ -71,23 +71,23 @@
                 </div>
             </div>
 
-            <div class="mb-6 flex space-x-4">
-                <form method="GET" action="{{ route('superadmin.users') }}" class="flex space-x-2">
+            <div class="mb-6 grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-4">
+                <form method="GET" action="{{ route('superadmin.users') }}" class="relative">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                             </svg>
                         </div>
-                        <input type="text" name="search" value="{{ request('search') }}" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 w-80" placeholder="Cari nama atau email...">
+                        <input type="text" name="search" value="{{ request('search') }}" id="table-search-users" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari nama atau email...">
                         @if(request('class_id'))
                             <input type="hidden" name="class_id" value="{{ request('class_id') }}">
                         @endif
-                        <button type="submit" class="absolute right-2.5 bottom-2.5 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-4 py-2">Cari</button>
                     </div>
+                    <button type="submit" class="absolute right-2.5 bottom-2.5 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-4 py-2 whitespace-nowrap">Cari</button>
                 </form>
 
-                <form method="GET" action="{{ route('superadmin.users') }}" class="w-64">
+                <form method="GET" action="{{ route('superadmin.users') }}">
                     <select name="class_id" onchange="this.form.submit()" class="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
                         <option value="">Semua Kelas</option>
                         @foreach($classes as $class)
@@ -102,7 +102,7 @@
                 </form>
 
                 @if(request('search') || request('class_id'))
-                    <a href="{{ route('superadmin.users') }}" class="flex items-center justify-center px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white font-medium rounded-lg text-sm">
+                    <a href="{{ route('superadmin.users') }}" class="flex items-center justify-center px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white font-medium rounded-lg text-sm whitespace-nowrap self-start">
                         Reset
                     </a>
                 @endif
