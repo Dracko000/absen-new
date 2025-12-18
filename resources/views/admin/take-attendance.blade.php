@@ -15,18 +15,36 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="mb-6">
-                        <button onclick="showScanner()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                            </svg>
-                            Pindai QR Code
-                        </button>
-                        <button onclick="showManual()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Input Manual
-                        </button>
+                        <!-- Toggle between Check-in and Check-out -->
+                        <div class="flex space-x-4 mb-4">
+                            <button id="checkInBtn" onclick="switchMode('check-in')" class="mode-btn bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg active-mode-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                </svg>
+                                Check-in (Masuk)
+                            </button>
+                            <button id="checkOutBtn" onclick="switchMode('check-out')" class="mode-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                                Check-out (Pulang)
+                            </button>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <button onclick="showScanner()" class="bg-green-600 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                </svg>
+                                Pindai QR Code
+                            </button>
+                            <button onclick="showManual()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Input Manual
+                            </button>
+                        </div>
                     </div>
 
                     <!-- QR Scanner Section -->
@@ -251,7 +269,7 @@
                 if (code) {
                     // QR code detected!
                     document.getElementById('qrInput').value = code.data;
-                    scanQrCode(); // Process the scanned code
+                    scanQrCode(); // Process the scanned code with current mode
                     // Keep camera active for continuous scanning - removed stopCameraScanner() call
                 }
             }
@@ -471,5 +489,144 @@
 
         // Initialize with scanner view
         showScanner();
+
+        // Mode functionality
+        function switchMode(mode) {
+            // Update active button styles
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active-mode-btn');
+                btn.classList.remove('bg-green-500');
+                btn.classList.remove('bg-blue-500');
+                btn.classList.add('bg-green-500'); // Default style
+            });
+
+            if (mode === 'check-in') {
+                document.getElementById('checkInBtn').classList.add('active-mode-btn');
+                document.getElementById('checkInBtn').classList.remove('bg-green-500');
+                document.getElementById('checkInBtn').classList.add('bg-green-700');
+                document.getElementById('checkOutBtn').classList.remove('bg-blue-700');
+                document.getElementById('checkOutBtn').classList.add('bg-blue-500');
+            } else if (mode === 'check-out') {
+                document.getElementById('checkOutBtn').classList.add('active-mode-btn');
+                document.getElementById('checkOutBtn').classList.remove('bg-blue-500');
+                document.getElementById('checkOutBtn').classList.add('bg-blue-700');
+                document.getElementById('checkInBtn').classList.remove('bg-green-700');
+                document.getElementById('checkInBtn').classList.add('bg-green-500');
+            }
+
+            // Update the global mode variable
+            window.currentMode = mode;
+        }
+
+        // Override the original scanQrCode function to handle both modes
+        function scanQrCode() {
+            const qrCode = document.getElementById('qrInput').value;
+            if (!qrCode) {
+                return; // Don't show alert for continuous scanning
+            }
+
+            // Get CSRF token with error handling
+            const csrfToken = document.querySelector('meta[name="csrf-token"]');
+            if (!csrfToken) {
+                playErrorSound();
+                alert('CSRF token not found. Please refresh the page.');
+                return;
+            }
+
+            // Temporarily disable the input field during processing
+            document.getElementById('qrInput').disabled = true;
+
+            // Determine the endpoint based on current mode
+            const endpoint = window.currentMode === 'check-out' ? '/attendance/checkout' : '/attendance/scan';
+            const modeLabel = window.currentMode === 'check-out' ? 'Check-out' : 'Check-in';
+
+            fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    qr_data: qrCode,
+                    class_model_id: {{ $class->id }}
+                })
+            })
+            .then(response => {
+                // Check if response is ok before parsing JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.getElementById('scanResult');
+
+                if(data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">${modeLabel} Berhasil! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    playSuccessSound(); // Play success sound
+                    // Clear input field for next scan
+                    document.getElementById('qrInput').value = '';
+                } else if(data.duplicate) {
+                    // Handle duplicate scan specifically (for both check-in and check-out)
+                    resultDiv.innerHTML = `
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">${modeLabel} Duplikat! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    // Show browser notification for duplicate
+                    showDuplicateNotification(data.message);
+                    playErrorSound(); // Play error sound for duplicate
+                    // Clear input field to allow next scan
+                    document.getElementById('qrInput').value = '';
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Gagal! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    playErrorSound(); // Play error sound
+                    // Clear input field to allow retry if there's an error
+                    document.getElementById('qrInput').value = '';
+                }
+
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('scanResult').innerHTML = `
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Gagal! </strong>
+                        <span class="block sm:inline">Terjadi kesalahan saat ${modeLabel.toLowerCase()} kode QR: ${error.message}</span>
+                    </div>
+                `;
+                playErrorSound(); // Play error sound
+                // Clear input field to allow retry if there's an error
+                document.getElementById('qrInput').value = '';
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
+            });
+        }
+
+        // Initialize mode to check-in
+        window.currentMode = 'check-in';
+
+        // Add CSS for the active mode button
+        const style = document.createElement('style');
+        style.textContent = `
+            .active-mode-btn {
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </x-app-layout>

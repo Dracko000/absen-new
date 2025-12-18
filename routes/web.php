@@ -64,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
         // User management routes
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{userId}', [SuperadminController::class, 'updateUser'])->name('users.update');
+        Route::put('/users/{userId}/reset-password', [SuperadminController::class, 'resetUserPasswordToNis'])->name('users.reset.password');
     });
 
     // Admin routes
@@ -100,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['auth'])->prefix('attendance')->name('attendance.')->group(function () {
         Route::post('/record', [AttendanceController::class, 'recordAttendance'])->name('record');
         Route::post('/scan', [AttendanceController::class, 'scanQrCode'])->name('scan');
+        Route::post('/checkout', [AttendanceController::class, 'scanQrCodeForCheckout'])->name('checkout');
         Route::post('/manual', [AttendanceController::class, 'markAttendanceManual'])->name('manual');
         Route::put('/{id}/status', [AttendanceController::class, 'updateAttendanceStatus'])->name('update.status');
         Route::delete('/{id}', [AttendanceController::class, 'deleteAttendance'])->name('delete');

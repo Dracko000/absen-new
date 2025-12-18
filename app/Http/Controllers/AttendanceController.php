@@ -270,6 +270,106 @@ class AttendanceController extends Controller
         ], 200);
     }
 
+    public function scanQrCodeForCheckout(Request $request)
+    {
+        // Manual validation to provide better error handling
+        $qrData = $request->input('qr_data');
+        $classModelId = $request->input('class_model_id');
+
+        if (empty($qrData)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QR data diperlukan',
+                'data' => null
+            ], 400);
+        }
+
+        if (empty($classModelId) || !is_numeric($classModelId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID kelas diperlukan dan harus berupa angka',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if class exists
+        $class = ClassModel::find($classModelId);
+        if (!$class) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kelas tidak ditemukan',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if the authenticated user is the teacher assigned to this class
+        if ($class->teacher_id !== auth()->id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
+                'data' => null
+            ], 403);
+        }
+
+        // Extract user ID from QR code URL
+        $pattern = '/\/qr\/show\/(\d+)/';
+        preg_match($pattern, $qrData, $matches);
+
+        if (empty($matches[1])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kode QR tidak valid',
+                'data' => null
+            ], 400);
+        }
+
+        $userId = $matches[1];
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pengguna tidak ditemukan',
+                'data' => null
+            ], 404);
+        }
+
+        // Check if attendance already exists for this user and date for the same class
+        $attendance = Attendance::where('user_id', $user->id)
+            ->where('date', today())
+            ->where('class_model_id', $classModelId)
+            ->first();
+
+        if (!$attendance) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Absensi masuk tidak ditemukan untuk ' . $user->name . ' pada kelas ini',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if already checked out
+        if ($attendance->time_out) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Siswa sudah check-out sebelumnya pada kelas ini',
+                'data' => new AttendanceResource($attendance)
+            ], 200);
+        }
+
+        // Update the time_out field
+        $attendance->update([
+            'time_out' => now()->toTimeString(),
+            'note' => $attendance->note . ' | Check-out: ' . now()->format('H:i'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => "Check-out berhasil! " . $user->name . " telah check-out dari kelas ini",
+            'data' => new AttendanceResource($attendance)
+        ], 200);
+    }
+
     public function getDailyAttendance($date = null)
     {
         $date = $date ?? today()->toDateString();

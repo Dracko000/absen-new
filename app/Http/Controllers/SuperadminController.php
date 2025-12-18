@@ -162,21 +162,52 @@ class SuperadminController extends Controller
     {
         $user = User::findOrFail($userId);
 
-        $request->validate([
+        $validationRules = [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $userId,
             'role' => 'required|exists:roles,name',
-        ]);
+        ];
 
-        $user->update([
+        // Add password validation only if password is being changed
+        if ($request->filled('password')) {
+            $validationRules['password'] = 'required|string|min:8|confirmed';
+        }
+
+        $request->validate($validationRules);
+
+        $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-        ]);
+        ];
+
+        // Update password only if provided
+        if ($request->filled('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($updateData);
 
         // Sync roles
         $user->syncRoles([$request->role]);
 
         return redirect()->route('superadmin.users')->with('success', 'User updated successfully.');
+    }
+
+    public function resetUserPasswordToNis(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Check if the user has an NIS value
+        if (empty($user->nis)) {
+            return redirect()->back()->with('error', 'User does not have an NIS value to reset to.');
+        }
+
+        // Reset password to NIS value
+        $user->update([
+            'password' => Hash::make($user->nis),
+        ]);
+
+        return redirect()->route('superadmin.users')->with('success', 'Password has been reset to NIS successfully.');
     }
 
     public function manageClasses()

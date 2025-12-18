@@ -6,12 +6,12 @@
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Edit User</h1>
-        
+
         <div class="mb-6 p-4 bg-blue-50 rounded-lg">
             <h2 class="text-lg font-semibold text-gray-800">Informasi User Saat Ini</h2>
             <p class="text-gray-600"><strong>Nama:</strong> {{ $user->name }}</p>
             <p class="text-gray-600"><strong>Email:</strong> {{ $user->email }}</p>
-            <p class="text-gray-600"><strong>Peran:</strong> 
+            <p class="text-gray-600"><strong>Peran:</strong>
                 @if($user->roles->first())
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                         {{ $user->roles->first()->name }}
@@ -23,7 +23,7 @@
         <form action="{{ route('superadmin.users.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
-            
+
             <div class="mb-4">
                 <label for="name" class="block text-gray-700 font-medium mb-2">Nama</label>
                 <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" required>
@@ -54,13 +54,41 @@
                 @enderror
             </div>
 
-            <div class="flex items-center justify-between">
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 font-medium mb-2">Password (Kosongkan jika tidak ingin mengganti)</label>
+                <input type="password" name="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                @error('password')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label for="password_confirmation" class="block text-gray-700 font-medium mb-2">Konfirmasi Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                @error('password_confirmation')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-6 flex items-center">
+                <input type="checkbox" name="reset_to_nis" id="reset_to_nis" class="mr-2">
+                <label for="reset_to_nis" class="text-gray-700">Reset password ke NIS ({{ $user->nis ?? 'N/A' }})</label>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
                 <a href="{{ route('superadmin.users') }}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                     Batal
                 </a>
                 <button type="submit" class="px-4 py-2 bg-indigo-600 border border-transparent rounded-md text-white hover:bg-indigo-700">
                     Update User
                 </button>
+                @if($user->nis)
+                    <a href="{{ route('superadmin.users.reset.password', $user->id) }}"
+                       class="px-4 py-2 bg-yellow-500 border border-transparent rounded-md text-white hover:bg-yellow-600"
+                       onclick="return confirm('Apakah Anda yakin ingin mereset password {{ $user->name }} ke NIS?')">
+                        Reset ke NIS
+                    </a>
+                @endif
             </div>
         </form>
     </div>
