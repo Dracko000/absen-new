@@ -23,10 +23,22 @@ class StudentsImport implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
+            // Convert data to array and ensure string fields are properly typed
+            $rowData = $row->toArray();
+
+            // Ensure 'nis' is treated as string, converting if necessary
+            if (isset($rowData['nis'])) {
+                $rowData['nis'] = (string) $rowData['nis'];
+            }
+
+            if (isset($rowData['nama'])) {
+                $rowData['nama'] = (string) $rowData['nama'];
+            }
+
             // Validate the required fields
-            $validator = Validator::make($row->toArray(), [
+            $validator = Validator::make($rowData, [
                 'nama' => 'required|string|max:255',
-                'nis' => 'required|string',
+                'nis' => 'required|string|max:255',
             ]);
 
             if ($validator->fails()) {
@@ -41,7 +53,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             }
 
             // Check if a user with this NIS already exists
-            $existingUser = User::where('nis', $row['nis'])->first();
+            $existingUser = User::where('nis', $rowData['nis'])->first();
             if ($existingUser) {
                 // If user already exists, check if they're already assigned to a different class
                 // by checking attendance records for other classes
@@ -59,9 +71,9 @@ class StudentsImport implements ToCollection, WithHeadingRow
             } else {
                 // Create the new student user if one doesn't exist
                 $user = User::create([
-                    'name' => $row['nama'],
-                    'email' => $row['nis'] . '@student.example.com', // Generate a default email
-                    'nis' => $row['nis'],
+                    'name' => $rowData['nama'],
+                    'email' => $rowData['nis'] . '@student.example.com', // Generate a default email
+                    'nis' => $rowData['nis'],
                     'password' => Hash::make('defaultpassword'), // Default password
                 ]);
 

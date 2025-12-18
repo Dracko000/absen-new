@@ -31,24 +31,44 @@ class UsersImport implements ToCollection, WithHeadingRow
     public function collection(Collection $collection)
     {
         foreach ($collection as $row) {
+            // Convert data to array and ensure string fields are properly typed
+            $rowData = $row->toArray();
+
+            // Ensure 'name', 'nis', 'nip_nuptk', and 'class_id' are treated as strings, converting if necessary
+            if (isset($rowData['name'])) {
+                $rowData['name'] = (string) $rowData['name'];
+            }
+
+            if (isset($rowData['nis'])) {
+                $rowData['nis'] = (string) $rowData['nis'];
+            }
+
+            if (isset($rowData['nip_nuptk'])) {
+                $rowData['nip_nuptk'] = (string) $rowData['nip_nuptk'];
+            }
+
+            if (isset($rowData['class_id'])) {
+                $rowData['class_id'] = (string) $rowData['class_id'];
+            }
+
             // Skip empty rows
-            if (empty($row['name']) && empty($row['nis'] ?? '') && empty($row['nip_nuptk'] ?? '')) {
+            if (empty($rowData['name']) && empty($rowData['nis'] ?? '') && empty($rowData['nip_nuptk'] ?? '')) {
                 continue;
             }
 
-            $name = $row['name'] ?? '';
-            $identifier = $this->role === 'User' ? ($row['nis'] ?? '') : ($row['nip_nuptk'] ?? '');
+            $name = $rowData['name'] ?? '';
+            $identifier = $this->role === 'User' ? ($rowData['nis'] ?? '') : ($rowData['nip_nuptk'] ?? '');
 
             // For students, generate email from NIS
             if ($this->role === 'User') {
                 $email = $identifier . '@student.example.com';
             } else {
                 // For teachers, use provided email or generate from nip_nuptk
-                $email = $row['email'] ?? ($identifier . '@teacher.example.com');
+                $email = $rowData['email'] ?? ($identifier . '@teacher.example.com');
             }
 
             // Validate the row data before creating user
-            $validator = Validator::make($row->toArray(), $this->rules());
+            $validator = Validator::make($rowData, $this->rules());
 
             if ($validator->fails()) {
                 // Throw an exception to be caught by the controller
@@ -78,8 +98,8 @@ class UsersImport implements ToCollection, WithHeadingRow
             $user->assignRole($this->role);
 
             // If it's a student and class_id is provided, create attendance record to assign to class
-            if ($this->role === 'User' && !empty($row['class_id'])) {
-                $class = ClassModel::find($row['class_id']);
+            if ($this->role === 'User' && !empty($rowData['class_id'])) {
+                $class = ClassModel::find($rowData['class_id']);
                 if ($class) {
                     // Create attendance record to associate student with class
                     Attendance::create([
