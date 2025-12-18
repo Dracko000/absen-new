@@ -89,7 +89,6 @@ class UsersImport implements ToCollection, WithHeadingRow
                 'name' => $name,
                 'email' => $email,
                 'password' => Hash::make($password), // Use identifier as password
-                'role' => $this->role,
                 'nis' => $this->role === 'User' ? $identifier : null,
                 'nip_nuptk' => $this->role === 'Admin' ? $identifier : null,
             ]);
