@@ -149,6 +149,36 @@ class SuperadminController extends Controller
         return redirect()->route('superadmin.users')->with('success', 'Kelas siswa berhasil diperbarui.');
     }
 
+    public function editUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        $roles = \Spatie\Permission\Models\Role::all();
+        $classes = \App\Models\ClassModel::all();
+
+        return view('superadmin.edit-user', compact('user', 'roles', 'classes'));
+    }
+
+    public function updateUser(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $userId,
+            'role' => 'required|exists:roles,name',
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        // Sync roles
+        $user->syncRoles([$request->role]);
+
+        return redirect()->route('superadmin.users')->with('success', 'User updated successfully.');
+    }
+
     public function manageClasses()
     {
         $classes = ClassModel::with('teacher')->get();

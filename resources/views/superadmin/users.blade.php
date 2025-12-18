@@ -107,7 +107,7 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
+                                                <a href="{{ route('superadmin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 @if($user->hasRole('User'))
                                                 <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
@@ -157,7 +157,7 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
+                                                <a href="{{ route('superadmin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 @if($user->hasRole('User'))
                                                 <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
@@ -211,7 +211,7 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
+                                                <a href="{{ route('superadmin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 @if($user->hasRole('User'))
                                                 <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
@@ -265,7 +265,7 @@
                                                 {{ $user->created_at->format('d M Y') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
+                                                <a href="{{ route('superadmin.users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 @if($user->hasRole('User'))
                                                 <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>

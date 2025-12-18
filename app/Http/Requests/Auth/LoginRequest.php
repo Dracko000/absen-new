@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'login' => ['required', 'string'], // Changed from 'email' to 'login' to accept email, nis, or nip_nuptk
+            'login' => ['required', 'string'], // Accept email, nis, or nip_nuptk
             'password' => ['required', 'string'],
         ];
     }
@@ -72,21 +72,22 @@ class LoginRequest extends FormRequest
             }
         }
 
-        // Check if it's a valid NIS (numeric value, typically length is 8-12 digits)
-        if (is_numeric($loginValue) && strlen($loginValue) >= 8) {
-            $user = \App\Models\User::where('nis', $loginValue)->first();
-            if ($user && $user->hasRole('User')) { // User role means student
+        // Check if it's a numeric value that could be NIS or NIP/NUPTK
+        if (is_numeric($loginValue)) {
+            // First, check if it matches a student's NIS
+            $student = \App\Models\User::where('nis', $loginValue)->first();
+            if ($student && $student->hasRole('User')) { // User role means student
                 return ['field' => 'nis'];
             }
 
-            // Also check if it could be a NIP/NUPTK for teachers
+            // Then, check if it matches a teacher's NIP/NUPTK
             $teacher = \App\Models\User::where('nip_nuptk', $loginValue)->first();
             if ($teacher && $teacher->hasRole('Admin')) { // Admin role means teacher
                 return ['field' => 'nip_nuptk'];
             }
         }
 
-        // Default to email field for superadmins
+        // If not found in NIS or NIP/NUPTK, try email for superadmin or other users
         return ['field' => 'email'];
     }
 
