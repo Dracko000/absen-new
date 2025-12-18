@@ -269,6 +269,7 @@
             // Get CSRF token with error handling
             const csrfToken = document.querySelector('meta[name="csrf-token"]');
             if (!csrfToken) {
+                playErrorSound();
                 alert('CSRF token not found. Please refresh the page.');
                 return;
             }
@@ -304,6 +305,7 @@
                             <span class="block sm:inline">${data.message}</span>
                         </div>
                     `;
+                    playSuccessSound(); // Play success sound
                     // Clear input field for next scan
                     document.getElementById('qrInput').value = '';
                 } else {
@@ -313,6 +315,7 @@
                             <span class="block sm:inline">${data.message}</span>
                         </div>
                     `;
+                    playErrorSound(); // Play error sound
                     // Clear input field to allow retry if there's an error
                     document.getElementById('qrInput').value = '';
                 }
@@ -328,11 +331,61 @@
                         <span class="block sm:inline">Terjadi kesalahan saat memindai kode QR: ${error.message}</span>
                     </div>
                 `;
+                playErrorSound(); // Play error sound
                 // Clear input field to allow retry if there's an error
                 document.getElementById('qrInput').value = '';
                 // Re-enable input field
                 document.getElementById('qrInput').disabled = false;
             });
+        }
+
+        // Audio notification functions
+        function playSuccessSound() {
+            // Create audio context for success sound (beep)
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 800; // Higher pitch for success
+                gainNode.gain.value = 0.3;
+
+                oscillator.start();
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 200); // Short beep for success
+            } catch (e) {
+                // Fallback if Web Audio API is not supported
+                console.log("Web Audio API not supported, using system alert");
+            }
+        }
+
+        function playErrorSound() {
+            // Create audio context for error sound (beep)
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 400; // Lower pitch for error
+                gainNode.gain.value = 0.3;
+
+                oscillator.start();
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 400); // Longer beep for error
+            } catch (e) {
+                // Fallback if Web Audio API is not supported
+                console.log("Web Audio API not supported, using system alert");
+            }
         }
 
         // Handle recording attendance manually
