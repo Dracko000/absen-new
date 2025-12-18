@@ -78,14 +78,14 @@ class SuperadminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+            'nis' => 'required|string|unique:users,nis',
         ]);
 
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'email' => $request->nis . '@student.example.com', // Generate email from NIS
+            'nis' => $request->nis,
+            'password' => Hash::make($request->nis), // Use NIS as password
         ]);
 
         $user->assignRole('User');

@@ -342,18 +342,8 @@
                     </div>
 
                     <div class="mt-4">
-                        <label for="s_email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="s_email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    </div>
-
-                    <div class="mt-4">
-                        <label for="s_password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="password" name="password" id="s_password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
-                    </div>
-
-                    <div class="mt-4">
-                        <label for="s_password_confirmation" class="block text-sm font-medium text-gray-700">Konfirmasi Password</label>
-                        <input type="password" name="password_confirmation" id="s_password_confirmation" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        <label for="s_nis" class="block text-sm font-medium text-gray-700">NIS (Nomor Induk Siswa)</label>
+                        <input type="text" name="nis" id="s_nis" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                     </div>
 
                     <div class="mt-6">
