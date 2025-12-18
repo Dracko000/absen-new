@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // First, change the column type from enum to varchar/string
-        DB::statement('ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255)');
+        // First drop the existing check constraint
+        DB::statement('ALTER TABLE attendances DROP CONSTRAINT IF EXISTS attendances_status_check');
 
-        // Update existing records to use string values instead of enum values
-        // This is handled automatically by PostgreSQL during the ALTER TABLE
+        // Change the column type from enum to varchar/string
+        DB::statement("ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255) USING status::text");
 
-        // Add a check constraint to maintain data integrity
-        DB::statement("ALTER TABLE attendances ADD CONSTRAINT chk_attendance_status CHECK (status IN ('Hadir', 'Terlambat', 'Tidak Hadir', 'Izin'))");
+        // Add a new check constraint with extended values
+        DB::statement("ALTER TABLE attendances ADD CONSTRAINT attendances_status_check CHECK (status IN ('Hadir', 'Terlambat', 'Tidak Hadir', 'Izin', 'Sakit'))");
     }
 
     /**
@@ -26,10 +26,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Remove the check constraint
-        DB::statement('ALTER TABLE attendances DROP CONSTRAINT chk_attendance_status');
+        // Remove the extended check constraint
+        DB::statement('ALTER TABLE attendances DROP CONSTRAINT IF EXISTS attendances_status_check');
 
-        // Change column type back to enum (with only original values)
-        DB::statement('ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255) USING CASE WHEN status = \'Izin\' THEN \'Tidak Hadir\' ELSE status END');
+        // Change column type back to the original enum type, converting 'Izin' and 'Sakit' to 'Tidak Hadir'
+        DB::statement("ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255) USING CASE WHEN status IN ('Izin', 'Sakit') THEN 'Tidak Hadir' ELSE status END");
+
+        // Restore the original constraint
+        DB::statement("ALTER TABLE attendances ADD CONSTRAINT attendances_status_check CHECK (status IN ('Hadir', 'Terlambat', 'Tidak Hadir'))");
     }
 };
