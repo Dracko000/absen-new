@@ -36,7 +36,8 @@
                                     <tr>
                                         <th scope="col" class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                         <th scope="col" class="hidden md:table-cell px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                        <th scope="col" class="hidden lg:table-cell px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Schedule</th>
+                                        <th scope="col" class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jam Masuk</th>
+                                        <th scope="col" class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Jam Pulang</th>
                                         <th scope="col" class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Created At</th>
                                         <th scope="col" class="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                     </tr>
@@ -50,20 +51,11 @@
                                             <td class="hidden md:table-cell px-3 sm:px-4 py-3 sm:py-4">
                                                 <div class="text-xs sm:text-sm text-gray-500 max-w-[120px] sm:max-w-[180px] truncate">{{ $class->description ?? 'No description' }}</div>
                                             </td>
-                                            <td class="hidden lg:table-cell px-3 sm:px-4 py-3 sm:py-4">
-                                                @if($class->schedules->count() > 0)
-                                                    <div class="text-xs sm:text-sm">
-                                                        @foreach($class->schedules->take(2) as $schedule)
-                                                            <div class="truncate">{{ $schedule->subject }}</div>
-                                                            <div class="text-gray-500 truncate">{{ $schedule->start_time }} - {{ $schedule->end_time }}</div>
-                                                        @endforeach
-                                                        @if($class->schedules->count() > 2)
-                                                            <div class="text-xs text-gray-500">+{{ $class->schedules->count() - 2 }} more</div>
-                                                        @endif
-                                                    </div>
-                                                @else
-                                                    <span class="text-xs sm:text-sm text-gray-500">No schedules</span>
-                                                @endif
+                                            <td class="px-3 sm:px-4 py-3 sm:py-4">
+                                                <div class="text-xs sm:text-sm text-gray-500">{{ $class->entry_time ? \Carbon\Carbon::parse($class->entry_time)->format('H:i') : '-' }}</div>
+                                            </td>
+                                            <td class="px-3 sm:px-4 py-3 sm:py-4">
+                                                <div class="text-xs sm:text-sm text-gray-500">{{ $class->exit_time ? \Carbon\Carbon::parse($class->exit_time)->format('H:i') : '-' }}</div>
                                             </td>
                                             <td class="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
                                                 {{ $class->created_at->format('d M Y') }}
@@ -119,7 +111,18 @@
                         <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                         <textarea name="description" id="description" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
                     </div>
-                    
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="entry_time" class="block text-sm font-medium text-gray-700">Jam Masuk</label>
+                            <input type="time" name="entry_time" id="entry_time" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        </div>
+                        <div>
+                            <label for="exit_time" class="block text-sm font-medium text-gray-700">Jam Pulang</label>
+                            <input type="time" name="exit_time" id="exit_time" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                        </div>
+                    </div>
+
                     <div class="mt-6">
                         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Create Class

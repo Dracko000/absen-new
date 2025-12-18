@@ -107,6 +107,23 @@ class AttendanceController extends Controller
             ], 200);
         }
 
+        // Determine if student is late based on class entry time if status is 'Hadir'
+        if ($status === 'Hadir') {
+            $class = \App\Models\ClassModel::find($classModelId);
+            $currentTime = \Carbon\Carbon::parse($timeIn);
+            $entryTime = $class ? $class->entry_time : null;
+
+            if ($entryTime) {
+                $classEntryTime = \Carbon\Carbon::parse($entryTime);
+
+                // Compare only the time parts
+                if ($currentTime->gt($classEntryTime)) {
+                    $status = 'Terlambat'; // Change to late if scanned after entry time
+                    $note = ($note ? $note . ' ' : '') . '(Terlambat)';
+                }
+            }
+        }
+
         $attendance = Attendance::create([
             'user_id' => $userId,
             'class_model_id' => $classModelId,
@@ -215,19 +232,40 @@ class AttendanceController extends Controller
             ], 200); // Still return 200 as it's not an error, just a duplicate
         }
 
+        // Determine if student is late based on class entry time
+        $class = \App\Models\ClassModel::find($classModelId);
+        $currentTime = now();
+        $entryTime = $class ? $class->entry_time : null;
+
+        $status = 'Hadir';
+        $note = 'Dipindai melalui Kode QR';
+
+        if ($entryTime) {
+            $classEntryTime = \Carbon\Carbon::parse($entryTime);
+            $currentDateTime = $currentTime->copy();
+            $currentDateTime->setTime($currentDateTime->hour, $currentDateTime->minute, $currentDateTime->second);
+
+            // Compare only the time parts
+            if ($currentDateTime->gt($classEntryTime)) {
+                $status = 'Terlambat'; // Mark as late
+                $note .= ' (Terlambat)';
+            }
+        }
+
         // Create new attendance record
         $attendance = Attendance::create([
             'user_id' => $user->id,
             'class_model_id' => $classModelId,
             'date' => today(),
             'time_in' => now()->toTimeString(),
-            'status' => 'Hadir', // Default to present when scanned
-            'note' => 'Dipindai melalui Kode QR',
+            'status' => $status,
+            'note' => $note,
         ]);
 
+        $statusMessage = $status == 'Terlambat' ? 'Terlambat' : 'berhasil';
         return response()->json([
             'success' => true,
-            'message' => 'Scan berhasil! Absensi direkam untuk ' . $user->name,
+            'message' => "Scan {$statusMessage}! Absensi direkam untuk " . $user->name . " (Status: {$status})",
             'data' => new AttendanceResource($attendance)
         ], 200);
     }
@@ -375,6 +413,25 @@ class AttendanceController extends Controller
                 'message' => 'Absensi untuk ' . $existingAttendance->user->name . ' sudah direkam sebelumnya, data diperbarui',
                 'data' => new AttendanceResource($existingAttendance)
             ], 200);
+        }
+
+        // Determine if student is late based on class entry time if status is 'Hadir'
+        if ($status === 'Hadir') {
+            $class = \App\Models\ClassModel::find($classModelId);
+            $currentTime = now();
+            $entryTime = $class ? $class->entry_time : null;
+
+            if ($entryTime) {
+                $classEntryTime = \Carbon\Carbon::parse($entryTime);
+                $currentDateTime = $currentTime->copy();
+                $currentDateTime->setTime($currentDateTime->hour, $currentDateTime->minute, $currentDateTime->second);
+
+                // Compare only the time parts
+                if ($currentDateTime->gt($classEntryTime)) {
+                    $status = 'Terlambat'; // Change to late if scanned after entry time
+                    $note = ($note ? $note . ' ' : '') . '(Terlambat)';
+                }
+            }
         }
 
         // Create new attendance record

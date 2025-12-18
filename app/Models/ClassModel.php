@@ -18,6 +18,8 @@ class ClassModel extends Model
         'name',
         'description',
         'teacher_id',  // ID of the teacher who teaches this class
+        'entry_time',  // Class entry time
+        'exit_time',   // Class exit time
     ];
 
     /**

@@ -33,12 +33,16 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'entry_time' => 'required|date_format:H:i',
+            'exit_time' => 'required|date_format:H:i|after:entry_time',
         ]);
 
         ClassModel::create([
             'name' => $request->name,
             'description' => $request->description,
             'teacher_id' => auth()->id(),
+            'entry_time' => $request->entry_time,
+            'exit_time' => $request->exit_time,
         ]);
 
         return redirect()->route('admin.classes')->with('success', 'Class created successfully.');

@@ -191,13 +191,17 @@ class SuperadminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:class_models,name',
             'description' => 'nullable|string',
-            'teacher_id' => 'nullable|exists:users,id'
+            'teacher_id' => 'nullable|exists:users,id',
+            'entry_time' => 'required|date_format:H:i',
+            'exit_time' => 'required|date_format:H:i|after:entry_time',
         ]);
 
         $class = ClassModel::create([
             'name' => $request->name,
             'description' => $request->description,
             'teacher_id' => $request->teacher_id,
+            'entry_time' => $request->entry_time,
+            'exit_time' => $request->exit_time,
         ]);
 
         return redirect()->route('superadmin.classes')->with('success', 'Class created successfully.');
