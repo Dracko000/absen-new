@@ -52,7 +52,8 @@ class SuperadminController extends Controller
 
         $users = $query->get();
         $roles = Role::all();
-        return view('superadmin.users', compact('users', 'roles'));
+        $classes = \App\Models\ClassModel::all(); // Get all classes for student assignment
+        return view('superadmin.users', compact('users', 'roles', 'classes'));
     }
 
     public function createTeacher(Request $request)
@@ -79,6 +80,7 @@ class SuperadminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'nis' => 'required|string|unique:users,nis',
+            'class_id' => 'nullable|exists:class_models,id', // Optional class assignment
         ]);
 
         $user = User::create([
@@ -89,6 +91,18 @@ class SuperadminController extends Controller
         ]);
 
         $user->assignRole('User');
+
+        // If a class is selected, create an initial attendance record to associate the student with the class
+        if ($request->filled('class_id')) {
+            \App\Models\Attendance::create([
+                'user_id' => $user->id,
+                'class_model_id' => $request->class_id,
+                'date' => now()->toDateString(),
+                'time_in' => now()->toTimeString(),
+                'status' => 'Tidak Hadir', // Default status when first assigned
+                'note' => 'Siswa didaftarkan ke kelas',
+            ]);
+        }
 
         return redirect()->route('superadmin.users')->with('success', 'Student created successfully.');
     }

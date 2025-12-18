@@ -346,6 +346,16 @@
                         <input type="text" name="nis" id="s_nis" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                     </div>
 
+                    <div class="mt-4">
+                        <label for="class_id" class="block text-sm font-medium text-gray-700">Kelas</label>
+                        <select name="class_id" id="class_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <option value="">Pilih Kelas (Opsional)</option>
+                            @foreach($classes as $class)
+                                <option value="{{ $class->id }}">{{ $class->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="mt-6">
                         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Tambah Siswa
