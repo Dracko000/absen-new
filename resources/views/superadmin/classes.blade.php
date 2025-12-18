@@ -72,7 +72,7 @@
                     </button>
                 </div>
                 
-                <form method="POST" action="{{ route('superadmin.create.class') }}">
+                <form method="POST" action="{{ route('superadmin.classes.store') }}">
                     @csrf
                     <div class="mt-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Class Name</label>
