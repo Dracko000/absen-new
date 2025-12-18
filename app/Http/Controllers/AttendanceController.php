@@ -357,6 +357,21 @@ class AttendanceController extends Controller
             ], 200);
         }
 
+        // Check if current time is before class exit time
+        if ($class->exit_time) {
+            $currentTime = now();
+            $classExitTime = \Carbon\Carbon::parse($class->exit_time);
+
+            // Compare only the time parts (hours and minutes)
+            if ($currentTime->lt($classExitTime)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Jam pulang belum tiba. Jam pulang kelas ini adalah pukul ' . $class->exit_time . '. Silakan tunggu hingga jam pulang.',
+                    'data' => new AttendanceResource($attendance)
+                ], 400);
+            }
+        }
+
         // Update the time_out field
         $attendance->update([
             'time_out' => now()->toTimeString(),
