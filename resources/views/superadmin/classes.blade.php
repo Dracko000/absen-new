@@ -21,6 +21,7 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teacher</th>
@@ -32,6 +33,9 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @forelse($classes as $class)
                                     <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">{{ $class->id }}</div>
+                                        </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900">{{ $class->name }}</div>
                                         </td>
@@ -59,7 +63,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center text-gray-500">No classes found.</td>
+                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">No classes found.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -86,6 +90,8 @@
                 
                 <form method="POST" action="{{ route('superadmin.classes.store') }}">
                     @csrf
+                    <p class="text-sm text-gray-500 mb-2">Catatan: ID Kelas akan dibuat secara otomatis oleh sistem</p>
+
                     <div class="mt-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Class Name</label>
                         <input type="text" name="name" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
