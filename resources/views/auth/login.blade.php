@@ -18,11 +18,11 @@
             <form method="POST" action="{{ route('login') }}" class="mt-6">
                 @csrf
 
-                <!-- Email Address -->
+                <!-- Login Field -->
                 <div class="mb-4">
-                    <x-input-label for="email" :value="__('Email')" />
-                    <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    <x-input-label for="login" :value="__('Email / NIS / NIP NUPTK')" />
+                    <x-text-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required autofocus autocomplete="username" />
+                    <x-input-error :messages="$errors->get('login')" class="mt-2" />
                 </div>
 
                 <!-- Password -->
@@ -57,11 +57,9 @@
             </form>
 
             <div class="mt-6 text-center">
+                <!-- Student registration is handled by superadmin -->
                 <p class="text-sm text-gray-600">
-                    Belum punya akun?
-                    <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Daftar di sini
-                    </a>
+                    Akun pelajar dibuat oleh admin.
                 </p>
             </div>
         </div>

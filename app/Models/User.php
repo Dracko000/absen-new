@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // Adding role field to store user type
+        'nis', // Student identification number
+        'nip_nuptk', // Teacher identification number
     ];
 
     /**

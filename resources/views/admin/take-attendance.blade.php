@@ -252,7 +252,7 @@
                     // QR code detected!
                     document.getElementById('qrInput').value = code.data;
                     scanQrCode(); // Process the scanned code
-                    stopCameraScanner(); // Stop camera after successful scan
+                    // Keep camera active for continuous scanning - removed stopCameraScanner() call
                 }
             }
 
@@ -263,8 +263,7 @@
         function scanQrCode() {
             const qrCode = document.getElementById('qrInput').value;
             if (!qrCode) {
-                alert('Silakan masukkan atau pindai kode QR terlebih dahulu');
-                return;
+                return; // Don't show alert for continuous scanning
             }
 
             // Get CSRF token with error handling
@@ -273,6 +272,9 @@
                 alert('CSRF token not found. Please refresh the page.');
                 return;
             }
+
+            // Temporarily disable the input field during processing
+            document.getElementById('qrInput').disabled = true;
 
             fetch('/attendance/scan', {
                 method: 'POST',
@@ -302,7 +304,7 @@
                             <span class="block sm:inline">${data.message}</span>
                         </div>
                     `;
-                    // Clear input field
+                    // Clear input field for next scan
                     document.getElementById('qrInput').value = '';
                 } else {
                     resultDiv.innerHTML = `
@@ -311,10 +313,12 @@
                             <span class="block sm:inline">${data.message}</span>
                         </div>
                     `;
+                    // Clear input field to allow retry if there's an error
+                    document.getElementById('qrInput').value = '';
                 }
 
-                // Show notification
-                alert(data.message);
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -324,7 +328,10 @@
                         <span class="block sm:inline">Terjadi kesalahan saat memindai kode QR: ${error.message}</span>
                     </div>
                 `;
-                alert('Terjadi kesalahan saat memindai kode QR: ' + error.message);
+                // Clear input field to allow retry if there's an error
+                document.getElementById('qrInput').value = '';
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
             });
         }
 

@@ -100,6 +100,23 @@ class SuperadminController extends Controller
         return view('superadmin.classes', compact('classes', 'teachers'));
     }
 
+    public function createClass(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:class_models,name',
+            'description' => 'nullable|string',
+            'teacher_id' => 'nullable|exists:users,id'
+        ]);
+
+        $class = ClassModel::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'teacher_id' => $request->teacher_id,
+        ]);
+
+        return redirect()->route('superadmin.classes')->with('success', 'Class created successfully.');
+    }
+
     public function attendanceReport()
     {
         $attendances = Attendance::with(['user', 'classModel'])->latest()->paginate(10);
@@ -122,5 +139,29 @@ class SuperadminController extends Controller
             new ClassMembersExport($students, $class->name),
             "anggota_kelas_{$class->name}.xlsx"
         );
+    }
+
+    public function importStudents(Request $request, $classId)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        $class = ClassModel::findOrFail($classId);
+
+        try {
+            // Import students with the specific class ID
+            Excel::import(new \App\Imports\StudentsImport($classId), $request->file('file'));
+
+            return redirect()->back()->with('success', 'Students imported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error importing students: ' . $e->getMessage());
+        }
+    }
+
+    public function showImportStudentsForm($classId)
+    {
+        $class = ClassModel::findOrFail($classId);
+        return view('superadmin.import-students', compact('class'));
     }
 }

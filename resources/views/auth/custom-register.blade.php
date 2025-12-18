@@ -32,6 +32,15 @@
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                 </div>
 
+                <!-- NIP/NUPTK for Admins -->
+                @if($role === 'Admin')
+                <div class="mb-4">
+                    <x-input-label for="nip_nuptk" :value="__('NIP/NUPTK')" />
+                    <x-text-input id="nip_nuptk" class="block mt-1 w-full" type="text" name="nip_nuptk" :value="old('nip_nuptk')" required autocomplete="off" />
+                    <x-input-error :messages="$errors->get('nip_nuptk')" class="mt-2" />
+                </div>
+                @endif
+
                 <!-- Password -->
                 <div class="mb-4">
                     <x-input-label for="password" :value="__('Password')" />

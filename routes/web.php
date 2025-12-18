@@ -45,9 +45,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/users/teacher', [SuperadminController::class, 'createTeacher'])->name('create.teacher');
         Route::post('/users/student', [SuperadminController::class, 'createStudent'])->name('create.student');
         Route::get('/classes', [SuperadminController::class, 'manageClasses'])->name('classes');
+        Route::post('/classes', [SuperadminController::class, 'createClass'])->name('superadmin.create.class');
         Route::get('/attendance-report', [SuperadminController::class, 'attendanceReport'])->name('attendance.report');
         Route::get('/class/{classId}/members', [SuperadminController::class, 'classMembers'])->name('class.members');
         Route::get('/class/{classId}/export', [SuperadminController::class, 'exportClassMembers'])->name('class.export');
+        Route::get('/class/{classId}/import-students', [SuperadminController::class, 'showImportStudentsForm'])->name('class.import.students.form');
+        Route::post('/class/{classId}/import-students', [SuperadminController::class, 'importStudents'])->name('class.import.students');
     });
 
     // Admin routes

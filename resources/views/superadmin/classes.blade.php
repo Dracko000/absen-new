@@ -72,18 +72,18 @@
                     </button>
                 </div>
                 
-                <form method="POST" action="#">
+                <form method="POST" action="{{ route('superadmin.create.class') }}">
                     @csrf
                     <div class="mt-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Class Name</label>
                         <input type="text" name="name" id="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                     </div>
-                    
+
                     <div class="mt-4">
                         <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                         <textarea name="description" id="description" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
                     </div>
-                    
+
                     <div class="mt-4">
                         <label for="teacher_id" class="block text-sm font-medium text-gray-700">Teacher</label>
                         <select name="teacher_id" id="teacher_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -93,7 +93,7 @@
                             @endforeach
                         </select>
                     </div>
-                    
+
                     <div class="mt-6">
                         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Create Class

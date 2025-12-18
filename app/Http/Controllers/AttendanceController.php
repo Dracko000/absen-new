@@ -26,6 +26,26 @@ class AttendanceController extends Controller
             return response()->json(['error' => $validator->errors()], 400);
         }
 
+        // Check if the authenticated user is the teacher assigned to this class
+        $class = ClassModel::find($request->class_model_id);
+        if (!$class || $class->teacher_id !== auth()->id()) {
+            return response()->json([
+                'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
+            ], 403);
+        }
+
+        // Check if the user is already attending a different class on the same day
+        $existingAttendance = Attendance::where('user_id', $request->user_id)
+            ->where('date', $request->date)
+            ->where('class_model_id', '!=', $request->class_model_id)
+            ->first();
+
+        if ($existingAttendance) {
+            return response()->json([
+                'message' => 'Siswa tidak dapat menghadiri kelas lain pada hari yang sama',
+            ], 400);
+        }
+
         $attendance = Attendance::create([
             'user_id' => $request->user_id,
             'class_model_id' => $request->class_model_id,
@@ -47,6 +67,16 @@ class AttendanceController extends Controller
             'qr_data' => 'required|string',
             'class_model_id' => 'required|exists:class_models,id', // Class where attendance is being taken
         ]);
+
+        // Check if the authenticated user is the teacher assigned to this class
+        $class = ClassModel::find($request->class_model_id);
+        if (!$class || $class->teacher_id !== auth()->id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
+                'data' => null
+            ], 403);
+        }
 
         // Extract user ID from QR code URL
         $pattern = '/\/qr\/show\/(\d+)/';
@@ -71,17 +101,31 @@ class AttendanceController extends Controller
             ], 404);
         }
 
-        // Check if attendance already exists for this user and date
+        // Check if the user is already attending a different class on the same day
         $existingAttendance = Attendance::where('user_id', $user->id)
             ->where('date', today())
-            ->where('class_model_id', $request->class_model_id)
+            ->where('class_model_id', '!=', $request->class_model_id)
             ->first();
 
         if ($existingAttendance) {
             return response()->json([
+                'success' => false,
+                'message' => 'Siswa tidak dapat menghadiri kelas lain pada hari yang sama',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if attendance already exists for this user and date for the same class
+        $existingAttendanceForClass = Attendance::where('user_id', $user->id)
+            ->where('date', today())
+            ->where('class_model_id', $request->class_model_id)
+            ->first();
+
+        if ($existingAttendanceForClass) {
+            return response()->json([
                 'success' => true,
                 'message' => 'Absensi sudah direkam sebelumnya untuk ' . $user->name,
-                'data' => new AttendanceResource($existingAttendance)
+                'data' => new AttendanceResource($existingAttendanceForClass)
             ], 200);
         }
 
@@ -174,7 +218,27 @@ class AttendanceController extends Controller
             'note' => 'nullable|string',
         ]);
 
-        // Check if attendance already exists for this user and date
+        // Check if the authenticated user is the teacher assigned to this class
+        $class = ClassModel::find($request->class_model_id);
+        if (!$class || $class->teacher_id !== auth()->id()) {
+            return response()->json([
+                'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
+            ], 403);
+        }
+
+        // Check if the user is already attending a different class on the same day
+        $existingAttendanceDifferentClass = Attendance::where('user_id', $request->user_id)
+            ->where('date', today())
+            ->where('class_model_id', '!=', $request->class_model_id)
+            ->first();
+
+        if ($existingAttendanceDifferentClass) {
+            return response()->json([
+                'message' => 'Siswa tidak dapat menghadiri kelas lain pada hari yang sama',
+            ], 400);
+        }
+
+        // Check if attendance already exists for this user and date for the same class
         $existingAttendance = Attendance::where('user_id', $request->user_id)
             ->where('date', today())
             ->where('class_model_id', $request->class_model_id)
