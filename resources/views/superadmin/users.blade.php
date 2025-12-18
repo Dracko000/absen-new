@@ -109,6 +109,10 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
+                                                @if($user->hasRole('User'))
+                                                <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                @endif
                                                 <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
@@ -155,6 +159,10 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
+                                                @if($user->hasRole('User'))
+                                                <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                @endif
                                                 <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
@@ -205,6 +213,10 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
+                                                @if($user->hasRole('User'))
+                                                <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                @endif
                                                 <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>
@@ -255,6 +267,10 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('profile.edit') }}#edit-user-{{ $user->id }}" class="text-indigo-600 hover:text-indigo-900" data-user-id="{{ $user->id }}">Edit</a>
                                                 <span class="mx-2 text-gray-300">|</span>
+                                                @if($user->hasRole('User'))
+                                                <a href="{{ route('superadmin.users.edit.class', $user->id) }}" class="text-purple-600 hover:text-purple-900">Edit Kelas</a>
+                                                <span class="mx-2 text-gray-300">|</span>
+                                                @endif
                                                 <a href="{{ route('print.preview.id.card', $user->id) }}" class="text-green-600 hover:text-green-900" target="_blank">Lihat</a>
                                                 <span class="mx-2 text-gray-300">|</span>
                                                 <a href="#" class="text-red-600 hover:text-red-900 delete-user" data-user-id="{{ $user->id }}" data-user-name="{{ $user->name }}">Hapus</a>

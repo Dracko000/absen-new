@@ -51,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/class/{classId}/export', [SuperadminController::class, 'exportClassMembers'])->name('class.export');
         Route::get('/class/{classId}/import-students', [SuperadminController::class, 'showImportStudentsForm'])->name('class.import.students.form');
         Route::post('/class/{classId}/import-students', [SuperadminController::class, 'importStudents'])->name('class.import.students');
+
+        // Student class assignment routes
+        Route::get('/users/{userId}/edit-class', [SuperadminController::class, 'showEditStudentClassForm'])->name('users.edit.class');
+        Route::put('/users/{userId}/class', [SuperadminController::class, 'updateStudentClass'])->name('users.update.class');
     });
 
     // Admin routes

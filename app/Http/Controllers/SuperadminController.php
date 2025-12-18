@@ -107,6 +107,48 @@ class SuperadminController extends Controller
         return redirect()->route('superadmin.users')->with('success', 'Student created successfully.');
     }
 
+    public function showEditStudentClassForm($userId)
+    {
+        $user = User::findOrFail($userId);
+        $classes = \App\Models\ClassModel::all();
+
+        // Get the current class of the student (if any) from their latest attendance record
+        $currentAttendance = \App\Models\Attendance::where('user_id', $userId)
+            ->latest('date')
+            ->first();
+
+        $currentClassId = $currentAttendance ? $currentAttendance->class_model_id : null;
+
+        return view('superadmin.edit-student-class', compact('user', 'classes', 'currentClassId'));
+    }
+
+    public function updateStudentClass(Request $request, $userId)
+    {
+        $request->validate([
+            'class_id' => 'required|exists:class_models,id',
+        ]);
+
+        $user = User::findOrFail($userId);
+
+        // Create or update attendance record to associate the student with the new class
+        // Remove any existing attendance records for other classes on today's date
+        \App\Models\Attendance::where('user_id', $user->id)
+            ->where('date', today())
+            ->delete();
+
+        // Create new attendance record for the new class
+        \App\Models\Attendance::create([
+            'user_id' => $user->id,
+            'class_model_id' => $request->class_id,
+            'date' => today(),
+            'time_in' => now()->toTimeString(),
+            'status' => 'Tidak Hadir', // Default status when first assigned
+            'note' => 'Kelas diperbarui oleh admin',
+        ]);
+
+        return redirect()->route('superadmin.users')->with('success', 'Kelas siswa berhasil diperbarui.');
+    }
+
     public function manageClasses()
     {
         $classes = ClassModel::with('teacher')->get();
