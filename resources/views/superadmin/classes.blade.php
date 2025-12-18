@@ -48,9 +48,13 @@
                                             <div class="text-sm text-gray-500">{{ $class->exit_time ? \Carbon\Carbon::parse($class->exit_time)->format('H:i') : '-' }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <a href="{{ route('superadmin.class.edit', $class->id) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                                             |
-                                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                            <form action="{{ route('superadmin.class.delete', $class->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this class?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900" style="background:none; border:none; padding:0; cursor:pointer;">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

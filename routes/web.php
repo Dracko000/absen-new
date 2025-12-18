@@ -56,6 +56,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{userId}/edit-class', [SuperadminController::class, 'showEditStudentClassForm'])->name('users.edit.class');
         Route::put('/users/{userId}/class', [SuperadminController::class, 'updateStudentClass'])->name('users.update.class');
 
+        // Class management routes
+        Route::get('/class/{classId}/edit', [SuperadminController::class, 'showEditClassForm'])->name('class.edit');
+        Route::put('/class/{classId}', [SuperadminController::class, 'updateClass'])->name('class.update');
+        Route::delete('/class/{classId}', [SuperadminController::class, 'deleteClass'])->name('class.delete');
+
         // User management routes
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{userId}', [SuperadminController::class, 'updateUser'])->name('users.update');

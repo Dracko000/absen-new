@@ -254,4 +254,46 @@ class SuperadminController extends Controller
         $class = ClassModel::findOrFail($classId);
         return view('superadmin.import-students', compact('class'));
     }
+
+    public function showEditClassForm($classId)
+    {
+        $class = ClassModel::with('teacher')->findOrFail($classId);
+        $teachers = User::role('Admin')->get();
+        return view('superadmin.edit-class', compact('class', 'teachers'));
+    }
+
+    public function updateClass(Request $request, $classId)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:class_models,name,' . $classId,
+            'description' => 'nullable|string',
+            'teacher_id' => 'nullable|exists:users,id',
+            'entry_time' => 'required|date_format:H:i',
+            'exit_time' => 'required|date_format:H:i|after:entry_time',
+        ]);
+
+        $class = ClassModel::findOrFail($classId);
+        $class->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'teacher_id' => $request->teacher_id,
+            'entry_time' => $request->entry_time,
+            'exit_time' => $request->exit_time,
+        ]);
+
+        return redirect()->route('superadmin.classes')->with('success', 'Class updated successfully.');
+    }
+
+    public function deleteClass($classId)
+    {
+        $class = ClassModel::with(['attendances', 'schedules'])->findOrFail($classId);
+
+        // Delete related attendances and schedules before deleting the class
+        $class->attendances()->delete();
+        $class->schedules()->delete();
+
+        $class->delete();
+
+        return redirect()->route('superadmin.classes')->with('success', 'Class deleted successfully.');
+    }
 }
