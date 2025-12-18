@@ -83,11 +83,10 @@
                     Update User
                 </button>
                 @if($user->nis)
-                    <form action="{{ route('superadmin.users.reset.password', $user->id) }}" method="POST" class="inline">
+                    <form action="{{ route('superadmin.users.reset.password', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mereset password {{ addslashes($user->name) }} ke NIS?');" class="inline">
                         @csrf
                         @method('PUT')
-                        <button type="submit" class="px-4 py-2 bg-yellow-500 border border-transparent rounded-md text-white hover:bg-yellow-600"
-                                onclick="return confirm('Apakah Anda yakin ingin mereset password {{ $user->name }} ke NIS?')">
+                        <button type="submit" class="px-4 py-2 bg-yellow-500 border border-transparent rounded-md text-white hover:bg-yellow-600">
                             Reset ke NIS
                         </button>
                     </form>
@@ -96,4 +95,5 @@
         </form>
     </div>
 </div>
+
 @endsection

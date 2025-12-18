@@ -50,7 +50,26 @@ class SuperadminController extends Controller
             });
         }
 
+        // Class filter functionality
+        if ($request->filled('class_id')) {
+            $classId = $request->input('class_id');
+            $query->whereHas('attendances', function($q) use ($classId) {
+                $q->where('class_model_id', $classId);
+            });
+        }
+
         $users = $query->get();
+
+        // Get class information for each student by their latest attendance
+        foreach ($users as $user) {
+            if ($user->hasRole('User')) { // Only for students
+                $latestAttendance = \App\Models\Attendance::where('user_id', $user->id)
+                    ->latest('date')
+                    ->first();
+                $user->setAttribute('class', $latestAttendance ? $latestAttendance->classModel : null);
+            }
+        }
+
         $roles = Role::all();
         $classes = \App\Models\ClassModel::all(); // Get all classes for student assignment
         return view('superadmin.users', compact('users', 'roles', 'classes'));
