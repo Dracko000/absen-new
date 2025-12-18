@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Role;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Spatie\Permission\Models\Role;
+use Maatwebsite\Excel\Concerns\Importable;
 
 class UsersImport implements ToCollection, WithHeadingRow
 {
+    use Importable;  // This trait provides the import() method
+
     protected $role;
 
     public function __construct($role = 'User')
@@ -29,7 +32,7 @@ class UsersImport implements ToCollection, WithHeadingRow
     {
         foreach ($collection as $row) {
             // Skip empty rows
-            if (empty($row['name']) && empty($row['nis']) && empty($row['nip_nuptk'])) {
+            if (empty($row['name']) && empty($row['nis'] ?? '') && empty($row['nip_nuptk'] ?? '')) {
                 continue;
             }
 
