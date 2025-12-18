@@ -12,6 +12,19 @@
                 <p class="mt-2 text-gray-600">Daftar semua pengguna dalam sistem berdasarkan peran</p>
             </div>
 
+            <!-- Success and Error Messages -->
+            @if(session('success'))
+                <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+
             <div class="flex justify-end mb-6">
                 <div class="flex space-x-2">
                     <button onclick="document.getElementById('addTeacherModal').classList.remove('hidden')"
@@ -27,6 +40,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                         </svg>
                         Tambah Siswa
+                    </button>
+                    <button onclick="document.getElementById('importUserModal').classList.remove('hidden')"
+                            class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                        </svg>
+                        Import Pengguna
                     </button>
                 </div>
             </div>
@@ -430,6 +450,56 @@
                     <div class="mt-6">
                         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Tambah Siswa
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import User Modal -->
+    <div id="importUserModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3">
+                <div class="flex justify-between items-center pb-3 border-b">
+                    <h3 class="text-lg font-medium text-gray-900">Import Pengguna</h3>
+                    <button onclick="document.getElementById('importUserModal').classList.add('hidden')"
+                            class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form method="POST" action="{{ route('superadmin.users.import') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mt-4">
+                        <label for="user_type" class="block text-sm font-medium text-gray-700">Jenis Pengguna</label>
+                        <select name="user_type" id="user_type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                            <option value="">Pilih jenis pengguna</option>
+                            <option value="User">Siswa</option>
+                            <option value="Admin">Guru</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="file" class="block text-sm font-medium text-gray-700">File Excel</label>
+                        <input type="file" name="file" id="file" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" accept=".xlsx,.xls,.csv" required>
+                        <p class="mt-1 text-xs text-gray-500">Format file yang didukung: XLSX, XLS, atau CSV (Maksimal 2MB)</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-600 mb-2">Download template untuk:</p>
+                        <div class="flex space-x-2">
+                            <a href="{{ route('superadmin.users.import.template', 'user') }}" class="text-sm text-blue-600 hover:text-blue-800 underline">Siswa</a>
+                            <span class="text-gray-300">|</span>
+                            <a href="{{ route('superadmin.users.import.template', 'admin') }}" class="text-sm text-blue-600 hover:text-blue-800 underline">Guru</a>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit" class="w-full bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                            Import Pengguna
                         </button>
                     </div>
                 </form>

@@ -482,4 +482,60 @@ class SuperadminController extends Controller
 
         return view('superadmin.admin-qr-code', compact('qrCode', 'user'));
     }
+
+    public function downloadUserImportTemplate($type)
+    {
+        $type = ucfirst($type); // Make sure it's properly capitalized
+
+        if (!in_array($type, ['Admin', 'User'])) {
+            return redirect()->back()->with('error', 'Invalid user type for template download');
+        }
+
+        // Define the headers based on the user type
+        $headers = ['name', 'email'];
+
+        if ($type === 'User') {
+            $headers[] = 'nis';
+        } elseif ($type === 'Admin') {
+            $headers[] = 'nip_nuptk';
+        }
+
+        // Create temporary CSV content
+        $content = implode(',', $headers) . "\n";
+
+        // Sample data row
+        if ($type === 'User') {
+            $content .= '"John Doe","john@example.com","123456789"' . "\n";
+        } else {
+            $content .= '"Jane Smith","jane@example.com","987654321"' . "\n";
+        }
+
+        $filename = 'template_import_' . strtolower($type) . '.csv';
+
+        return response($content)
+            ->header('Content-Type', 'text/csv')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    public function importUsers(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048', // max 2MB
+            'user_type' => 'required|in:Admin,User'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $userType = $request->input('user_type');
+
+            $import = new \App\Imports\UsersImport($userType);
+            $import->import($file);
+
+            return redirect()->back()->with('success',
+                ucfirst(strtolower($userType)) . 's imported successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Import failed: ' . $e->getMessage());
+        }
+    }
 }

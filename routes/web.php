@@ -73,6 +73,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
         Route::put('/users/{userId}', [SuperadminController::class, 'updateUser'])->name('users.update');
         Route::put('/users/{userId}/reset-password', [SuperadminController::class, 'resetUserPasswordToNis'])->name('users.reset.password');
+
+        // Import user routes
+        Route::get('/users/import-template/{type}', [SuperadminController::class, 'downloadUserImportTemplate'])->name('users.import.template');
+        Route::post('/users/import', [SuperadminController::class, 'importUsers'])->name('users.import');
     });
 
     // Admin routes
