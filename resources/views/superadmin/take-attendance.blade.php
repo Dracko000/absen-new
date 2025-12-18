@@ -185,7 +185,7 @@
 
     <script>
         let videoStream = null;
-        let window.currentMode = 'check-in'; // Global variable to track current mode
+        let currentMode = 'check-in'; // Global variable to track current mode
 
         // Initialize mode buttons
         document.addEventListener('DOMContentLoaded', function() {
@@ -220,7 +220,7 @@
             }
 
             // Update the global mode variable
-            window.currentMode = mode;
+            currentMode = mode;
         }
 
         function startCameraScanner() {
@@ -341,8 +341,8 @@
             document.getElementById('qrInput').disabled = true;
 
             // Determine the endpoint based on current mode
-            const endpoint = window.currentMode === 'check-out' ? '/attendance/checkout' : '/attendance/scan';
-            const modeLabel = window.currentMode === 'check-out' ? 'Check-out' : 'Check-in';
+            const endpoint = currentMode === 'check-out' ? '/attendance/checkout' : '/attendance/scan';
+            const modeLabel = currentMode === 'check-out' ? 'Check-out' : 'Check-in';
 
             fetch(endpoint, {
                 method: 'POST',
