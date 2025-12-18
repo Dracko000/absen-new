@@ -75,15 +75,36 @@ class AttendanceController extends Controller
         }
 
         // Check if the user is already attending a different class on the same day
-        $existingAttendance = Attendance::where('user_id', $userId)
+        $existingAttendanceDifferentClass = Attendance::where('user_id', $userId)
             ->where('date', $date)
             ->where('class_model_id', '!=', $classModelId)
             ->first();
 
-        if ($existingAttendance) {
+        if ($existingAttendanceDifferentClass) {
             return response()->json([
                 'message' => 'Siswa tidak dapat menghadiri kelas lain pada hari yang sama',
             ], 400);
+        }
+
+        // Check if attendance already exists for this user and date for the same class
+        $existingAttendance = Attendance::where('user_id', $userId)
+            ->where('date', $date)
+            ->where('class_model_id', $classModelId)
+            ->first();
+
+        if ($existingAttendance) {
+            // Update existing attendance
+            $existingAttendance->update([
+                'status' => $status,
+                'note' => $note,
+                'time_in' => $timeIn, // Update time_in when manually recorded
+            ]);
+
+            return response()->json([
+                'duplicate' => true,
+                'message' => 'Absensi untuk ' . $existingAttendance->user->name . ' sudah direkam sebelumnya, data diperbarui',
+                'data' => new AttendanceResource($existingAttendance)
+            ], 200);
         }
 
         $attendance = Attendance::create([
@@ -187,10 +208,11 @@ class AttendanceController extends Controller
 
         if ($existingAttendanceForClass) {
             return response()->json([
-                'success' => true,
-                'message' => 'Absensi sudah direkam sebelumnya untuk ' . $user->name,
+                'success' => false, // Now returning false for duplicate scan
+                'duplicate' => true, // Adding flag to specifically identify duplicate scans
+                'message' => 'Absensi sudah direkam sebelumnya untuk ' . $user->name . ' pada kelas ini',
                 'data' => new AttendanceResource($existingAttendanceForClass)
-            ], 200);
+            ], 200); // Still return 200 as it's not an error, just a duplicate
         }
 
         // Create new attendance record
@@ -349,7 +371,8 @@ class AttendanceController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Attendance updated successfully',
+                'duplicate' => true,
+                'message' => 'Absensi untuk ' . $existingAttendance->user->name . ' sudah direkam sebelumnya, data diperbarui',
                 'data' => new AttendanceResource($existingAttendance)
             ], 200);
         }

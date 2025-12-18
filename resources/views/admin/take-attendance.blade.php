@@ -308,6 +308,19 @@
                     playSuccessSound(); // Play success sound
                     // Clear input field for next scan
                     document.getElementById('qrInput').value = '';
+                } else if(data.duplicate) {
+                    // Handle duplicate scan specifically
+                    resultDiv.innerHTML = `
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Scan Duplikat! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    // Show browser notification for duplicate scan
+                    showDuplicateNotification(data.message);
+                    playErrorSound(); // Play error sound for duplicate
+                    // Clear input field to allow next scan
+                    document.getElementById('qrInput').value = '';
                 } else {
                     resultDiv.innerHTML = `
                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -388,6 +401,32 @@
             }
         }
 
+        // Function to show duplicate scan notification
+        function showDuplicateNotification(message) {
+            // Create a more prominent alert for duplicate scans
+            alert('Peringatan: ' + message);
+
+            // Additionally, we could use the Notification API if available
+            if ("Notification" in window) {
+                // Request permission if not already granted
+                if (Notification.permission === "granted") {
+                    new Notification("Scan Duplikat!", {
+                        body: message,
+                        icon: null // You could add an icon if desired
+                    });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then(function(permission) {
+                        if (permission === "granted") {
+                            new Notification("Scan Duplikat!", {
+                                body: message,
+                                icon: null
+                            });
+                        }
+                    });
+                }
+            }
+        }
+
         // Handle recording attendance manually
         document.querySelectorAll('.record-btn').forEach(button => {
             button.addEventListener('click', function() {
@@ -413,7 +452,11 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if(data.message) {
+                    if(data.duplicate) {
+                        // Show duplicate notification for manual entry
+                        alert('Peringatan Duplikat: ' + data.message);
+                        showDuplicateNotification(data.message);
+                    } else if(data.message) {
                         alert(data.message);
                     } else {
                         alert('Error: ' + (data.error || 'Unknown error'));
