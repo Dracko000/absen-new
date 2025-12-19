@@ -132,6 +132,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/scan', [AttendanceController::class, 'scanQrCode'])->name('scan');
         Route::post('/checkout', [AttendanceController::class, 'scanQrCodeForCheckout'])->name('checkout');
         Route::post('/manual', [AttendanceController::class, 'markAttendanceManual'])->name('manual');
+        Route::post('/teacher-scan', [AttendanceController::class, 'scanQrCodeForTeacherAttendance'])->name('teacher.scan');
         Route::put('/{id}/status', [AttendanceController::class, 'updateAttendanceStatus'])->name('update.status');
         Route::delete('/{id}', [AttendanceController::class, 'deleteAttendance'])->name('delete');
         Route::get('/daily/{date?}', [AttendanceController::class, 'getDailyAttendance'])->name('daily');

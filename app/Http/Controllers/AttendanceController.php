@@ -585,6 +585,140 @@ class AttendanceController extends Controller
         ], 200);
     }
 
+    public function scanQrCodeForTeacherAttendance(Request $request)
+    {
+        // Manual validation to provide better error handling
+        $qrData = $request->input('qr_data');
+        $classModelId = $request->input('class_model_id');
+
+        if (empty($qrData)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QR data diperlukan',
+                'data' => null
+            ], 400);
+        }
+
+        if (empty($classModelId) || !is_numeric($classModelId)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID kelas diperlukan dan harus berupa angka',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if class exists
+        $class = ClassModel::find($classModelId);
+        if (!$class) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kelas tidak ditemukan',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if the authenticated user (superadmin) has permissions
+        // Since superadmin has all permissions, we can proceed
+        // Or add specific permission check if needed
+
+        // Extract user ID from QR code URL
+        $pattern = '/\/qr\/show\/(\d+)/';
+        preg_match($pattern, $qrData, $matches);
+
+        if (empty($matches[1])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kode QR tidak valid',
+                'data' => null
+            ], 400);
+        }
+
+        $userId = $matches[1];
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pengguna tidak ditemukan',
+                'data' => null
+            ], 404);
+        }
+
+        // Verify that the user being scanned is a teacher/admin
+        if (!$user->hasRole('Admin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kode QR ini bukan milik guru',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if the teacher is already attending a different class on the same day
+        $existingAttendance = Attendance::where('user_id', $user->id)
+            ->where('date', today())
+            ->where('class_model_id', '!=', $classModelId)
+            ->first();
+
+        if ($existingAttendance) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Guru tidak dapat menghadiri kelas lain pada hari yang sama',
+                'data' => null
+            ], 400);
+        }
+
+        // Check if attendance already exists for this user and date for the same class
+        $existingAttendanceForClass = Attendance::where('user_id', $user->id)
+            ->where('date', today())
+            ->where('class_model_id', $classModelId)
+            ->first();
+
+        if ($existingAttendanceForClass) {
+            return response()->json([
+                'success' => false, // Now returning false for duplicate scan
+                'duplicate' => true, // Adding flag to specifically identify duplicate scans
+                'message' => 'Absensi sudah direkam sebelumnya untuk ' . $user->name . ' pada kelas ini',
+                'data' => new AttendanceResource($existingAttendanceForClass)
+            ], 200); // Still return 200 as it's not an error, just a duplicate
+        }
+
+        // Determine if teacher is late based on class entry time
+        $currentTime = now();
+        $entryTime = $class ? $class->entry_time : null;
+
+        $status = 'Hadir';
+        $note = 'Dipindai melalui Kode QR oleh Superadmin';
+
+        if ($entryTime) {
+            $classEntryTime = \Carbon\Carbon::parse($entryTime);
+            $currentDateTime = $currentTime->copy();
+            $currentDateTime->setTime($currentDateTime->hour, $currentDateTime->minute, $currentDateTime->second);
+
+            // Compare only the time parts
+            if ($currentDateTime->gt($classEntryTime)) {
+                $status = 'Terlambat'; // Mark as late
+                $note .= ' (Terlambat)';
+            }
+        }
+
+        // Create new attendance record
+        $attendance = Attendance::create([
+            'user_id' => $user->id,
+            'class_model_id' => $classModelId,
+            'date' => today(),
+            'time_in' => now()->toTimeString(),
+            'status' => $status,
+            'note' => $note,
+        ]);
+
+        $statusMessage = $status == 'Terlambat' ? 'Terlambat' : 'berhasil';
+        return response()->json([
+            'success' => true,
+            'message' => "Scan {$statusMessage}! Absensi direkam untuk " . $user->name . " (Status: {$status})",
+            'data' => new AttendanceResource($attendance)
+        ], 200);
+    }
+
     public function deleteAttendance($id)
     {
         $attendance = Attendance::findOrFail($id);

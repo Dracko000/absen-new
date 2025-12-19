@@ -33,11 +33,15 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                 </svg>
                                 <p class="mt-2 text-sm text-gray-600">Arahkan kamera ke QR Code guru</p>
-                                <div class="mt-4">
+                                <div class="mt-4 space-y-2">
                                     <input type="file" id="qrFileInput" accept="image/*" capture="environment" class="hidden" />
                                     <button onclick="document.getElementById('qrFileInput').click()"
                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Gunakan Kamera
+                                    </button>
+                                    <button onclick="simulateQRScan()"
+                                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">
+                                        Simulasi Scan
                                     </button>
                                 </div>
                             </div>
@@ -108,7 +112,6 @@
             }
 
             if (confirm('Apakah Anda yakin ingin mencatat kehadiran guru ini?')) {
-                // In a real implementation, you would make an API call here
                 fetch('/attendance/manual', {
                     method: 'POST',
                     headers: {
@@ -138,14 +141,61 @@
             }
         }
 
+        // Function to handle QR scanning for teacher attendance
+        function processTeacherQRScan(qrData) {
+            const classId = document.getElementById('classSelect').value;
+
+            if (!classId) {
+                alert('Silakan pilih kelas terlebih dahulu');
+                return;
+            }
+
+            fetch('/attendance/teacher-scan', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    qr_data: qrData,
+                    class_model_id: classId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('Error: ' + (data.message || 'Terjadi kesalahan saat scan'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan saat memproses QR Code');
+            });
+        }
+
         // Handle QR file input
         document.getElementById('qrFileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                alert('File QR Code diterima. Dalam implementasi penuh, ini akan diproses untuk deteksi kode QR.');
-                // In a full implementation, you would use a QR code scanner library here
-                // For now, we'll just show an alert
+                // In a real implementation, you would process the QR code image here
+                // For now, we'll simulate a QR code URL
+                // In a complete implementation, you would use a QR code scanning library
+                alert('File QR Code diterima. Anda dapat menggunakan perpustakaan QR scanner untuk membaca kode.');
             }
         });
+
+        // Simulated QR scanner functionality (in real implementation, you'd use a library like QuaggaJS or similar)
+        // This is just to demonstrate the functionality
+        function simulateQRScan() {
+            // This would normally be integrated with a camera-based QR scanner
+            // For now, we'll prompt for a QR URL for testing
+            const qrCodeUrl = prompt('Masukkan URL QR Code guru (contoh: http://example.com/qr/show/123):');
+            if (qrCodeUrl) {
+                processTeacherQRScan(qrCodeUrl);
+            }
+        }
     </script>
 </x-app-layout>
