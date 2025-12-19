@@ -587,6 +587,15 @@ class AttendanceController extends Controller
 
     public function scanQrCodeForTeacherAttendance(Request $request)
     {
+        // Check if the authenticated user has the right permissions (Superadmin)
+        if (!auth()->user()->hasRole('Superadmin')) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda tidak memiliki izin untuk mengambil absensi guru',
+                'data' => null
+            ], 403);
+        }
+
         // Manual validation to provide better error handling
         $qrData = $request->input('qr_data');
         $classModelId = $request->input('class_model_id');
@@ -616,10 +625,6 @@ class AttendanceController extends Controller
                 'data' => null
             ], 400);
         }
-
-        // Check if the authenticated user (superadmin) has permissions
-        // Since superadmin has all permissions, we can proceed
-        // Or add specific permission check if needed
 
         // Extract user ID from QR code URL
         $pattern = '/\/qr\/show\/(\d+)/';

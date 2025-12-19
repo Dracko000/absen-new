@@ -150,7 +150,7 @@
                 return;
             }
 
-            fetch('/attendance/teacher-scan', {
+            fetch('{{ route("attendance.teacher.scan") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -167,12 +167,13 @@
                     alert(data.message);
                     location.reload();
                 } else {
+                    console.error('API Error:', data);
                     alert('Error: ' + (data.message || 'Terjadi kesalahan saat scan'));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat memproses QR Code');
+                console.error('Network Error:', error);
+                alert('Terjadi kesalahan jaringan saat memproses QR Code');
             });
         }
 
