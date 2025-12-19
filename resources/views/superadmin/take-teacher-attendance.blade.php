@@ -12,13 +12,13 @@
                 <p class="mt-1 text-gray-600">Scan QR code yang dimiliki oleh guru untuk merekam kehadiran mereka</p>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="md:col-span-1">
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Pilih Kelas</h3>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class="mb-6">
+                        <!-- Select Class First -->
                         <div class="mb-4">
-                            <label for="classSelect" class="block text-sm font-medium text-gray-700">Kelas</label>
-                            <select id="classSelect" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <label for="classSelect" class="block text-sm font-medium text-gray-700 mb-2">Pilih Kelas</label>
+                            <select id="classSelect" class="border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-full">
                                 <option value="">Pilih kelas...</option>
                                 @foreach($classes as $class)
                                     <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -26,36 +26,84 @@
                             </select>
                         </div>
 
-                        <div class="mt-6">
-                            <h3 class="text-lg font-medium text-gray-900 mb-4">Scan QR Code</h3>
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center" id="qrScanner">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <!-- Scanner Button (only appears after class selection) -->
+                        <div id="scannerButtonContainer" class="hidden">
+                            <button onclick="startCameraScanner()" class="bg-green-600 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                 </svg>
-                                <p class="mt-2 text-sm text-gray-600">Arahkan kamera ke QR Code guru</p>
-                                <div class="mt-4 space-y-2">
-                                    <input type="file" id="qrFileInput" accept="image/*" capture="environment" class="hidden" />
-                                    <button onclick="document.getElementById('qrFileInput').click()"
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                        Gunakan Kamera
+                                Pindai QR Code Guru
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- QR Scanner Section -->
+                    <div id="scanner" class="hidden mb-6 p-6 bg-gray-50 rounded-xl">
+                        <h4 class="text-lg font-medium mb-4 text-gray-900">Pemindai QR Code Guru</h4>
+                        <div class="grid grid-cols-1 gap-6">
+                            <div>
+                                <div id="camera-container" class="hidden border-2 border-dashed border-gray-300 rounded-lg p-2 text-center bg-white">
+                                    <div class="relative">
+                                        <video id="camera-video" autoplay playsinline class="w-full max-h-96 mx-auto" style="max-width: 100%;"></video>
+                                        <canvas id="qr-canvas" class="hidden"></canvas>
+                                    </div>
+                                    <button onclick="stopCameraScanner()" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
+                                        Hentikan Kamera
                                     </button>
-                                    <button onclick="simulateQRScan()"
-                                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">
-                                        Simulasi Scan
+                                </div>
+
+                                <div id="no-camera-access" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center bg-white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto sm:h-16 sm:w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                    </svg>
+                                    <p class="text-gray-600 mt-2 sm:mt-4 text-sm sm:text-base">Arahkan kamera ke kode QR guru untuk memindai</p>
+                                    <p class="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">Pastikan izin kamera telah diberikan</p>
+                                    <button onclick="startCameraScanner()" class="mt-2 sm:mt-3 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto">
+                                        Aktifkan Kamera
                                     </button>
+                                </div>
+
+                                <div class="mt-3 sm:mt-4">
+                                    <label for="qrInput" class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Atau masukkan kode QR guru secara manual:</label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input type="text" id="qrInput" placeholder="Tempel kode QR di sini..." class="flex-1 border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm py-2 px-3">
+                                        <button onclick="scanQrCode()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
+                                            Pindai
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="bg-white p-3 sm:p-4 rounded-lg border">
+                                    <h5 class="font-medium text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Hasil Pemindaian</h5>
+                                    <div id="scanResult" class="text-gray-600 min-h-[80px] sm:min-h-[100px] text-sm">
+                                        <p>Hasil pemindaian akan muncul di sini...</p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 sm:mt-4 bg-blue-50 p-3 sm:p-4 rounded-lg">
+                                    <h5 class="font-medium text-gray-900 mb-2 text-sm sm:text-base">Petunjuk Pemindaian</h5>
+                                    <ul class="list-disc pl-4 text-xs sm:text-sm text-gray-600 space-y-1">
+                                        <li>Pastikan pencahayaan cukup</li>
+                                        <li>Jaga jarak 10-20cm dari kode QR</li>
+                                        <li>Hasil absensi akan muncul secara otomatis</li>
+                                        <li>Jika gagal, coba pindai ulang</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="md:col-span-1">
+                    <!-- Teacher List and QR Links -->
+                    <div class="mt-6">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">Daftar Guru</h3>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guru</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                                     </tr>
                                 </thead>
@@ -64,19 +112,12 @@
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-gray-900">{{ $teacher->name }}</div>
-                                                <div class="text-sm text-gray-500">{{ $teacher->email }}</div>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                                                    Belum Absen
-                                                </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <button onclick="markTeacherAttendance({{ $teacher->id }})" 
-                                                        class="text-blue-600 hover:text-blue-900 mr-2">
-                                                    Absen Manual
-                                                </button>
-                                                <a href="{{ route('superadmin.admin.qr.code', $teacher->id) }}" 
+                                                {{ $teacher->email }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                <a href="{{ route('superadmin.admin.qr.code', $teacher->id) }}"
                                                    target="_blank"
                                                    class="text-indigo-600 hover:text-indigo-900">
                                                     Lihat QR
@@ -91,111 +132,310 @@
                                 </tbody>
                             </table>
                         </div>
-                        
-                        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
-                            <h4 class="text-sm font-medium text-blue-800">Catatan:</h4>
-                            <p class="mt-1 text-sm text-blue-700">Fitur scan QR untuk guru akan segera tersedia. Untuk sementara, gunakan tombol 'Absen Manual' untuk merekam kehadiran guru.</p>
-                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <a href="{{ route('superadmin.dashboard') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-lg">
+                            Kembali ke Dashboard
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function markTeacherAttendance(teacherId) {
-            const classId = document.getElementById('classSelect').value;
+    <!-- Load jsQR library for QR code detection -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
-            if (!classId) {
+    <script>
+        let videoStream = null;
+        let selectedClassId = null; // Store the selected class ID
+
+        // Update scanner button visibility based on class selection
+        document.getElementById('classSelect').addEventListener('change', function() {
+            selectedClassId = this.value;
+            const container = document.getElementById('scannerButtonContainer');
+
+            if (selectedClassId) {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+                // Also hide scanner if class is unselected
+                document.getElementById('scanner').classList.add('hidden');
+            }
+        });
+
+        function startCameraScanner() {
+            // Ensure a class is selected
+            if (!selectedClassId) {
                 alert('Silakan pilih kelas terlebih dahulu');
                 return;
             }
 
-            if (confirm('Apakah Anda yakin ingin mencatat kehadiran guru ini?')) {
-                fetch('/attendance/manual', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        user_id: teacherId,
-                        class_model_id: classId,
-                        status: 'Hadir', // Default status
-                        note: 'Absensi guru oleh superadmin'
+            // Hide no camera access message
+            document.getElementById('no-camera-access').style.display = 'none';
+
+            // Show scanner section and camera container
+            document.getElementById('scanner').classList.remove('hidden');
+            document.getElementById('camera-container').classList.remove('hidden');
+
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('qr-canvas');
+
+            if (!videoStream) {
+                // Try to access the back camera on mobile devices
+                navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: "environment" } }
+                })
+                .then(function(stream) {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                    video.play();
+
+                    // Start QR detection once video is playing
+                    video.addEventListener('play', function() {
+                        detectQRCode();
+                    });
+                })
+                .catch(function(error) {
+                    console.error("Camera error: ", error);
+                    // If back camera fails, try any available camera
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        videoStream = stream;
+                        video.srcObject = stream;
+                        video.play();
+
+                        video.addEventListener('play', function() {
+                            detectQRCode();
+                        });
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert('Kehadiran guru berhasil direkam');
-                        location.reload();
-                    } else {
-                        alert('Error: ' + (data.message || 'Terjadi kesalahan'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Terjadi kesalahan saat mencatat kehadiran');
+                    .catch(function(error) {
+                        console.error("Camera error (fallback): ", error);
+                        alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.');
+                        document.getElementById('camera-container').classList.add('hidden');
+                        document.getElementById('no-camera-access').style.display = 'block';
+                    });
                 });
             }
         }
 
-        // Function to handle QR scanning for teacher attendance
-        function processTeacherQRScan(qrData) {
-            const classId = document.getElementById('classSelect').value;
+        function stopCameraScanner() {
+            if (videoStream) {
+                const tracks = videoStream.getTracks();
+                tracks.forEach(track => track.stop());
+                videoStream = null;
+            }
 
-            if (!classId) {
+            document.getElementById('camera-container').classList.add('hidden');
+            document.getElementById('no-camera-access').style.display = 'block';
+        }
+
+        function detectQRCode() {
+            const video = document.getElementById('camera-video');
+            const canvas = document.getElementById('qr-canvas');
+            const ctx = canvas.getContext('2d');
+
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                // Set canvas dimensions to match video
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+
+                // Draw current video frame to canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // Get image data from canvas
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                // Try to decode QR code using jsQR
+                const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                    inversionAttempts: "dontInvert",
+                });
+
+                if (code) {
+                    // QR code detected!
+                    document.getElementById('qrInput').value = code.data;
+                    scanQrCode(); // Process the scanned code
+                    // Keep camera active for continuous scanning
+                }
+            }
+
+            // Continue scanning
+            requestAnimationFrame(detectQRCode);
+        }
+
+        function scanQrCode() {
+            const qrCode = document.getElementById('qrInput').value;
+            if (!qrCode) {
+                return; // Don't show alert for continuous scanning
+            }
+
+            // Ensure a class is selected
+            if (!selectedClassId) {
                 alert('Silakan pilih kelas terlebih dahulu');
                 return;
             }
 
-            fetch('{{ route("attendance.teacher.scan") }}', {
+            // Get CSRF token with error handling
+            const csrfToken = document.querySelector('meta[name="csrf-token"]');
+            if (!csrfToken) {
+                playErrorSound();
+                alert('CSRF token not found. Please refresh the page.');
+                return;
+            }
+
+            // Temporarily disable the input field during processing
+            document.getElementById('qrInput').disabled = true;
+
+            // Use the /attendance/teacher-scan endpoint
+            fetch('/attendance/teacher-scan', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    qr_data: qrData,
-                    class_model_id: classId
+                    qr_data: qrCode,
+                    class_model_id: selectedClassId // Use the selected class ID
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    console.error('API Error:', data);
-                    alert('Error: ' + (data.message || 'Terjadi kesalahan saat scan'));
+            .then(response => {
+                // Check if response is ok before parsing JSON
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then(data => {
+                const resultDiv = document.getElementById('scanResult');
+
+                if(data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Scan Berhasil! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    playSuccessSound(); // Play success sound
+                    // Clear input field for next scan
+                    document.getElementById('qrInput').value = '';
+                } else if(data.duplicate) {
+                    // Handle duplicate scan specifically
+                    resultDiv.innerHTML = `
+                        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Scan Duplikat! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    // Show browser notification for duplicate scan
+                    showDuplicateNotification(data.message);
+                    playErrorSound(); // Play error sound for duplicate
+                    // Clear input field to allow next scan
+                    document.getElementById('qrInput').value = '';
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Gagal! </strong>
+                            <span class="block sm:inline">${data.message}</span>
+                        </div>
+                    `;
+                    playErrorSound(); // Play error sound
+                    // Clear input field to allow retry if there's an error
+                    document.getElementById('qrInput').value = '';
+                }
+
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
             })
             .catch(error => {
-                console.error('Network Error:', error);
-                alert('Terjadi kesalahan jaringan saat memproses QR Code');
+                console.error('Error:', error);
+                document.getElementById('scanResult').innerHTML = `
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Gagal! </strong>
+                        <span class="block sm:inline">Terjadi kesalahan saat memindai kode QR guru: ${error.message}</span>
+                    </div>
+                `;
+                playErrorSound(); // Play error sound
+                // Clear input field to allow retry if there's an error
+                document.getElementById('qrInput').value = '';
+                // Re-enable input field
+                document.getElementById('qrInput').disabled = false;
             });
         }
 
-        // Handle QR file input
-        document.getElementById('qrFileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                // In a real implementation, you would process the QR code image here
-                // For now, we'll simulate a QR code URL
-                // In a complete implementation, you would use a QR code scanning library
-                alert('File QR Code diterima. Anda dapat menggunakan perpustakaan QR scanner untuk membaca kode.');
-            }
-        });
+        // Audio notification functions
+        function playSuccessSound() {
+            // Create audio context for success sound (beep)
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
 
-        // Simulated QR scanner functionality (in real implementation, you'd use a library like QuaggaJS or similar)
-        // This is just to demonstrate the functionality
-        function simulateQRScan() {
-            // This would normally be integrated with a camera-based QR scanner
-            // For now, we'll prompt for a QR URL for testing
-            const qrCodeUrl = prompt('Masukkan URL QR Code guru (contoh: http://example.com/qr/show/123):');
-            if (qrCodeUrl) {
-                processTeacherQRScan(qrCodeUrl);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 800; // Higher pitch for success
+                gainNode.gain.value = 0.3;
+
+                oscillator.start();
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 200); // Short beep for success
+            } catch (e) {
+                // Fallback if Web Audio API is not supported
+                console.log("Web Audio API not supported, using system alert");
+            }
+        }
+
+        function playErrorSound() {
+            // Create audio context for error sound (beep)
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = 'sine';
+                oscillator.frequency.value = 400; // Lower pitch for error
+                gainNode.gain.value = 0.3;
+
+                oscillator.start();
+                setTimeout(() => {
+                    oscillator.stop();
+                }, 400); // Longer beep for error
+            } catch (e) {
+                // Fallback if Web Audio API is not supported
+                console.log("Web Audio API not supported, using system alert");
+            }
+        }
+
+        // Function to show duplicate scan notification
+        function showDuplicateNotification(message) {
+            // Create a more prominent alert for duplicate scans
+            alert('Peringatan: ' + message);
+
+            // Additionally, we could use the Notification API if available
+            if ("Notification" in window) {
+                // Request permission if not already granted
+                if (Notification.permission === "granted") {
+                    new Notification("Scan Duplikat!", {
+                        body: message,
+                        icon: null // You could add an icon if desired
+                    });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then(function(permission) {
+                        if (permission === "granted") {
+                            new Notification("Scan Duplikat!", {
+                                body: message,
+                                icon: null
+                            });
+                        }
+                    });
+                }
             }
         }
     </script>

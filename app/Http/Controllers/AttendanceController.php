@@ -172,7 +172,8 @@ class AttendanceController extends Controller
         }
 
         // Check if the authenticated user is the teacher assigned to this class
-        if ($class->teacher_id !== auth()->id()) {
+        // Allow Superadmin to scan for any class
+        if ($class->teacher_id !== auth()->id() && !auth()->user()->hasRole('Superadmin')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
@@ -296,7 +297,8 @@ class AttendanceController extends Controller
         }
 
         // Check if the authenticated user is the teacher assigned to this class
-        if ($class->teacher_id !== auth()->id()) {
+        // Allow Superadmin to scan for any class
+        if ($class->teacher_id !== auth()->id() && !auth()->user()->hasRole('Superadmin')) {
             return response()->json([
                 'success' => false,
                 'message' => 'Anda tidak diizinkan mengambil absensi untuk kelas ini',
