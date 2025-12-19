@@ -38,9 +38,15 @@ class StudentController extends Controller
     public function showQrCode()
     {
         $user = auth()->user();
+
+        // Check if user has NIS
+        if (empty($user->nis)) {
+            return redirect()->back()->with('error', 'NIS not found. Please contact admin to set your NIS.');
+        }
+
         $qrCode = base64_encode(QrCode::format('png')
             ->size(200)
-            ->generate(route('user.qr.show', ['id' => $user->id])));
+            ->generate($user->nis));
 
         return view('student.qr-code', compact('qrCode', 'user'));
     }

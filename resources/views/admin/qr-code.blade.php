@@ -15,7 +15,11 @@
                             <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code" class="mx-auto">
                         </div>
                         <p class="mt-4 text-gray-600">Show this QR code to superadmin for attendance scanning</p>
-                        <p class="mt-2 text-sm text-gray-500">Your unique ID: {{ $user->id }}</p>
+                        @if($user->nip_nuptk)
+                            <p class="mt-2 text-sm text-gray-500">Your NIP/NUPTK: {{ $user->nip_nuptk }}</p>
+                        @else
+                            <p class="mt-2 text-sm text-gray-500">Your NIS: {{ $user->nis }}</p>
+                        @endif
                     </div>
 
                     <div class="mt-8">

@@ -15,7 +15,7 @@
                             <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code" class="mx-auto">
                         </div>
                         <p class="mt-4 text-gray-600">Show this QR code to your teacher for attendance scanning</p>
-                        <p class="mt-2 text-sm text-gray-500">Your unique ID: {{ $user->id }}</p>
+                        <p class="mt-2 text-sm text-gray-500">Your NIS: {{ $user->nis }}</p>
                     </div>
                     
                     <div class="mt-8">

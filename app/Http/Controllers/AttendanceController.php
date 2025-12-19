@@ -180,25 +180,16 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Extract user ID from QR code URL
-        $pattern = '/\/qr\/show\/(\d+)/';
-        preg_match($pattern, $qrData, $matches);
+        // Extract NIS from QR code (direct NIS value instead of URL)
+        $nis = trim($qrData);
 
-        if (empty($matches[1])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kode QR tidak valid',
-                'data' => null
-            ], 400);
-        }
-
-        $userId = $matches[1];
-        $user = User::find($userId);
+        // Find user by NIS instead of user ID
+        $user = User::where('nis', $nis)->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan',
+                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
                 'data' => null
             ], 404);
         }
@@ -311,25 +302,16 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Extract user ID from QR code URL
-        $pattern = '/\/qr\/show\/(\d+)/';
-        preg_match($pattern, $qrData, $matches);
+        // Extract NIS from QR code (direct NIS value instead of URL)
+        $nis = trim($qrData);
 
-        if (empty($matches[1])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kode QR tidak valid',
-                'data' => null
-            ], 400);
-        }
-
-        $userId = $matches[1];
-        $user = User::find($userId);
+        // Find user by NIS instead of user ID
+        $user = User::where('nis', $nis)->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan',
+                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
                 'data' => null
             ], 404);
         }
@@ -626,25 +608,16 @@ class AttendanceController extends Controller
             ], 400);
         }
 
-        // Extract user ID from QR code URL
-        $pattern = '/\/qr\/show\/(\d+)/';
-        preg_match($pattern, $qrData, $matches);
+        // Extract NIS from QR code (direct NIS value instead of URL)
+        $nis = trim($qrData);
 
-        if (empty($matches[1])) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Kode QR tidak valid',
-                'data' => null
-            ], 400);
-        }
-
-        $userId = $matches[1];
-        $user = User::find($userId);
+        // Find user by NIS instead of user ID
+        $user = User::where('nis', $nis)->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan',
+                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
                 'data' => null
             ], 404);
         }

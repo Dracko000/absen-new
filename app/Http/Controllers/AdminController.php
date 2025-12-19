@@ -284,9 +284,17 @@ class AdminController extends Controller
     public function showQrCode()
     {
         $user = auth()->user();
+
+        // Check if user has NIS (for teachers) or NIP_NUPTK
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
+            return redirect()->back()->with('error', 'Identification number not found. Please contact admin to set your NIS or NIP_NUPTK.');
+        }
+
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
         $qrCode = base64_encode(QrCode::format('png')
             ->size(200)
-            ->generate(route('user.qr.show', ['id' => $user->id])));
+            ->generate($identifier));
 
         return view('admin.qr-code', compact('qrCode', 'user'));
     }

@@ -165,6 +165,9 @@ Route::middleware(['auth'])->group(function () {
     // QR Code routes
     Route::get('/qr/show/{id}', [QrCodeController::class, 'show'])->name('user.qr.show');
     Route::get('/qr/generate/{userId}', [QrCodeController::class, 'generateForUser'])->name('user.qr.generate');
+    // New routes for NIS-based QR codes
+    Route::get('/qr/nis/show/{userId}', [QrCodeController::class, 'showWithNis'])->name('user.qr.nis.show');
+    Route::get('/qr/nis/generate/{userId}', [QrCodeController::class, 'generateForUserWithNis'])->name('user.qr.nis.generate');
 
     // Print routes
     Route::middleware(['auth'])->prefix('print')->name('print.')->group(function () {
