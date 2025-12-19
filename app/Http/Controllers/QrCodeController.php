@@ -12,8 +12,18 @@ class QrCodeController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        // Generate QR code with NIS instead of user ID
-        $qrCode = QrCode::size(200)->generate($user->nis);
+
+        // Check if user has NIS (for students) or NIP/NUPTK (for teachers)
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No identification number found for this user'
+            ], 400);
+        }
+
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis for students
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
+        $qrCode = QrCode::size(200)->generate($identifier);
 
         return Response::make($qrCode, 200)->header('Content-Type', 'image/png');
     }
@@ -21,48 +31,62 @@ class QrCodeController extends Controller
     public function generateForUser($userId)
     {
         $user = User::findOrFail($userId);
-        // Generate QR code with NIS instead of user ID
-        $qrCode = QrCode::size(200)->generate($user->nis);
+
+        // Check if user has NIS (for students) or NIP/NUPTK (for teachers)
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No identification number found for this user'
+            ], 400);
+        }
+
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis for students
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
+        $qrCode = QrCode::size(200)->generate($identifier);
 
         return Response::make($qrCode, 200)->header('Content-Type', 'image/png');
     }
 
     /**
-     * Generate QR code for user with NIS
+     * Generate QR code for user with NIS/NIP
      */
     public function generateForUserWithNis($userId)
     {
         $user = User::findOrFail($userId);
 
-        // Check if user has NIS
-        if (empty($user->nis)) {
+        // Check if user has NIS (for students) or NIP/NUPTK (for teachers)
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
             return response()->json([
                 'success' => false,
-                'message' => 'NIS not found for this user'
+                'message' => 'No identification number found for this user'
             ], 400);
         }
 
-        $qrCode = QrCode::size(200)->generate($user->nis);
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis for students
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
+        $qrCode = QrCode::size(200)->generate($identifier);
 
         return Response::make($qrCode, 200)->header('Content-Type', 'image/png');
     }
 
     /**
-     * Show QR code for user with NIS
+     * Show QR code for user with NIS/NIP
      */
     public function showWithNis($userId)
     {
         $user = User::findOrFail($userId);
 
-        // Check if user has NIS
-        if (empty($user->nis)) {
+        // Check if user has NIS (for students) or NIP/NUPTK (for teachers)
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
             return response()->json([
                 'success' => false,
-                'message' => 'NIS not found for this user'
+                'message' => 'No identification number found for this user'
             ], 400);
         }
 
-        $qrCode = QrCode::size(200)->generate($user->nis);
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis for students
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
+        $qrCode = QrCode::size(200)->generate($identifier);
 
         return Response::make($qrCode, 200)->header('Content-Type', 'image/png');
     }
