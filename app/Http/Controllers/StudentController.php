@@ -52,15 +52,94 @@ class StudentController extends Controller
 
     public function submitLeaveRequest(Request $request)
     {
+        // Validate the form inputs
         $request->validate([
             'reason' => 'required|string|max:500',
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'attachment' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            // Require either attachment file or captured image
+            'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'captured_image' => 'nullable|string', // For captured image from camera
         ]);
 
-        // Store the attachment
-        $attachmentPath = $request->file('attachment')->store('leave-requests', 'public');
+        // Validate that at least one image is provided
+        if (!$request->hasFile('attachment') && !$request->filled('captured_image')) {
+            return redirect()->back()
+                ->withErrors(['attachment' => 'Silakan pilih atau ambil foto terlebih dahulu.'])
+                ->withInput();
+        }
+
+        // Process the image based on the source
+        if ($request->hasFile('attachment')) {
+            // Handle uploaded file - validation already done by Laravel
+            $attachmentPath = $request->file('attachment')->store('leave-requests', 'public');
+        } elseif ($request->filled('captured_image')) {
+            // Handle captured image from camera
+            $imageData = $request->captured_image;
+
+            // Remove data:image/jpeg;base64, part if present
+            if (strpos($imageData, 'data:image') === 0) {
+                $imageData = substr($imageData, strpos($imageData, ',') + 1);
+            }
+
+            // Decode the base64 image data
+            $imageBinary = base64_decode($imageData);
+
+            if ($imageBinary === false) {
+                return redirect()->back()
+                    ->withErrors(['captured_image' => 'Format gambar tidak valid.'])
+                    ->withInput();
+            }
+
+            // Check image size - max 2MB (2048 KB)
+            if (strlen($imageBinary) > 2048 * 1024) {
+                return redirect()->back()
+                    ->withErrors(['captured_image' => 'Ukuran gambar terlalu besar. Maksimal 2MB.'])
+                    ->withInput();
+            }
+
+            // Determine image extension based on the data URL
+            $imageInfo = getimagesize('data://application/octet-stream;base64,' . base64_encode($imageBinary));
+            $extension = 'jpg'; // Default to jpg
+            if ($imageInfo) {
+                switch ($imageInfo[2]) {
+                    case IMAGETYPE_PNG:
+                        $extension = 'png';
+                        break;
+                    case IMAGETYPE_GIF:
+                        $extension = 'gif';
+                        break;
+                    case IMAGETYPE_JPEG:
+                        $extension = 'jpg';
+                        break;
+                }
+            }
+
+            // Validate image type
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
+                return redirect()->back()
+                    ->withErrors(['captured_image' => 'Format gambar tidak didukung. Gunakan JPEG, PNG, atau GIF.'])
+                    ->withInput();
+            }
+
+            // Generate unique filename
+            $filename = 'leave-request-' . auth()->id() . '-' . time() . '.' . $extension;
+
+            // Store the image in the leave-requests directory
+            $path = storage_path('app/public/leave-requests/' . $filename);
+            $directory = dirname($path);
+
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
+
+            file_put_contents($path, $imageBinary);
+            $attachmentPath = 'leave-requests/' . $filename;
+        } else {
+            return redirect()->back()
+                ->withErrors(['attachment' => 'Silakan pilih atau ambil foto terlebih dahulu.'])
+                ->withInput();
+        }
 
         \App\Models\LeaveRequest::create([
             'user_id' => auth()->id(),

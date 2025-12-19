@@ -22,6 +22,50 @@
                         </a>
                     </div>
                 </div>
+
+                <!-- Filter Section -->
+                <div class="mt-4 bg-white p-4 rounded-lg shadow-sm">
+                    <form method="GET" action="{{ route('superadmin.attendance.report') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+                            <input type="date" name="date" id="date" value="{{ request('date') }}"
+                                   class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Dari</label>
+                            <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
+                                   class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Sampai</label>
+                            <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
+                                   class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Peran</label>
+                            <select name="role" id="role" class="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="">Semua Peran</option>
+                                @foreach($roles as $roleValue => $roleLabel)
+                                    <option value="{{ $roleValue }}" {{ request('role') == $roleValue ? 'selected' : '' }}>
+                                        {{ $roleLabel }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-4">
+                            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                                Terapkan Filter
+                            </button>
+                            <a href="{{ route('superadmin.attendance.report') }}" class="ml-2 bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                                Reset Filter
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

@@ -381,10 +381,49 @@ class SuperadminController extends Controller
         return redirect()->route('superadmin.classes')->with('success', 'Class created successfully.');
     }
 
-    public function attendanceReport()
+    public function attendanceReport(Request $request)
     {
-        $attendances = Attendance::with(['user', 'classModel'])->latest()->paginate(10);
-        return view('superadmin.attendance-report', compact('attendances'));
+        $query = Attendance::with(['user', 'classModel']);
+
+        // Apply date filter if provided
+        if ($request->filled('date')) {
+            $query->where('date', $request->date);
+        }
+
+        // Apply role filter if provided
+        if ($request->filled('role')) {
+            $role = $request->role;
+            if ($role === 'Admin') {
+                $query->whereHas('user', function($q) {
+                    $q->whereHas('roles', function($q2) {
+                        $q2->where('name', 'Admin');
+                    });
+                });
+            } elseif ($role === 'User') {
+                $query->whereHas('user', function($q) {
+                    $q->whereHas('roles', function($q2) {
+                        $q2->where('name', 'User');
+                    });
+                });
+            }
+        }
+
+        // Apply date range filter if provided
+        if ($request->filled('date_from') || $request->filled('date_to')) {
+            if ($request->filled('date_from')) {
+                $query->where('date', '>=', $request->date_from);
+            }
+            if ($request->filled('date_to')) {
+                $query->where('date', '<=', $request->date_to);
+            }
+        }
+
+        $attendances = $query->orderBy('date', 'desc')->orderBy('created_at', 'desc')->paginate(10);
+
+        // Get all roles for the filter dropdown
+        $roles = ['Admin' => 'Admin', 'User' => 'User'];
+
+        return view('superadmin.attendance-report', compact('attendances', 'roles'));
     }
 
     public function classMembers($classId)
