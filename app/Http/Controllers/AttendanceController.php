@@ -180,16 +180,18 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Extract NIS from QR code (direct NIS value instead of URL)
-        $nis = trim($qrData);
+        // Extract identification number from QR code (direct NIS/NIP value instead of URL)
+        $identifier = trim($qrData);
 
-        // Find user by NIS instead of user ID
-        $user = User::where('nis', $nis)->first();
+        // Find user by either NIS or NIP/NUPTK
+        $user = User::where('nis', $identifier)
+                    ->orWhere('nip_nuptk', $identifier)
+                    ->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
+                'message' => 'Pengguna tidak ditemukan dengan NIS/NIP: ' . $identifier,
                 'data' => null
             ], 404);
         }
@@ -302,16 +304,18 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Extract NIS from QR code (direct NIS value instead of URL)
-        $nis = trim($qrData);
+        // Extract identification number from QR code (direct NIS/NIP value instead of URL)
+        $identifier = trim($qrData);
 
-        // Find user by NIS instead of user ID
-        $user = User::where('nis', $nis)->first();
+        // Find user by either NIS or NIP/NUPTK
+        $user = User::where('nis', $identifier)
+                    ->orWhere('nip_nuptk', $identifier)
+                    ->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
+                'message' => 'Pengguna tidak ditemukan dengan NIS/NIP: ' . $identifier,
                 'data' => null
             ], 404);
         }
@@ -608,16 +612,18 @@ class AttendanceController extends Controller
             ], 400);
         }
 
-        // Extract NIS from QR code (direct NIS value instead of URL)
-        $nis = trim($qrData);
+        // Extract identification number from QR code (direct NIS/NIP value instead of URL)
+        $identifier = trim($qrData);
 
-        // Find user by NIS instead of user ID
-        $user = User::where('nis', $nis)->first();
+        // Find user by either NIS or NIP/NUPTK
+        $user = User::where('nis', $identifier)
+                    ->orWhere('nip_nuptk', $identifier)
+                    ->first();
 
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pengguna tidak ditemukan dengan NIS: ' . $nis,
+                'message' => 'Pengguna tidak ditemukan dengan NIS/NIP: ' . $identifier,
                 'data' => null
             ], 404);
         }
