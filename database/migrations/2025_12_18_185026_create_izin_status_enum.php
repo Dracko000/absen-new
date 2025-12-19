@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 return new class extends Migration
 {
@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // First drop the existing check constraint
-        DB::statement('ALTER TABLE attendances DROP CONSTRAINT IF EXISTS attendances_status_check');
+        // Modify the status column to allow the new values (for SQLite compatibility)
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->dropColumn('status');
+            $table->string('status', 255)->default('Tidak Hadir')->after('time_out');
+        });
 
-        // Change the column type from enum to varchar/string
-        DB::statement("ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255) USING status::text");
-
-        // Add a new check constraint with extended values
-        DB::statement("ALTER TABLE attendances ADD CONSTRAINT attendances_status_check CHECK (status IN ('Hadir', 'Terlambat', 'Tidak Hadir', 'Izin', 'Sakit'))");
+        // Update existing records to ensure valid status values
+        DB::table('attendances')->whereIn('status', ['Hadir', 'Terlambat', 'Tidak Hadir', 'Izin', 'Sakit'])->update(['status' => DB::raw('status')]);
     }
 
     /**
@@ -26,13 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Remove the extended check constraint
-        DB::statement('ALTER TABLE attendances DROP CONSTRAINT IF EXISTS attendances_status_check');
-
-        // Change column type back to the original enum type, converting 'Izin' and 'Sakit' to 'Tidak Hadir'
-        DB::statement("ALTER TABLE attendances ALTER COLUMN status TYPE VARCHAR(255) USING CASE WHEN status IN ('Izin', 'Sakit') THEN 'Tidak Hadir' ELSE status END");
-
-        // Restore the original constraint
-        DB::statement("ALTER TABLE attendances ADD CONSTRAINT attendances_status_check CHECK (status IN ('Hadir', 'Terlambat', 'Tidak Hadir'))");
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->dropColumn('status');
+            $table->enum('status', ['Hadir', 'Terlambat', 'Tidak Hadir'])->default('Tidak Hadir');
+        });
     }
 };
