@@ -658,20 +658,6 @@ class AttendanceController extends Controller
             ], 400);
         }
 
-        // Check if the teacher is already attending a different class on the same day
-        $existingAttendance = Attendance::where('user_id', $user->id)
-            ->where('date', today())
-            ->where('class_model_id', '!=', $classModelId)
-            ->first();
-
-        if ($existingAttendance) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Guru tidak dapat menghadiri kelas lain pada hari yang sama',
-                'data' => null
-            ], 400);
-        }
-
         // Check if attendance already exists for this user and date for the same class
         $existingAttendanceForClass = Attendance::where('user_id', $user->id)
             ->where('date', today())
