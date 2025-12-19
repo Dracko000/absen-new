@@ -167,10 +167,10 @@
                 </div>
             </div>
 
-            <!-- Recent Attendance - Fully Responsive -->
+            <!-- Recent Student Attendance - Fully Responsive -->
             <div class="mt-6 bg-white rounded-xl shadow-lg p-4 sm:p-6">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 space-y-2 sm:space-y-0">
-                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">Absensi Terbaru</h3>
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">Absensi Terbaru Siswa</h3>
                     <a href="{{ route('superadmin.attendance.report') }}" class="text-blue-600 hover:text-blue-800 text-sm">Lihat semua &rarr;</a>
                 </div>
 
@@ -179,7 +179,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Siswa/Guru</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Siswa</th>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
                                 <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -188,6 +188,66 @@
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             @forelse($recentAttendances as $attendance)
+                                @if(!$attendance->user->hasRole('Admin'))
+                                <tr>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900 truncate max-w-[100px] sm:max-w-none">{{ $attendance->user->name }}</div>
+                                    </td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500 truncate max-w-[80px] sm:max-w-none">{{ $attendance->classModel->name ?? 'N/A' }}</div>
+                                    </td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $attendance->date }}
+                                    </td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                            @if($attendance->status == 'Hadir') bg-green-100 text-green-800
+                                            @elseif($attendance->status == 'Terlambat') bg-yellow-100 text-yellow-800
+                                            @else bg-red-100 text-red-800
+                                            @endif">
+                                            {{ $attendance->status }}
+                                        </span>
+                                    </td>
+                                    <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm font-medium">
+                                        <a href="{{ route('superadmin.attendance.report') }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
+                                        <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                    </td>
+                                </tr>
+                                @endif
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada data absensi</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                @else
+                    <p class="text-gray-500 text-center py-4">Tidak ada data absensi terbaru</p>
+                @endif
+            </div>
+
+            <!-- Recent Teacher Attendance - Fully Responsive -->
+            <div class="mt-6 bg-white rounded-xl shadow-lg p-4 sm:p-6">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 space-y-2 sm:space-y-0">
+                    <h3 class="text-base sm:text-lg font-semibold text-gray-900">Absensi Terbaru Guru</h3>
+                    <a href="{{ route('superadmin.attendance.report') }}" class="text-blue-600 hover:text-blue-800 text-sm">Lihat semua &rarr;</a>
+                </div>
+
+                @if($recentTeacherAttendances && $recentTeacherAttendances->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guru</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($recentTeacherAttendances as $attendance)
                                 <tr>
                                     <td class="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900 truncate max-w-[100px] sm:max-w-none">{{ $attendance->user->name }}</div>
@@ -214,14 +274,14 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada data absensi</td>
+                                    <td colspan="5" class="px-3 sm:px-6 py-4 text-center text-gray-500">Tidak ada data absensi guru</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
                 @else
-                    <p class="text-gray-500 text-center py-4">Tidak ada data absensi terbaru</p>
+                    <p class="text-gray-500 text-center py-4">Tidak ada data absensi guru terbaru</p>
                 @endif
             </div>
         </div>

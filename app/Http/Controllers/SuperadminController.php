@@ -35,7 +35,18 @@ class SuperadminController extends Controller
             ->take(5)
             ->get();
 
-        return view('superadmin.dashboard', compact('totalUsers', 'totalTeachers', 'totalStudents', 'totalClasses', 'todayAttendance', 'attendances', 'recentAttendances'));
+        // Get recent teacher attendance specifically
+        $recentTeacherAttendances = Attendance::with(['user', 'classModel'])
+            ->join('users', 'attendances.user_id', '=', 'users.id')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('roles.name', 'Admin')
+            ->select('attendances.*')
+            ->orderBy('attendances.created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('superadmin.dashboard', compact('totalUsers', 'totalTeachers', 'totalStudents', 'totalClasses', 'todayAttendance', 'attendances', 'recentAttendances', 'recentTeacherAttendances'));
     }
 
     public function manageUsers(Request $request)
