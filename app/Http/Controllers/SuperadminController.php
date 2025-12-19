@@ -478,6 +478,13 @@ class SuperadminController extends Controller
         return view('superadmin.take-attendance', compact('classes', 'users'));
     }
 
+    public function takeTeacherAttendance()
+    {
+        $teachers = User::role('Admin')->get(); // Get only teachers/admins
+        $classes = ClassModel::all(); // Get all classes for the dropdown
+        return view('superadmin.take-teacher-attendance', compact('teachers', 'classes'));
+    }
+
     public function showAdminQrCode($userId)
     {
         $user = User::findOrFail($userId);

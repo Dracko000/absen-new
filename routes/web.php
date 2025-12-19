@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/leave-requests/{id}/reject', [SuperadminController::class, 'rejectLeaveRequest'])->name('leave.request.reject');
 
         Route::get('/take-attendance', [SuperadminController::class, 'takeAttendance'])->name('take.attendance');
+        Route::get('/take-teacher-attendance', [SuperadminController::class, 'takeTeacherAttendance'])->name('take.teacher.attendance');
 
         // User management routes
         Route::get('/users/{userId}/edit', [SuperadminController::class, 'editUser'])->name('users.edit');
