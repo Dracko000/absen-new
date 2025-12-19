@@ -146,4 +146,42 @@ class ExportController extends Controller
             "attendance_class_{$classId}_{$date}.csv"
         );
     }
+
+    public function exportDailyTeachers(Request $request, $date = null)
+    {
+        $date = $date ?? today()->toDateString();
+
+        $attendances = Attendance::where('date', $date)
+            ->join('users', 'attendances.user_id', '=', 'users.id')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('roles.name', 'Admin')
+            ->select('attendances.*')
+            ->with(['user', 'classModel'])
+            ->get();
+
+        return Excel::download(
+            new AttendanceExport($attendances, 'daily'),
+            "attendance_daily_teachers_{$date}.xlsx"
+        );
+    }
+
+    public function exportDailyTeachersCSV(Request $request, $date = null)
+    {
+        $date = $date ?? today()->toDateString();
+
+        $attendances = Attendance::where('date', $date)
+            ->join('users', 'attendances.user_id', '=', 'users.id')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('roles.name', 'Admin')
+            ->select('attendances.*')
+            ->with(['user', 'classModel'])
+            ->get();
+
+        return Excel::download(
+            new AttendanceExport($attendances, 'daily'),
+            "attendance_daily_teachers_{$date}.csv"
+        );
+    }
 }

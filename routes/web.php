@@ -154,6 +154,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/weekly-csv/{year}/{week}', [ExportController::class, 'exportWeeklyCSV'])->name('weekly.csv');
         Route::get('/monthly-csv/{year}/{month}', [ExportController::class, 'exportMonthlyCSV'])->name('monthly.csv');
         Route::get('/class-csv/{classId}/{date?}', [ExportController::class, 'exportByClassCSV'])->name('by.class.csv');
+
+        // Teacher-specific exports
+        Route::get('/daily-teachers/{date?}', [ExportController::class, 'exportDailyTeachers'])->name('daily.teachers');
+        Route::get('/daily-teachers-csv/{date?}', [ExportController::class, 'exportDailyTeachersCSV'])->name('daily.teachers.csv');
     });
 
     // QR Code routes

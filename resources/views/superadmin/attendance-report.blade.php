@@ -109,6 +109,18 @@
                     </a>
                 </div>
             </div>
+
+            <div class="mt-6 bg-white p-6 rounded-lg shadow-sm">
+                <h4 class="text-lg font-medium mb-4">Opsi Ekspor Khusus Guru</h4>
+                <div class="flex flex-wrap gap-4">
+                    <a href="{{ route('export.daily.teachers') }}" class="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
+                        Ekspor Harian Guru (XLSX)
+                    </a>
+                    <a href="{{ route('export.daily.teachers.csv') }}" class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded">
+                        Ekspor Harian Guru (CSV)
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
