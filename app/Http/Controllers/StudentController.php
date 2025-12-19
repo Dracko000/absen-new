@@ -39,14 +39,21 @@ class StudentController extends Controller
     {
         $user = auth()->user();
 
-        // Check if user has NIS
-        if (empty($user->nis)) {
-            return redirect()->back()->with('error', 'NIS not found. Please contact admin to set your NIS.');
+        // Check if user has NIS or NIP/NUPTK
+        if (empty($user->nis) && empty($user->nip_nuptk)) {
+            // Show the view with an error message instead of redirecting
+            return view('student.qr-code', [
+                'user' => $user,
+                'qrCode' => null,
+                'error' => 'NIS not found. Please contact admin to set your NIS or NIP/NUPTK.'
+            ]);
         }
 
+        // For teachers, use nip_nuptk if available, otherwise fallback to nis for students
+        $identifier = !empty($user->nip_nuptk) ? $user->nip_nuptk : $user->nis;
         $qrCode = base64_encode(QrCode::format('png')
             ->size(200)
-            ->generate($user->nis));
+            ->generate($identifier));
 
         return view('student.qr-code', compact('qrCode', 'user'));
     }

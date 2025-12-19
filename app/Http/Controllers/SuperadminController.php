@@ -533,9 +533,14 @@ class SuperadminController extends Controller
             abort(404);
         }
 
-        // Check if user has NIS (for teachers) or NIP_NUPTK
+        // Check if user has NIS or NIP/NUPTK
         if (empty($user->nis) && empty($user->nip_nuptk)) {
-            return redirect()->back()->with('error', 'Identification number not found for this admin.');
+            // Show the view with an error message instead of redirecting
+            return view('superadmin.admin-qr-code', [
+                'user' => $user,
+                'qrCode' => null,
+                'error' => 'Identification number not found for this admin.'
+            ]);
         }
 
         // For teachers, use nip_nuptk if available, otherwise fallback to nis

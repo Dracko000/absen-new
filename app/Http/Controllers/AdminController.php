@@ -285,9 +285,14 @@ class AdminController extends Controller
     {
         $user = auth()->user();
 
-        // Check if user has NIS (for teachers) or NIP_NUPTK
+        // Check if user has NIS or NIP/NUPTK
         if (empty($user->nis) && empty($user->nip_nuptk)) {
-            return redirect()->back()->with('error', 'Identification number not found. Please contact admin to set your NIS or NIP_NUPTK.');
+            // Show the view with an error message instead of redirecting
+            return view('admin.qr-code', [
+                'user' => $user,
+                'qrCode' => null,
+                'error' => 'Identification number not found. Please contact admin to set your NIS or NIP/NUPTK.'
+            ]);
         }
 
         // For teachers, use nip_nuptk if available, otherwise fallback to nis
